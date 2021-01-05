@@ -28,3 +28,20 @@
     box-shadow: 0px 0px 1vw 0.5vw  #C8C8C8;
 
 }
+
+.DownloadButton{
+    padding:1vw;
+    background: #FFFFFF;
+    border: 0.25vw solid #98C7FF;
+    box-sizing: border-box;
+    border-radius: 1vw;
+}
+.DownloadButton:hover{
+    box-shadow: 0px 0px 0.5vw 0.25vw rgba(101, 171, 255, 0.5);
+}
+.DownloadButton:active{
+    background: #DFEAF8;
+}
+*{
+    outline: none;
+}

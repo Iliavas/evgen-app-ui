@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
-import {DefaultButton} from "./uiKit/Buttons"
+import { MySelect } from './uiKit/Select';
+import {DownloadButton} from "./uiKit/Buttons"
 
 function click(){
   console.log("походу работает")
 }
 
 ReactDOM.render(
-  <DefaultButton text="rrr5" handleClick={click} />,
+  <DownloadButton handleClick={click}></DownloadButton>,
   document.getElementById('root')
 );

@@ -1,0 +1,35 @@
+.myInput{
+    padding:1vw 2vw;
+    height:7vw;
+    width:50vw;
+    outline: none;
+    background: #FFFFFF;
+    border: 0.25vw solid #DDDDDD;
+    box-sizing: border-box;
+    border-radius: 2.5vw;
+
+    font-family:  'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 5vw;
+    line-height: 7vw;
+    /* identical to box height */
+
+
+    color: #A9A9A9;
+}
+.myInput::placeholder{
+    font-size: 5vw;
+    line-height: 7vw;
+    color: #A9A9A9;
+    font-family:'Montserrat', sans-serif;;
+}
+.myInput:hover{
+    border:none;
+    box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.15);
+
+}
+.myInput:active{
+    border: 0.25vw solid #A9A9A9;
+
+}

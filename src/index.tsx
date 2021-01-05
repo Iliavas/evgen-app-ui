@@ -9,6 +9,6 @@ function click(){
 }
 
 ReactDOM.render(
-  <DefaultInput placeHolder="привет" handleChange={click}  type="e-mail"/>,
+  <DefaultInput placeHolder="ФИО" handleChange={click}  type="e-mail"/>,
   document.getElementById('root')
 );

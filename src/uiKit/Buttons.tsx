@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import "./css/Buttons.css"
-import download from "D:/Programs_pc/react/Projects/evgen-app-ui/src/images/download.svg"
+import download from "../images/download.svg"
 
 interface ButtonsConfig{
     text?:String;

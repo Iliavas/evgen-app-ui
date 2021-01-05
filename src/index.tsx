@@ -2,13 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import {DefaultButton} from "./uiKit/Buttons"
-import {DefaultInput} from "./uiKit/Inputs"
 
 function click(){
-  console.log("походу работает123")
+  console.log("походу работает")
 }
 
 ReactDOM.render(
-  <DefaultInput placeHolder="ФИО" handleChange={click}  type="e-mail"/>,
+  <DefaultButton text="батон" handleClick={click} />,
   document.getElementById('root')
 );

@@ -1,3 +1,30 @@
 .defaultButton{
-    background-color: red;
+    width: 15vw;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 3vw;
+    line-height: 4vw;
+    /* identical to box height */
+    
+    text-align: center;
+    
+    color: #58FFAF;
+    outline: none;
+
+    background: #FFFFFF;
+    border: 0.25vw solid #90FFCA;
+    box-sizing: border-box;
+    border-radius: 7px;
+}
+.defaultButton:hover{
+    outline: none;
+
+    box-shadow: 0px 0px 1vw 0.5vw #C8C8C8;
+}
+.defaultButton:active{
+    border: 0.3vw solid #90FFCA;
+    outline: none;
+    box-shadow: 0px 0px 1vw 0.5vw  #C8C8C8;
+
 }

@@ -1,10 +1,7 @@
 import React from 'react';
 
 import client from './client'
-
 import {gql} from "@apollo/client";
-
-
 import {get} from './QUERIES/debug';
 
 

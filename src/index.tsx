@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { MySelect } from './uiKit/Select';
+import { MyTextarea } from './uiKit/Textarea';
 
 function click(){
   console.log("походу работает")
 }
 
 ReactDOM.render(
-  <MySelect handleChange={click} el={["ddd","ddeed","ddeeed","ddeewwerd"]}></MySelect>,
+  <MyTextarea content = {"Hello word"} onChange={(e:any) => {console.log(e.target.value);}}/>,
   document.getElementById('root')
 );

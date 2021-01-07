@@ -90,7 +90,7 @@ export const Column: React.FC<ColumnProps> = ({ list }) => {
       )
   }
 
-  const UnDropItem: React.FC<ItemProps> = ({ text, index }) => {
+  const UnDropItem: React.FC<ItemProps> = ({ text }) => {
     return (
           <div className="item">
             {text}

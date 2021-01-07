@@ -15,20 +15,28 @@ interface ConformityConfig{
 
 interface ItemProps {
     text: string
+    charPointer:string
     index: number
   }
   
-  const Item: React.FC<ItemProps> = ({ text, index }) => {
+  const Item: React.FC<ItemProps> = (props) => {
     return (
-      <Draggable draggableId={text} index={index}>
+      <Draggable draggableId={props.text} index={props.index}>
         {provided => (
           <div className="item"
             ref={provided.innerRef}
             {...provided.draggableProps}
-            {...provided.dragHandleProps}
-          >
-            {text}
-            <img src={cursor} className="cursor"></img>
+            {...provided.dragHandleProps}>
+             <div className="txtDiv"><span className="charPointer">{props.charPointer + " "}</span>{props.text}</div>
+             <div className="cursor">
+                <div className="circle"></div>
+                <div className="circle"></div>
+                <div className="circle"></div>
+                <div className="circle"></div>
+                <div className="circle"></div>
+                <div className="circle"></div>
+             </div>
+            {/* <img src={cursor} className="cursor"/> */}
 
           </div>
         )}
@@ -66,7 +74,7 @@ export const Column: React.FC<ColumnProps> = ({ list }) => {
               ref={provided.innerRef}
             >
               {list.map((text, index) => (
-                <Item key={text} text={(index+1).toString() + " " + text} index={index} />
+                <Item key={text} text={text} index={index} charPointer={(index+1).toString()} />
               ))}
               {provided.placeholder}
             </div>
@@ -83,16 +91,16 @@ export const Column: React.FC<ColumnProps> = ({ list }) => {
     return (
             <div className="col">
               {props.answers.map((text, index) => (
-                <UnDropItem key={text} text={alphavit.charAt(index) + " " + text} index={index} />
+                <UnDropItem key={text} charPointer={alphavit.charAt(index)} text={text} index={index} />
               ))}
             </div>
       )
   }
 
-  const UnDropItem: React.FC<ItemProps> = ({ text }) => {
+  const UnDropItem: React.FC<ItemProps> = (props) => {
     return (
           <div className="item">
-            {text}
+            <div className="txtDiv"><span className="charPointer">{props.charPointer + " "}</span>{props.text}</div>
           </div>
     );
   }

@@ -1,50 +1,19 @@
+import { from } from '@apollo/client';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { MySelect } from './uiKit/Select';
-import {TimeCell,  TimeCol, TimeTable} from "./uiKit/timetable"
+import {MySelect} from './uiKit/Select';
+import {Conformity, UnDropColumn} from "./uiKit/conformity";
+import "./uiKit/css/conformity.css"
 
 function click(){
   console.log("походу работает")
 }
 
 ReactDOM.render(
-  <TimeTable firstCol={3} cols={[
-    <TimeCol number={1} name="Вт" content={[
-      <TimeCell name="Алгебра" startTime="9:00" endTime="10:00" test={0}></TimeCell>,
-      <TimeCell name="Utjvt" startTime="9:00" endTime="10:00" test={1}></TimeCell>,
-      <TimeCell name="Алгdfgdfgебра" startTime="9:00" endTime="10:00" test={2}></TimeCell>,
-      <TimeCell name="Алгdfgdfgебра" startTime="9:00" endTime="10:00" test={3}></TimeCell>,
-    ]}>
-      
-    </TimeCol>,
-        <TimeCol number={1} name="Gт" content={[
-          <TimeCell name="Алгебра" startTime="9:00" endTime="10:00" test={0}></TimeCell>,
-          <TimeCell name="Utjvt" startTime="9:00" endTime="12:00" test={1}></TimeCell>,
-          <TimeCell name="Алгdfgdfgебра" startTime="9:00" endTime="10:00" test={2}></TimeCell>,
-          <TimeCell name="Алгdfgdfgебра" startTime="9:00" endTime="10:00" test={3}></TimeCell>,
-        ]}>
-          
-        </TimeCol>,
-            <TimeCol number={1} name="Dт" content={[
-              <TimeCell name="Алгебра" startTime="9:00" endTime="10:00" test={0}></TimeCell>,
-              <TimeCell name="Utjvt" startTime="9:00" endTime="10:00" test={1}></TimeCell>,
-              <TimeCell name="Алгdfgdfgебра" startTime="9:00" endTime="11:00" test={2}></TimeCell>,
-              <TimeCell name="Алгdfgdfgебра" startTime="9:00" endTime="10:00" test={3}></TimeCell>,
-            ]}>
-              
-            </TimeCol>,
-                <TimeCol number={1} name="Fт" content={[
-                  <TimeCell name="Алгебра" startTime="9:00" endTime="12:00" test={0}></TimeCell>,
-                  <TimeCell name="Utjvt" startTime="9:00" endTime="11:00" test={1}></TimeCell>,
-                  <TimeCell name="Алгdfgdfgебра" startTime="9:00" endTime="10:00" test={2}></TimeCell>,
-                  <TimeCell name="Алгdfgdfgебра" startTime="9:00" endTime="10:00" test={3}></TimeCell>,
-                ]}>
-                  
-                </TimeCol>,
-
-  ]}>
-    </TimeTable>,
+  <div className="myDiv">
+      <UnDropColumn answers={["спит","спать", "Петербург","бобра"]}></UnDropColumn>
+      <Conformity answers={["Пошла","Наелся и", "Съел","Санкт"]}></Conformity>
+  </div>,
   
-
   document.getElementById('root')
 );

@@ -1,0 +1,28 @@
+.a{
+    background: #FFD493;
+}
+.b{
+    background: #ffe6c2;
+}
+.timeCell{
+    padding-top:1vw;
+}
+
+.test{
+    justify-content: center;
+    text-align: center;
+    margin-left:90%;
+    background:gray;
+    border-radius:1vw;
+    border:none;
+
+}
+.mainDiv{
+    display:flex;
+    flex-wrap: wrap;
+    gap:1vw;
+}
+.myCol{
+    min-width:200px ;
+    width:15vw ;
+}

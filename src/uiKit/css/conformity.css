@@ -1,0 +1,58 @@
+.item{
+    width: 21.6vw;
+    height: 3.1vw;
+    margin-top:2vw;
+    border-radius: 2vw;
+    background: #FFFFFF;
+    border: 0.1vw solid #DDDDDD;
+    border-radius: 0.5vw;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.7vw;
+    line-height: 3.1vw;
+    min-width: 200px;
+
+    font-family: 'Montserrat', sans-serif;
+
+
+    color: #000000 !important;
+
+    display:flex;
+    align-items: center;
+}
+.myDiv{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap:1vw
+}
+.col{
+    display: flex;
+    flex-direction: column;
+}
+
+.cursor{
+    margin-right:0.5vw;
+
+    display: grid;
+    grid-row-gap:0.2vw;
+    grid-column-gap:0.4vw;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+.txtDiv{
+    margin-left:1vw;
+    flex-grow: 2;
+}
+.charPointer{
+    color:#818181;
+}
+.circle{
+    display:block;
+    height: 0.7vw;
+    width: 0.7vw;
+    background-color:#C4C4C4;
+    border-radius: 50%;
+
+}

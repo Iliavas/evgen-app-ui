@@ -1,0 +1,61 @@
+.row{
+    position: relative;
+    left:15vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.myContainer{
+    background: #EEEEEE;
+    border-radius: 1vw;
+    display:flex;
+    width:65vw
+}
+.green{
+    background: #A3E1A8;
+
+}
+.gray{
+    background: #C4C4C4;
+}
+.myDiv{
+    margin-top:1vw;
+    margin-bottom:1vw;
+    margin-left: 2vw;
+    border-radius: 1vw;
+    width: 3vw;
+    height: 3vw;
+}
+.text{
+    font-style: normal;
+    font-weight: 400;
+    font-size: 1.7vw;
+    line-height: 3.1vw;
+
+    position: relative;
+    left:1.5vw;
+    top:1vw;
+    
+
+    font-family: 'Montserrat', sans-serif;
+
+
+    color: #000000 !important;
+}
+.scroll{
+    display:flex;
+    gap:1vw;
+    flex-direction: column;
+    overflow-y: scroll;
+    max-height: 400px;
+}
+
+.NumRow{
+    display:flex;
+    flex-direction: row;
+    gap:4vw;
+    margin-bottom:1vw;
+    margin-left:33vw;
+}

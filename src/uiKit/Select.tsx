@@ -1,6 +1,5 @@
 import React, {useImperativeHandle, useState} from 'react';
 import ReactDOM from 'react-dom';
-import { StringMappingType } from 'typescript';
 import "./css/Select.css"
 
 interface SelectConfig{

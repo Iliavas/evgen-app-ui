@@ -7,7 +7,6 @@ interface PaginationConfig{
     handleClick:Function;
     thisPage:number;
     pageList:Array<number>
-
 };
 
 export const Pagination : React.FC<PaginationConfig> = (props) => {

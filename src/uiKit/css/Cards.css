@@ -1,24 +1,22 @@
 .SbCard{
-    display: flex; 
-    flex-direction: row;
-    flex-wrap: nowrap;
-
+    position: relative;
+    padding:0;
+    margin-left: 1vw;
+    width: 90vw;
     background: #FFFFFF;
     border: 1px solid #EEEEEE;
     box-sizing: border-box;
-    border-radius: 10px;   
+    border-radius: 1.5vw;   
+    justify-content: center;
+    align-items:center;
 }
 .TeacherText{
     font-family:  'Montserrat', sans-serif;
     font-style: normal;
     font-weight: 500;
-    font-size: 18px;
-    /* identical to box height */
-
-    display: flex;
-    align-items: center;
-    letter-spacing: 0.2px;
-
+    font-size: 1.5vw;
+    line-height: 2.5vw;
+    letter-spacing: 0.02vw;
     color: #565656;
 
 }
@@ -26,18 +24,22 @@
     font-family:  'Montserrat', sans-serif;
     font-style: normal;
     font-weight: 600;
-    font-size: 24px;
+    font-size: 2.5vw;
+    line-height: 3vw;
     display: flex;
     align-items: center;
-    letter-spacing: 0.2px;
+    letter-spacing: 0.02vw;
 
     color: #000000;
 }
+
 .noTasks{
     font-family:  'Montserrat', sans-serif;
     font-style: normal;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 1.5vw;
+    line-height: 2.5vw;
+    letter-spacing: 0.02vw;
 
     color: #565656;
 }
@@ -45,11 +47,47 @@
     font-family:  'Montserrat', sans-serif;
     font-style: normal;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 1.5vw;
+    line-height: 2.5vw;
+    letter-spacing: 0.02vw;
 
     color: #707EFF;
 
 }
 .image{
-    width: 30vw;
+    display: block;
+    width: 30.3vw;
+    position: relative;
+    border-radius: 1.5vw;
+    float:right
+
+}
+
+.subDiv{
+    padding-left:2vw
+}
+.taskDiv{
+    padding-left:6vw
+}
+
+*{
+    outline: none;
+}
+
+.padDiv{
+    margin-top:2vw;
+    position: absolute;
+    display: flex; 
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    align-items:center;
+}
+
+.SbCard:hover{
+    box-shadow: 0px 0px 0.5vw 0.1vw #C8C8C8;
+}
+.SbCard:active{
+    box-shadow: 0px 0px 1vw 0.5vw  #C8C8C8;
+
 }

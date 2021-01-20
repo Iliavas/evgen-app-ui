@@ -1,0 +1,55 @@
+.SbCard{
+    display: flex; 
+    flex-direction: row;
+    flex-wrap: nowrap;
+
+    background: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    box-sizing: border-box;
+    border-radius: 10px;   
+}
+.TeacherText{
+    font-family:  'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    /* identical to box height */
+
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.2px;
+
+    color: #565656;
+
+}
+.SubjectText{
+    font-family:  'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.2px;
+
+    color: #000000;
+}
+.noTasks{
+    font-family:  'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+
+    color: #565656;
+}
+.newTasks{
+    font-family:  'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+
+    color: #707EFF;
+
+}
+.image{
+    width: 30vw;
+}

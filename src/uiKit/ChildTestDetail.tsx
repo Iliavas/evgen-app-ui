@@ -9,7 +9,7 @@ interface TaskRowConfig{
 }
 interface NumRowConfig{
     num:number;
-    taskrows:Array<JSX.Element>
+    children:Array<JSX.Element>
 }
 
 export const TaskRow : React.FC<TaskRowConfig> = (props) => {
@@ -44,7 +44,7 @@ export const NumRow : React.FC<NumRowConfig> = (props) => {
     return(
         <div>
             <div className="NumRow">{nums}</div>
-            <div className="scroll">{props.taskrows}</div>
+            <div className="scroll">{props.children}</div>
         </div>
     );
 }

@@ -1,0 +1,20 @@
+.paginationBTN{
+   border:none;
+}
+.row{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap:1vw;
+}
+.gray{
+    background:gray;
+}
+.green{
+    background:green;
+}
+.yellow{
+    background:yellow;
+}

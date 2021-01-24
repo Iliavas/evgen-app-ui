@@ -132,3 +132,34 @@
     display: flex;
     gap:2vw;
 }
+.grayGrade{
+    padding-left:1vw;
+
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 44px;
+    /* identical to box height */
+
+    letter-spacing: 0.2px;
+
+    color: #565656;
+}
+.purpleGrade{
+    padding-left:1vw;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 44px;
+    /* identical to box height */
+
+    letter-spacing: 0.2px;
+
+    color: #707EFF;
+}
+
+.sbp{
+    padding:2vw;
+}

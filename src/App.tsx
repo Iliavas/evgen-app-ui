@@ -9,7 +9,7 @@ function App() {
   client.query({
     query: gql`${get()}`
   }).then((data) => {
-    console.log(data)
+    console.log("aaa")
   })
   return (
     <div className="App">

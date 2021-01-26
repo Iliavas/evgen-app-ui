@@ -1,0 +1,44 @@
+.today {
+    color: #707EFF !important;
+    border: 1px solid #707EFF !important;
+  }
+
+  .purpleDay:not(.-selectedStart):not(.-selectedBetween):not(.-selectedEnd):not(.-selected) {
+    border: 2px solid rgba(156, 136, 255, 0.7) !important;
+  }
+  
+  .orangeDay:not(.-selectedStart):not(.-selectedBetween):not(.-selectedEnd):not(.-selected) {
+    border: 2px solid rgba(219, 145, 60, 0.7) !important;
+  }
+  
+  .yellowDay:not(.-selectedStart):not(.-selectedBetween):not(.-selectedEnd):not(.-selected) {
+    border: 2px solid rgba(228, 231, 36, 0.7) !important;
+  }
+  
+  .greenDay:not(.-selectedStart):not(.-selectedBetween):not(.-selectedEnd):not(.-selected) {
+    border: 2px solid rgba(0, 255, 76, 0.849) !important;
+  }
+
+
+  
+  .modal {
+    background-color: rgba(0,0,0,0.5);
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .TGbtn{
+    height: 30vw;
+    color:green
+  }
+
+  .MuiToggleButton-root{
+    height: 30vw;
+
+  }

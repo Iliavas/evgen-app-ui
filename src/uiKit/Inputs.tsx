@@ -11,6 +11,6 @@ interface InputsConfig{
 
 export const DefaultInput : React.FC<InputsConfig> = (props) => {   
     return (
-        <input className="myInput" placeholder={props.placeHolder} onChange={()=>props.handleChange()} type={props.type}></input>
+        <input className="myInput" placeholder={props.placeHolder} onChange={(event)=>props.handleChange(event)} type={props.type}></input>
     );
 }

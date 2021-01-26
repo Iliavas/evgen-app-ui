@@ -7,6 +7,32 @@ import { Calendar } from "react-modern-calendar-datepicker";
 import { get } from '../QUERIES/debug';
 
 
+const appRoot = document.getElementById('app-root');
+const modalRoot = document.getElementById('modal-root');
+
+class Modal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.el = document.createElement('div');
+  }
+
+  componentDidMount() {
+    modalRoot.appendChild(this.el);
+  }
+
+  componentWillUnmount() {
+    modalRoot.removeChild(this.el);
+  }
+  
+  render() {
+    return ReactDOM.createPortal(
+      this.props.children,
+      this.el,
+    );
+  }
+}
+
+
 
 const MyCalendar = (props) => {
   let date = new Date()
@@ -17,27 +43,41 @@ const MyCalendar = (props) => {
   };
   const [selectedDay, setSelectedDay] = useState(defaultValue);
 
-  function OnChange(event){
 
+   let [showModal,setShowModal] = useState(false)
+    
+
+  function handleShow() {
+    setShowModal(true);
+  }
+  
+  function handleHide() {
+    setShowModal(false);
+  }
+
+    const modal = showModal ? (
+      <Modal>
+        <div className="modal">
+          <div>
+            {selectedDay.year.toString() + "." + selectedDay.month.toString() +"." + selectedDay.day.toString() }
+          </div>
+          <button onClick={()=>setShowModal(!showModal)}>закрыть</button>
+        </div>
+      </Modal>
+    ) : null;
+
+  function OnChange(event){
     let el = document.createElement('div');
 
     const appRoot = document.getElementById('app-root');
     const modalRoot = document.getElementById('modal-root');
 
     setSelectedDay(event)
-    console.log(event)
+    setShowModal(!showModal)
 
     
 
-    let domNode = <div className="modal"><h1></h1></div>
-    appRoot.appendChild(domNode)
-
-    return( 
-      ReactDOM.createPortal(
-        domNode,
-        el,
-      )
-    );
+    
     //тут  креитится портал
   }
   
@@ -63,6 +103,7 @@ const MyCalendar = (props) => {
       calendarTodayClassName="today"
       customDaysClassName={testDays}
     />
+    {modal}
     </div>
     
   );

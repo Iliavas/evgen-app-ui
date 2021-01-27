@@ -5,12 +5,16 @@ import "./css/InputField.css"
 
 interface InputsConfig{
     placeHolder?:string;
-    handleChange:Function;
+    handleChange?:Function;
     type?: string;
+    class?:string;
 };
 
 export const DefaultInput : React.FC<InputsConfig> = (props) => {   
+    const classes = "myInput " + (props.class == undefined ? "" : props.class); 
     return (
-        <input className="myInput" placeholder={props.placeHolder} onChange={(event)=>props.handleChange(event)} type={props.type}></input>
+        <input className={classes} placeholder={props.placeHolder} onChange={
+            (event)=> props.handleChange != undefined ? props.handleChange(event) : {}} 
+            type={props.type}></input>
     );
 }

@@ -1,21 +1,19 @@
 .defaultButton{
-    width: 50vw;
-    height: 8vw;
-    
+
         
     background: #707EFF;    
     border: 1px solid #5E77FF;
     box-sizing: border-box;
-    border-radius: 1.5vw;
+    border-radius: 10px;
     font-family:  'Montserrat', sans-serif;
     font-style: normal;
     font-weight: 600;
-    font-size: 2vw;
-    line-height: 3vw;
+    font-size: 18px;
     /* identical to box height */
     
-    
+    padding : 20px 20px;
     color: #FFFFFF;
+    letter-spacing: 0.2px;
 }
 .defaultButton:hover{
     outline: none;
@@ -44,3 +42,4 @@
 *{
     outline: none;
 }
+

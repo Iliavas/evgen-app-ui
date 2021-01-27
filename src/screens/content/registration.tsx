@@ -12,8 +12,10 @@ import googleImg from "../svg/googleImg.svg";
 import {Login_inputs} from "./login-inputs";
 import {Registration_inputs} from "./registration-inputs";
 
+import {checkToken} from "../../LocalStorageInteraction/checkToken"
+
 import {
-    Link, Switch, Route, useRouteMatch, useLocation
+    Link, Switch, Route, useRouteMatch, useLocation, Redirect
 } from "react-router-dom";
 
 export const Registration:react.FC = () => {
@@ -21,6 +23,7 @@ export const Registration:react.FC = () => {
     const location = useLocation();
     console.log(location);
     const isSign = location.pathname.split("/").pop() == "Login";
+    if (checkToken()) return <Redirect to=""></Redirect>
     return (
     <div className="centered">
         <div className="registration__container">

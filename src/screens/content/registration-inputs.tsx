@@ -4,12 +4,34 @@ import { DefaultInput } from "../../uiKit/Inputs"
 
 import "../css/inputs.css"
 
-export const Registration_inputs:React.FC = () =>{
+import {useMutation} from "@apollo/client";
+import {register} from "../../MUTATIONS/registerUser"
+
+import {IEvent} from "./interfaces"
+
+
+export const Registration_inputs:React.FC = () => {
+    const [registerUser, {data}] = useMutation(register, {onCompleted: 
+        (data) => {
+            console.log(data);
+        } });
+    let name_input:string, password_input:string;
     return <div className="inputs_flex">
-        <DefaultInput handleChange={() => {}} class="reg-input" placeHolder="ФИО"></DefaultInput>
-        <DefaultInput handleChange={() => {}} class="reg-input" placeHolder="E-mail"></DefaultInput>
-        <DefaultInput handleChange={() => {}} class="reg-input" placeHolder="Password"></DefaultInput>
-        <DefaultButton handleClick={()=>{}} class="reg-btn">
+        <DefaultInput handleChange={(e:IEvent) => {
+            name_input = e.target.value;
+        }} 
+        class="reg-input" placeHolder="ФИО"></DefaultInput>
+        <DefaultInput handleChange={(e:IEvent) => {
+        }} class="reg-input" placeHolder="E-mail"></DefaultInput>
+        <DefaultInput handleChange={(e:IEvent) => {
+            password_input = e.target.value;
+        }} class="reg-input" placeHolder="Password"></DefaultInput>
+        
+        
+        <DefaultButton handleClick={()=>{
+            registerUser({variables:{username:name_input, 
+                password:password_input}});
+        }} class="reg-btn">
             Зарегистрироваться
         </DefaultButton>
     </div>

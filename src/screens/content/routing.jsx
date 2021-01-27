@@ -12,6 +12,7 @@ import client from "../../client"
 
 import {Registration} from "./registration"
 
+import {OrganisationList} from "./organisations";
 
 export const Routing = () => {
     return <ApolloProvider client={client}>
@@ -19,6 +20,9 @@ export const Routing = () => {
             <Switch>
                 <Route path="/enter-user">
                     <Registration></Registration>
+                </Route>
+                <Route path="/">
+                    <OrganisationList></OrganisationList>
                 </Route>
             </Switch>
         </Router>

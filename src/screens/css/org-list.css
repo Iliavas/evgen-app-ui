@@ -1,0 +1,24 @@
+.org-list__container{
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: 100px;
+    justify-content: center;
+    align-items: center;
+}
+.heading{
+    width: 100vw;
+}
+
+.org-list__public {
+    display: inline-flex;
+    justify-content: center;align-items: center;
+    flex-direction: column;
+}
+
+.heading{
+    text-align: center;
+}
+.centered{
+    display: flex;
+    justify-content: center;align-items: center;
+}

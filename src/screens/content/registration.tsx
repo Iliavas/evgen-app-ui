@@ -9,21 +9,38 @@ import {DefaultInput} from "../../uiKit/Inputs";
 import vkImg from "../svg/VkImage.svg";
 import googleImg from "../svg/googleImg.svg";
 
+import {Login_inputs} from "./login-inputs";
+import {Registration_inputs} from "./registration-inputs";
+
+import {
+    Link, Switch, Route, useRouteMatch, useLocation
+} from "react-router-dom";
+
 export const Registration:react.FC = () => {
+    const {path, url} = useRouteMatch();
+    const location = useLocation();
+    console.log(location);
+    const isSign = location.pathname.split("/").pop() == "Login";
     return (
     <div className="centered">
         <div className="registration__container">
             <div className="heading">Добро пожаловать в EvgenApp</div>
             <div className="toggle__reg">
-                <div className="toggle-text">Вход</div>
-                <div className="toggle-text">Регистрация</div>
+                <Link to="Login">                
+                    <div className={"toggle-text " + (isSign ? "" : "disabled")}>Вход</div>
+                </Link>
+                <Link to="Registration">
+                    <div className={"toggle-text " + (isSign ? "disabled": "")}>Регистрация</div>
+                </Link>
             </div>
-            <DefaultInput handleChange={() => {}} class="reg-input" placeHolder="E-mail"></DefaultInput>
-            <DefaultInput handleChange={() => {}} class="reg-input" placeHolder="Password"></DefaultInput>
-            <div className="password-refresh">Восстановить пароль</div>
-            <DefaultButton handleClick={()=>{}} class="reg-btn">
-                Войти
-            </DefaultButton>
+            <Switch>
+                <Route path={`${url}/Login`}>
+                    <Login_inputs></Login_inputs>
+                </Route>
+                <Route path={`${url}/Registration`}>
+                    <Registration_inputs></Registration_inputs>
+                </Route>
+            </Switch>
             <div className="or-container">
                 <div className="line"></div>
                 <div className="or-content">или</div>

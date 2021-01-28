@@ -14,6 +14,9 @@ import {Registration} from "./registration"
 
 import {OrganisationList} from "./organisations";
 
+import {ChildLobby} from "./childLobby";
+
+
 export const Routing = () => {
     return <ApolloProvider client={client}>
         <Router>
@@ -22,7 +25,7 @@ export const Routing = () => {
                     <Registration></Registration>
                 </Route>
                 <Route path="/">
-                    <OrganisationList></OrganisationList>
+                    <ChildLobby></ChildLobby>
                 </Route>
             </Switch>
         </Router>

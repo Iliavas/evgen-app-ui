@@ -2,10 +2,9 @@
     display: inline-block;
     background-color: white;
     width: max(250px, 17vw);
-    height: 320px;
     border-radius:10px;
     border: 1px solid #EEEEEE;
-    padding: 40px;
+    padding: 50px 40px;
     margin:0px;
 
     font-family: Montserrat;
@@ -13,6 +12,7 @@
     font-weight: 600;
     font-size: 18px;
     line-height: 22px;
+    padding-bottom:70px;
 }
 
 .org-card__heading{

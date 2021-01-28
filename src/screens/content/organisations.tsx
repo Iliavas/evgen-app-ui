@@ -37,13 +37,6 @@ export const OrganisationList:react.FC = () =>{
             <div className="heading">Мои организации</div>
             <div className="org-list__container">
                 {childProcessing(data.userInfo.profile.childSet.edges)}
-                <OrgCard
-                    name="school 777"
-                    subjects={["physics", "PE"]}
-                    childLen={4}
-                    classesLen={10}
-                    role="child"
-                ></OrgCard>
             </div>
         </div>
     </div>

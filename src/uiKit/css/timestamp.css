@@ -1,0 +1,27 @@
+.wrapper{
+    display: flex;
+    flex-direction: row;
+    gap:10vw
+}
+.cDiv{
+    display: flex;
+    flex-direction: column;
+    gap:5vw
+}
+
+.text{
+    font-family:  'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+    display: block;
+    align-items: bottom;
+    letter-spacing: 0.02vw;
+
+    color: #000000;
+}
+
+.calendar{
+    font-size: 1.5vw !important; /* default to 10px */
+}

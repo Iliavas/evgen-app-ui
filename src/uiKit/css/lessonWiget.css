@@ -1,0 +1,100 @@
+.lesson-widget__container{
+    background: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    box-sizing: border-box;
+    border-radius: 10px;
+    width: 100%;
+    padding: 20px;
+}
+
+.lesson-widget__heading{
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.2px;
+
+    color: #000000;
+}
+
+.lesson-widget__descr{
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+
+    align-items: center;
+    letter-spacing: 0.2px;
+
+    color: #565656;
+    margin-top: 8px;
+}
+
+.date-of-lesson{
+    margin-top: 56px;
+
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+
+    color: #6F6F6F;
+}
+
+.colorized{
+    color:#707EFF;
+}
+
+.materials__info{
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+
+    color: #565656;
+}
+
+.lesson-widget-content{
+    display: flex;
+    flex-direction: row;
+    gap: 7vw;
+}
+
+.lesson-widget__tests-info{
+    margin-top: 8px;
+}
+
+.deadline{
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+
+    color: #6F6F6F;
+
+    margin-top: 56px;
+}
+
+.materials-viewed{
+    font-family: Montserrat;
+font-style: normal;
+font-weight: 600;
+font-size: 20px;
+line-height: 24px;
+color: #565656;
+}
+
+.test__compl{
+    margin-top: 8px;
+}
+
+.time-to-deadline{
+    margin-top: 56px;
+}

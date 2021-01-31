@@ -1,0 +1,27 @@
+.top {
+    background-color: #B9EBBD;
+    color: #000000;
+    font-weight: 500;
+    font-size: 16px;
+    font-family: 'Montserrat', sans-serif;
+    width: 24vw;
+    height: 8vh;
+    display: flex;
+    border-radius: 0.5rem;
+}
+
+.text {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.points {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-right: auto;
+    color: #818181;
+    font-weight: 700;
+}

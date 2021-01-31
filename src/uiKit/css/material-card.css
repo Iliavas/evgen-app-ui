@@ -1,0 +1,17 @@
+.material-card__container{
+    background-color: white;
+    border-radius:10px;
+    border: 1px solid #EEEEEE;
+    display: inline-block;
+    padding: 30px 20px;
+}
+
+.material-card__content{
+    line-height: normal!important;
+    font-size: 18px;
+    color: #707EFF;
+}
+
+.material-card__header{
+    line-height: normal!important;
+}

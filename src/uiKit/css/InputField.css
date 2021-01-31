@@ -1,18 +1,14 @@
 .myInput{
-    width: 50vw;
-    height: 8vw;
-
     
     background: #FFFFFF;
     border: 1px solid #E1E1E1;
     box-sizing: border-box;
-    border-radius: 1.5vw;
-    padding-left:2.5vw;
+    border-radius: 10px;
+    padding: 20px 32px;
     font-family:  'Montserrat', sans-serif;
     font-style: normal;
     font-weight: 600;
-    font-size: 2vw;
-    line-height: 3vw;
+    font-size: 18px;
     /* identical to box height */
 
 
@@ -21,8 +17,7 @@
 .myInput::placeholder{
     font-style: normal;
     font-weight: 600;
-    font-size: 2vw;
-    line-height: 3vw;
+    font-size: 18px;
     /* identical to box height */
 
 

@@ -17,12 +17,11 @@
 }
 .defaultButton:hover{
     outline: none;
-
-    box-shadow: 0px 0px 0.5vw 0.1vw #C8C8C8;
+    box-shadow: 0px 0px 0.5vw 0.1vw #707EFF;
 }
 .defaultButton:active{
     outline: none;
-    box-shadow: 0px 0px 1vw 0.5vw  #C8C8C8;
+    box-shadow: 0px 0px 1vw 0.5vw  #707EFF;
 
 }
 

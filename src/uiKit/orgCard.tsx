@@ -4,13 +4,20 @@ import "./css/org-card.css"
 
 import {DefaultButton} from "./Buttons";
 
+import {
+    Link
+} from "react-router-dom";
+
 interface IEOrgCard {
     name:string,
     role:string,
     childLen:number,
     classesLen:number,
-    subjects:string[]
+    subjects:string[],
+    id:string
 }
+
+
 
 export const OrgCard:react.FC<IEOrgCard> = (props) => {
     return <div className="org-card__container">
@@ -23,6 +30,9 @@ export const OrgCard:react.FC<IEOrgCard> = (props) => {
         <div className="classes">
             Классов: <span className="colorize">{props.classesLen}</span>
         </div>
-        <DefaultButton handleClick={()=>{}} class="org-btn">Перейти</DefaultButton>
+        <Link to={`${props.id}/${props.role}`}>
+            <DefaultButton handleClick={()=>{}} class="org-btn">Перейти</DefaultButton>
+
+        </Link>
     </div>
 }

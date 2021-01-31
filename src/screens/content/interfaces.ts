@@ -1,3 +1,5 @@
+import react from "react";
+
 export interface IEvent{
     target: {
         value:string;
@@ -14,4 +16,17 @@ export interface IEDataProcessing{
             subjects: string[]
         }
     }
+}
+
+export interface IEGetParams{
+    id:string,
+    type:string,
+    action:string
+}
+
+export interface IEMenuItem{
+    name:string,
+    classes:string[],
+    link:string,
+    routeWidget: react.ReactNode
 }

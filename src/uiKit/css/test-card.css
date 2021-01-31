@@ -1,0 +1,18 @@
+.test-card__container{
+    background-color: white;
+    padding: 30px 20px;
+    display: inline-block;
+    border: 1px solid #eee;
+    border-radius: 10px;
+}
+
+.test-card__header{
+    font-size: 26px;
+    line-height: 36px!important;
+    margin-bottom: 10px;
+}
+
+.test-card__content{
+    line-height: normal!important;
+    font-size: 18px;
+}

@@ -17,6 +17,19 @@ query allOrgs($token:String!){
         }
       }
     }
+    teacherSet{
+      edges{
+        node{
+          id, pk
+          org{
+            name,
+            classesLength,
+            childrenLength, 
+            subjects
+          }
+        }
+      }
+    }
     }
   }
 }

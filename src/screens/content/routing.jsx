@@ -25,7 +25,7 @@ export const Routing = () => {
                     <Registration></Registration>
                 </Route>
                 <Route path="/">
-                    <ChildLobby></ChildLobby>
+                    <OrganisationList></OrganisationList>
                 </Route>
             </Switch>
         </Router>

@@ -11,17 +11,26 @@ import {getToken} from "../../LocalStorageInteraction/getToken";
 
 import {IEDataProcessing} from "./interfaces"
 
-function childProcessing(arrayProcessed:IEDataProcessing[]) {
-    console.log(arrayProcessed)
+import {
+    Route, Switch
+} from "react-router-dom";
+
+import {
+    LobbyContentRouter
+} from "./childLobby";
+
+function Processing(arrayProcessed:IEDataProcessing[], role:string) {
     let result = []
+    let links = []
     for (const childProfile of arrayProcessed){
         result.push(<OrgCard
             subjects={childProfile.node.org.subjects}
             name={childProfile.node.org.name}
             childLen={childProfile.node.org.childrenLength}
             classesLen={childProfile.node.org.classesLength}
-            role="child"
-        ></OrgCard>)
+            role={role}
+            id={childProfile.node.id}
+        ></OrgCard>);
     }
     return result;
 }
@@ -32,14 +41,23 @@ export const OrganisationList:react.FC = () =>{
     }});
     if (loading) return <div>loading...</div>
     console.log(data)
-    return <div className="centered">
-        <div className="org-list__public">
-            <div className="heading">Мои организации</div>
-            <div className="org-list__container">
-                {childProcessing(data.userInfo.profile.childSet.edges)}
+    return <Switch>
+        <Route path="/:id/:type/">
+            <LobbyContentRouter></LobbyContentRouter>
+        </Route>
+        <Route path="/">
+            <div className="centered">
+                <div className="org-list__public">
+                    <div className="heading">Мои организации</div>
+                    <div className="org-list__container">
+                        {Processing(data.userInfo.profile.childSet.edges, "child")}
+                        {Processing(data.userInfo.profile.teacherSet.edges, "teacher")}
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
+        </Route>
+
+    </Switch>
 
 
 }

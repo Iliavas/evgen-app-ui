@@ -3,9 +3,7 @@ import ReactDOM from 'react-dom';
 import "./css/Buttons.css"
 import download from "../images/download.svg"
 import { CSSProperties } from 'react';
-import ViewListIcon from '@material-ui/icons/ViewList';
-import ViewModuleIcon from '@material-ui/icons/ViewModule';
-import ViewQuiltIcon from '@material-ui/icons/ViewQuilt';
+
 import { ToggleButton, ToggleButtonGroup} from '@material-ui/lab';
 
 
@@ -14,6 +12,8 @@ interface ButtonsConfig{
     text?:String;
     handleClick:Function;
     style?:boolean;
+    class?:string;
+    children?:React.ReactNode;
 };
 
 export const DefaultButton : React.FC<ButtonsConfig> = (props) => {
@@ -21,8 +21,9 @@ export const DefaultButton : React.FC<ButtonsConfig> = (props) => {
         width:"30vw",
         height:"5vw"
     };
+    const classes = "defaultButton " + (props.class == undefined ? "" : props.class);
     return (
-        <button className="defaultButton" style={props.style == true? btnStyle:{}} onClick={()=> props.handleClick()}>{props.text}</button>
+        <button className={classes} style={props.style == true? btnStyle:{}} onClick={()=> props.handleClick()}>{props.children}</button>
     );
 }
 

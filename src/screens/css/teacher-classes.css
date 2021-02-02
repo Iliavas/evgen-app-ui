@@ -1,0 +1,17 @@
+.teacher-classes__content{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.teacher-classes__heading{
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+
+    letter-spacing: 0.2px;
+
+    color: #666666;
+}

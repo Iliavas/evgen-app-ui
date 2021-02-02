@@ -26,7 +26,4 @@ export interface IEGetParams{
 
 export interface IEMenuItem{
     name:string,
-    classes:string[],
-    link:string,
-    routeWidget: react.ReactNode
 }

@@ -17,7 +17,7 @@ import {
 
 import {
     LobbyContentRouter
-} from "./childLobby";
+} from "./LobbyContentRouter";
 
 function Processing(arrayProcessed:IEDataProcessing[], role:string) {
     let result = []

@@ -3,13 +3,9 @@ import react, {useState} from "react"
 import "../css/lobby.css";
 
 import {
-    useParams, useRouteMatch, Link, Switch, Route, useLocation, Redirect
+    useParams, useRouteMatch, Link, Switch, Route, Redirect
 } from "react-router-dom"
-import { Divider } from "@material-ui/core";
 
-import {
-    ChildSubject
-} from "./childSubjectWidget"
 
 import {
     IEGetParams,
@@ -18,44 +14,49 @@ import {
 
 import {ChildContext} from "./childContext";
 import {ChildLobbyContentRouter} from "./childLobbyContentRouter"
+import {TeacherLobbyContentRouter} from "./teacherLobbyContentRouter";
 
 interface IELobby{
     items: Map<string, IEMenuItem>,
     ContentRouter: react.ReactNode,
-    defaultPath:string
+    defaultPath:string,
+    createWork:string
 }
 
 export const LobbyContentRouter:react.FC = () => {
+    let items: Map<string, IEMenuItem>;
+    const {url} = useRouteMatch()
     const {type} = useParams<IEGetParams>();
     switch (type) {
         case "child":
-            let items : Map<string, IEMenuItem> = new Map([
-                ["subjects", {name: "Предметы", classes: [""], link:"", 
-                    routeWidget:<div></div>}],
-                ["homework", {name: "Домашняя работа", classes: [""], link:"",
-                    routeWidget: <div>mother</div>}],
-                ["marks", {name: "Оценки", classes: [], link:"",
-                    routeWidget: <div>shit</div>}],
-                ["add-material", {name: "Доп. материал", classes: [], link:"",
-                    routeWidget: <div>yeah</div>}]
+            items = new Map([
+                ["subjects", {name: "Предметы"}],
+                ["homework", {name: "Домашняя работа"}],
+                ["marks", {name: "Оценки"}],
+                ["add-material", {name: "Доп. материал"}]
             ]);
 
-            return <Lobby defaultPath="subjects" items={items} ContentRouter={
+            return <Lobby createWork="" defaultPath="subjects" items={items} ContentRouter={
                 <ChildLobbyContentRouter></ChildLobbyContentRouter>}></Lobby>
         case "teacher":
-            return <div>teacher</div>
+            items = new Map([
+                ["my-classes", {name: "Мои классы"}],
+                ["create-work", {name:"Создать работу"}],
+                ["check-works", {name:"Проверить работы"}],
+                ["works-archieve", {name: "Архив работ"}]
+            ])
+            return <Lobby createWork={`${url}/create-work`} defaultPath="my-classes" items={items} ContentRouter={
+                <TeacherLobbyContentRouter></TeacherLobbyContentRouter>
+            }></Lobby>
     }
     return <div>error</div>
 }
 
 export const Lobby:react.FC<IELobby> = (props) => {
-    const [activeName, setActiveName] = useState("subjects")
+    const [activeName, setActiveName] = useState(props.defaultPath)
     const {url} = useRouteMatch();
     const {id, type, action} = useParams<IEGetParams>();
-    try{
-        props.items.get(activeName)!.classes.push("active")
-    } catch{
-    }
+
     let widgets: react.ReactNode[] = [];
     for (let item of props.items){
         widgets.push(
@@ -67,7 +68,7 @@ export const Lobby:react.FC<IELobby> = (props) => {
         );
     }
 
-    return <ChildContext.Provider value={{id, setActiveName}}>
+    return <ChildContext.Provider value={{id, setActiveName, createWorkLink:props.createWork}}>
         <div className="lobby__container">
         <div className="lobby__menu">
             <div className="lobby__heading">

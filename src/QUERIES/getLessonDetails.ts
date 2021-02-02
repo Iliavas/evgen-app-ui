@@ -15,7 +15,7 @@ query q($id:ID!) {
         name, id, taskLen, deadline
       },
       materials{
-        name, link
+        name, data
       }
     }
 }

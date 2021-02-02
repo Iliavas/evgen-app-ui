@@ -14,7 +14,7 @@ import {Registration} from "./registration"
 
 import {OrganisationList} from "./organisations";
 
-import {ChildLobby} from "./childLobby";
+import {ChildLobby} from "./LobbyContentRouter";
 
 
 export const Routing = () => {

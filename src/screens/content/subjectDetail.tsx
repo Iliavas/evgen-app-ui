@@ -13,10 +13,19 @@ import {
     useParams, Switch, Route, useRouteMatch, Link
 } from "react-router-dom";
 import {LessonDetails} from "./lessonDetails";
+import { create } from "domain";
 
 
 interface IEParams{
     id:string;
+}
+
+interface IESubjectDetail{
+    isTeacher?:boolean;
+}
+
+interface IECreationButton{
+    link:string;
 }
 
 interface QueryData{
@@ -50,7 +59,17 @@ function parseQuery(data:QueryData[], path:string){
     return res;
 }
 
-export const SubjectDetail:react.FC = () => {
+const CreateButton:react.FC<IECreationButton> = (props) => {
+    return <Link to={`${props.link}`}>
+        <div className="create-button__container">
+            Создать
+        </div>
+    </Link>
+
+}
+
+export const SubjectDetail:react.FC<IESubjectDetail> = () => {
+    const {createWorkLink} = useContext(ChildContext)
     const {url} = useRouteMatch()
     const {id} = useParams<IEParams>()
     const {loading, data} = useQuery(lessonInfoQuery, {variables:{id:id}});
@@ -63,7 +82,14 @@ export const SubjectDetail:react.FC = () => {
         </Route>
         <Route path={url}>
             <div className="subject-detail__container">
-                <div className="subject-detail__heading">{`${data.subjectClass.name}, ${data.subjectClass.group.name}`}</div>
+                <div className="subject-detail__heading">
+                    <p>
+                        {`${data.subjectClass.name}, ${data.subjectClass.group.name}`}
+                    </p>
+                    {
+                    createWorkLink != "" ? <CreateButton link={createWorkLink}></CreateButton> : <div></div>
+                    }
+                </div>
                 {res}
             </div>
         </Route>

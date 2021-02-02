@@ -4,7 +4,6 @@ import "./css/Calendar.css"
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
 
 import { Calendar } from "react-modern-calendar-datepicker";
-import { get } from '../QUERIES/debug';
 
 
 const appRoot = document.getElementById('app-root');
@@ -75,10 +74,7 @@ const MyCalendar = (props) => {
     setSelectedDay(event)
     setShowModal(!showModal)
 
-    
 
-    
-    //тут  креитится портал
   }
   
   let testDays = new Array()

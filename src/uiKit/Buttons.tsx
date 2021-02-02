@@ -4,6 +4,11 @@ import "./css/Buttons.css"
 import download from "../images/download.svg"
 import { CSSProperties } from 'react';
 
+import { ToggleButton, ToggleButtonGroup} from '@material-ui/lab';
+
+=======
+
+
 
 interface ButtonsConfig{
     text?:String;

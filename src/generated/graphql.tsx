@@ -60,6 +60,9 @@ export type Query = {
   /** The ID of the object */
   subjectClass?: Maybe<LocalSubjectType>;
   subjectClasses?: Maybe<LocalSubjectTypeConnection>;
+  materials?: Maybe<MaterialConnection>;
+  /** The ID of the object */
+  material?: Maybe<Material>;
   roles?: Maybe<Array<Maybe<RoleType>>>;
   organisations?: Maybe<OrganisationTypeConnection>;
   /** The ID of the object */
@@ -196,6 +199,21 @@ export type QuerySubjectClassesArgs = {
   name_Contains?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['ID']>;
   group?: Maybe<Scalars['ID']>;
+};
+
+
+export type QueryMaterialsArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+
+export type QueryMaterialArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -855,13 +873,23 @@ export type LessonType = Node & {
   descr: Scalars['String'];
   content: Scalars['String'];
   timeLesson: Scalars['DateTime'];
-  materialsSet: Array<Material>;
+  materialsSet: MaterialConnection;
   testsSet: TestsTypeConnection;
   pk?: Maybe<Scalars['Int']>;
   tests?: Maybe<Array<Maybe<TestsType>>>;
   testsLen?: Maybe<Scalars['Int']>;
   materialsLen?: Maybe<Scalars['Int']>;
   materials?: Maybe<Array<Maybe<Material>>>;
+};
+
+
+export type LessonTypeMaterialsSetArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
 };
 
 
@@ -997,8 +1025,26 @@ export type LessonTypeEdge = {
   cursor: Scalars['String'];
 };
 
-export type Material = {
+export type MaterialConnection = {
+  __typename?: 'MaterialConnection';
+  /** Pagination data for this connection. */
+  pageInfo: PageInfo;
+  /** Contains the nodes in this connection. */
+  edges: Array<Maybe<MaterialEdge>>;
+};
+
+/** A Relay edge containing a `Material` and its cursor. */
+export type MaterialEdge = {
+  __typename?: 'MaterialEdge';
+  /** The item at the end of the edge */
+  node?: Maybe<Material>;
+  /** A cursor for use in pagination */
+  cursor: Scalars['String'];
+};
+
+export type Material = Node & {
   __typename?: 'Material';
+  /** The ID of the object. */
   id: Scalars['ID'];
   link: Scalars['String'];
   name: Scalars['String'];
@@ -1163,6 +1209,8 @@ export type Mutation = {
   removeSubjectFromTeacher?: Maybe<RemoveSubjectFromTeacher>;
   answerQuestion?: Maybe<AnswerQuestion>;
   createMaterial?: Maybe<CreateMaterial>;
+  deleteMaterial?: Maybe<DeleteMaterial>;
+  changeMaterial?: Maybe<ChangeMaterail>;
   createOrg?: Maybe<CreateOrg>;
   createGroup?: Maybe<CreateGroup>;
   addGroupToOrg?: Maybe<AddGroupToOrg>;
@@ -1319,7 +1367,20 @@ export type MutationAnswerQuestionArgs = {
 
 export type MutationCreateMaterialArgs = {
   data?: Maybe<Scalars['String']>;
+  lessonType?: Maybe<Scalars['String']>;
   lessonId?: Maybe<Scalars['ID']>;
+  name?: Maybe<Scalars['String']>;
+};
+
+
+export type MutationDeleteMaterialArgs = {
+  materialId?: Maybe<Scalars['ID']>;
+};
+
+
+export type MutationChangeMaterialArgs = {
+  data?: Maybe<Scalars['String']>;
+  materialId?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
 };
 
@@ -1530,6 +1591,16 @@ export type CreateMaterial = {
   material?: Maybe<Material>;
 };
 
+export type DeleteMaterial = {
+  __typename?: 'DeleteMaterial';
+  ok?: Maybe<Scalars['Boolean']>;
+};
+
+export type ChangeMaterail = {
+  __typename?: 'ChangeMaterail';
+  material?: Maybe<Material>;
+};
+
 export type CreateOrg = {
   __typename?: 'CreateOrg';
   Org?: Maybe<OrganisationType>;
@@ -1621,7 +1692,7 @@ export type GetLessonsInfoQueryVariables = Exact<{
 }>;
 
 
-export type GetLessonsInfoQuery = { __typename?: 'Query', lessons?: Maybe<{ __typename?: 'LessonType', name: string, content: string, descr: string, typeLesson: { __typename?: 'LocalSubjectType', name: string, group: { __typename?: 'GroupType', name: string } }, tests?: Maybe<Array<Maybe<{ __typename?: 'TestsType', name: string, id: string, taskLen?: Maybe<number>, deadline: any }>>>, materials?: Maybe<Array<Maybe<{ __typename?: 'Material', name: string, data: string }>>> }> };
+export type GetLessonsInfoQuery = { __typename?: 'Query', lessons?: Maybe<{ __typename?: 'LessonType', name: string, content: string, descr: string, typeLesson: { __typename?: 'LocalSubjectType', name: string, group: { __typename?: 'GroupType', name: string } }, tests?: Maybe<Array<Maybe<{ __typename?: 'TestsType', name: string, id: string, taskLen?: Maybe<number>, deadline: any }>>>, materials?: Maybe<Array<Maybe<{ __typename?: 'Material', name: string, data: string, id: string }>>> }> };
 
 export type GetSubjectLessonsQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -1651,6 +1722,13 @@ export type GetTeacherClassesQueryVariables = Exact<{
 
 export type GetTeacherClassesQuery = { __typename?: 'Query', teacher?: Maybe<{ __typename?: 'TeacherType', subjectclasslocalSet: { __typename?: 'LocalSubjectTypeConnection', edges: Array<Maybe<{ __typename?: 'LocalSubjectTypeEdge', node?: Maybe<{ __typename?: 'LocalSubjectType', id: string, name: string, lessonsLen?: Maybe<number>, group: { __typename?: 'GroupType', name: string, childrenLen?: Maybe<number> } }> }>> } }> };
 
+export type MaterialQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type MaterialQuery = { __typename?: 'Query', material?: Maybe<{ __typename?: 'Material', name: string, data: string, Type: string }> };
+
 export type GetTokenByNameAndPasswordMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
@@ -1666,6 +1744,32 @@ export type RegisterUserMutationVariables = Exact<{
 
 
 export type RegisterUserMutation = { __typename?: 'Mutation', registerUser?: Maybe<{ __typename?: 'RegisterUser', ok?: Maybe<boolean> }> };
+
+export type AddMaterialMutationVariables = Exact<{
+  id: Scalars['ID'];
+  data: Scalars['String'];
+  type: Scalars['String'];
+  name: Scalars['String'];
+}>;
+
+
+export type AddMaterialMutation = { __typename?: 'Mutation', createMaterial?: Maybe<{ __typename?: 'CreateMaterial', material?: Maybe<{ __typename?: 'Material', data: string }> }> };
+
+export type ChangeMaterialMutationVariables = Exact<{
+  id: Scalars['ID'];
+  data: Scalars['String'];
+  name: Scalars['String'];
+}>;
+
+
+export type ChangeMaterialMutation = { __typename?: 'Mutation', changeMaterial?: Maybe<{ __typename?: 'ChangeMaterail', material?: Maybe<{ __typename?: 'Material', name: string, data: string }> }> };
+
+export type DeleteMaterialMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteMaterialMutation = { __typename?: 'Mutation', deleteMaterial?: Maybe<{ __typename?: 'DeleteMaterial', ok?: Maybe<boolean> }> };
 
 
 export const GetLessonsInfoDocument = gql`
@@ -1689,6 +1793,7 @@ export const GetLessonsInfoDocument = gql`
     materials {
       name
       data
+      id
     }
   }
 }
@@ -1922,6 +2027,41 @@ export function useGetTeacherClassesLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type GetTeacherClassesQueryHookResult = ReturnType<typeof useGetTeacherClassesQuery>;
 export type GetTeacherClassesLazyQueryHookResult = ReturnType<typeof useGetTeacherClassesLazyQuery>;
 export type GetTeacherClassesQueryResult = Apollo.QueryResult<GetTeacherClassesQuery, GetTeacherClassesQueryVariables>;
+export const MaterialDocument = gql`
+    query material($id: ID!) {
+  material(id: $id) {
+    name
+    data
+    Type
+  }
+}
+    `;
+
+/**
+ * __useMaterialQuery__
+ *
+ * To run a query within a React component, call `useMaterialQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMaterialQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMaterialQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useMaterialQuery(baseOptions: Apollo.QueryHookOptions<MaterialQuery, MaterialQueryVariables>) {
+        return Apollo.useQuery<MaterialQuery, MaterialQueryVariables>(MaterialDocument, baseOptions);
+      }
+export function useMaterialLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MaterialQuery, MaterialQueryVariables>) {
+          return Apollo.useLazyQuery<MaterialQuery, MaterialQueryVariables>(MaterialDocument, baseOptions);
+        }
+export type MaterialQueryHookResult = ReturnType<typeof useMaterialQuery>;
+export type MaterialLazyQueryHookResult = ReturnType<typeof useMaterialLazyQuery>;
+export type MaterialQueryResult = Apollo.QueryResult<MaterialQuery, MaterialQueryVariables>;
 export const GetTokenByNameAndPasswordDocument = gql`
     mutation getTokenByNameAndPassword($username: String!, $password: String!) {
   tokenAuth(username: $username, password: $password) {
@@ -1988,3 +2128,109 @@ export function useRegisterUserMutation(baseOptions?: Apollo.MutationHookOptions
 export type RegisterUserMutationHookResult = ReturnType<typeof useRegisterUserMutation>;
 export type RegisterUserMutationResult = Apollo.MutationResult<RegisterUserMutation>;
 export type RegisterUserMutationOptions = Apollo.BaseMutationOptions<RegisterUserMutation, RegisterUserMutationVariables>;
+export const AddMaterialDocument = gql`
+    mutation addMaterial($id: ID!, $data: String!, $type: String!, $name: String!) {
+  createMaterial(data: $data, lessonId: $id, lessonType: $type, name: $name) {
+    material {
+      data
+    }
+  }
+}
+    `;
+export type AddMaterialMutationFn = Apollo.MutationFunction<AddMaterialMutation, AddMaterialMutationVariables>;
+
+/**
+ * __useAddMaterialMutation__
+ *
+ * To run a mutation, you first call `useAddMaterialMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddMaterialMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addMaterialMutation, { data, loading, error }] = useAddMaterialMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      data: // value for 'data'
+ *      type: // value for 'type'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useAddMaterialMutation(baseOptions?: Apollo.MutationHookOptions<AddMaterialMutation, AddMaterialMutationVariables>) {
+        return Apollo.useMutation<AddMaterialMutation, AddMaterialMutationVariables>(AddMaterialDocument, baseOptions);
+      }
+export type AddMaterialMutationHookResult = ReturnType<typeof useAddMaterialMutation>;
+export type AddMaterialMutationResult = Apollo.MutationResult<AddMaterialMutation>;
+export type AddMaterialMutationOptions = Apollo.BaseMutationOptions<AddMaterialMutation, AddMaterialMutationVariables>;
+export const ChangeMaterialDocument = gql`
+    mutation changeMaterial($id: ID!, $data: String!, $name: String!) {
+  changeMaterial(materialId: $id, name: $name, data: $data) {
+    material {
+      name
+      data
+    }
+  }
+}
+    `;
+export type ChangeMaterialMutationFn = Apollo.MutationFunction<ChangeMaterialMutation, ChangeMaterialMutationVariables>;
+
+/**
+ * __useChangeMaterialMutation__
+ *
+ * To run a mutation, you first call `useChangeMaterialMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeMaterialMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeMaterialMutation, { data, loading, error }] = useChangeMaterialMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      data: // value for 'data'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useChangeMaterialMutation(baseOptions?: Apollo.MutationHookOptions<ChangeMaterialMutation, ChangeMaterialMutationVariables>) {
+        return Apollo.useMutation<ChangeMaterialMutation, ChangeMaterialMutationVariables>(ChangeMaterialDocument, baseOptions);
+      }
+export type ChangeMaterialMutationHookResult = ReturnType<typeof useChangeMaterialMutation>;
+export type ChangeMaterialMutationResult = Apollo.MutationResult<ChangeMaterialMutation>;
+export type ChangeMaterialMutationOptions = Apollo.BaseMutationOptions<ChangeMaterialMutation, ChangeMaterialMutationVariables>;
+export const DeleteMaterialDocument = gql`
+    mutation deleteMaterial($id: ID!) {
+  deleteMaterial(materialId: $id) {
+    ok
+  }
+}
+    `;
+export type DeleteMaterialMutationFn = Apollo.MutationFunction<DeleteMaterialMutation, DeleteMaterialMutationVariables>;
+
+/**
+ * __useDeleteMaterialMutation__
+ *
+ * To run a mutation, you first call `useDeleteMaterialMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteMaterialMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteMaterialMutation, { data, loading, error }] = useDeleteMaterialMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteMaterialMutation(baseOptions?: Apollo.MutationHookOptions<DeleteMaterialMutation, DeleteMaterialMutationVariables>) {
+        return Apollo.useMutation<DeleteMaterialMutation, DeleteMaterialMutationVariables>(DeleteMaterialDocument, baseOptions);
+      }
+export type DeleteMaterialMutationHookResult = ReturnType<typeof useDeleteMaterialMutation>;
+export type DeleteMaterialMutationResult = Apollo.MutationResult<DeleteMaterialMutation>;
+export type DeleteMaterialMutationOptions = Apollo.BaseMutationOptions<DeleteMaterialMutation, DeleteMaterialMutationVariables>;

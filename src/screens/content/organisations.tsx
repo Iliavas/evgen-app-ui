@@ -19,7 +19,9 @@ import {
     LobbyContentRouter
 } from "./LobbyContentRouter";
 
-function Processing(arrayProcessed:IEDataProcessing[], role:string) {
+import {useUserInfoQuery} from "../../generated/graphql";
+
+function Processing(arrayProcessed:any, role:string) {
     let result = []
     let links = []
     for (const childProfile of arrayProcessed){
@@ -36,9 +38,7 @@ function Processing(arrayProcessed:IEDataProcessing[], role:string) {
 }
 
 export const OrganisationList:react.FC = () =>{
-    const {loading, error, data} = useQuery(getUserOrg, {variables:{
-        token:getToken()
-    }});
+    const {loading, error, data} = useUserInfoQuery({variables: {id: getToken()!}})
     if (loading) return <div>loading...</div>
     console.log(data)
     return <Switch>
@@ -50,8 +50,8 @@ export const OrganisationList:react.FC = () =>{
                 <div className="org-list__public">
                     <div className="heading">Мои организации</div>
                     <div className="org-list__container">
-                        {Processing(data.userInfo.profile.childSet.edges, "child")}
-                        {Processing(data.userInfo.profile.teacherSet.edges, "teacher")}
+                        {Processing(data?.userInfo?.profile?.childSet.edges, "child")}
+                        {Processing(data?.userInfo?.profile?.teacherSet.edges, "teacher")}
                     </div>
                 </div>
             </div>

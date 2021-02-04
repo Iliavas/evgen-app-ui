@@ -1,0 +1,110 @@
+query getLessonsInfo($id:ID!) {
+    lessons(id:$id){
+      name, content, descr,
+      typeLesson{
+        name,
+        group{
+          name
+        }
+      }
+      tests{
+        name, id, taskLen, deadline
+      },
+      materials{
+        name, data
+      }
+    }
+}
+
+query getSubjectLessons($id:ID!){
+    subjectClass(id:$id){
+      name, group{
+        name
+      }
+      lessonSet{
+        edges{
+          node{
+            name, descr, testsLen, materialsLen, timeLesson, id
+          }
+        }
+      }
+    }
+}
+query userInfo($id:String!){
+    userInfo(token:$id){
+        profile{
+            childSet{
+                edges{
+                    node{
+                        id, pk
+                        org{
+                            name,
+                            classesLength,
+                            childrenLength, 
+                            subjects
+                        }
+                    }
+                }
+            }
+            teacherSet{
+                edges{
+                    node{
+                        id, pk
+                        org{
+                            name,
+                            classesLength,
+                            childrenLength, 
+                            subjects
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+query childSubjects($id:ID!){
+    child(id:$id){
+      name, pk
+      groups{
+        edges{
+          node{
+            name,
+            classes{
+              name, id
+              teachersSet{
+                name
+              }
+            }
+          }
+        }
+      }
+    }
+}  
+
+query getTeacherClasses($id:ID!){
+    teacher(id:$id){
+      subjectclasslocalSet{
+        edges{
+          node{
+            id,
+            name, lessonsLen, group{
+              name, childrenLen
+            }
+          }
+        }
+      } 
+    }
+}
+
+mutation getTokenByNameAndPassword($username:String!, $password:String!){
+    tokenAuth(username:$username, password:$password){
+      token
+    }
+}
+
+mutation registerUser($username:String!, $password:String!){
+    registerUser(input:{username:$username, password:$password}){
+      ok
+    }
+  }

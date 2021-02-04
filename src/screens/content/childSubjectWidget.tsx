@@ -17,6 +17,7 @@ import {ChildContext} from "./childContext";
 
 import {SubjectDetail} from "./subjectDetail"
 
+import {useChildSubjectsQuery} from "../../generated/graphql"
 
 interface QueryData{
     node: {
@@ -31,7 +32,7 @@ interface QueryData{
     }
 }
 
-function parseData(data:QueryData[], location:string){
+function parseData(data:any, location:string){
     console.log(data);
     let res = [];
     for (let elem of data){
@@ -60,12 +61,10 @@ export const ChildSubject:react.FC = (props) => {
     const {id} = useContext(ChildContext);
     const match = useRouteMatch();
     console.log(match.url)
-    const {loading, data} = useQuery(subjectInfoQuery, {variables:{
-        id:id
-    }});
+    const {loading, data} = useChildSubjectsQuery({variables: {id:id}})
     if (loading) return <div>loading...</div>
-    console.log(data);
-    let res = parseData(data.child.groups.edges, match.url);
+    console.log(data?.child?.groups.edges);
+    let res = parseData(data?.child?.groups.edges, match.url);
     return <Switch>
         <Route path={`${match.url}/:id`}>
             <SubjectDetail></SubjectDetail>

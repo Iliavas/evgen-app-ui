@@ -7,13 +7,19 @@ import {Editor} from "../../uiKit/editor";
 import {MaterialCard} from "../../uiKit/materialCard";
 import {TestCard} from "../../uiKit/testCard";
 
-import {useParams} from "react-router-dom";
+import {useParams, useRouteMatch} from "react-router-dom";
 
 import {useQuery} from "@apollo/client";
 
 import {lessonDetalsQuery} from "../../QUERIES/getLessonDetails"
 import { IEGetParams } from "./interfaces";
 import { TeacherClassCard } from "../../uiKit/teacherClassCard";
+
+import {useGetLessonsInfoQuery} from "../../generated/graphql";
+
+import {Link, Switch, Route} from "react-router-dom";
+
+import {CreateMaterialWidget} from "./createMaterial"
 
 interface IEParams{
     id:string;
@@ -60,7 +66,7 @@ function parseTeacherTests(data:IEQuery){
 }
 
 interface IELessonDetail{
-    data: IEQuery
+    data: any
 }
 
 const ChildLessonDetail:react.FC<IELessonDetail> = (props) => {
@@ -111,12 +117,16 @@ const NewTestCard:react.FC<IETestCard> = (props) => {
 
 interface IEPlusButton{
     OnClick:Function;
+    link?:string;
 }
 
 const PlusButon:react.FC<IEPlusButton> = (props) => {
-    return <div className="teacher-material teacher-material__add-button" onClick={props.OnClick()}>
+
+    return <Link to={props.link!}>
+        <div className="teacher-material teacher-material__add-button" onClick={props.OnClick()}>
             <span className="plus">+</span>
         </div>
+    </Link> 
 }
 
 function parseTests(data:IEQuery){
@@ -133,7 +143,8 @@ function parseTests(data:IEQuery){
 }
 
 const TeacherLessonDetail:react.FC<IELessonDetail> = (props) => {
-    const data = props.data;
+    const {url} = useRouteMatch();
+    const data = props.data.lessons;
     return <div className="lesson-details__container">
     <div className="lesson-details__heading">
         {data.typeLesson.name}, {data.typeLesson.group.name}, {data.name}, 27.09
@@ -174,9 +185,7 @@ const TeacherLessonDetail:react.FC<IELessonDetail> = (props) => {
                     <div className="teacher-materials__heading">Добавьте материалы к уроку</div>
                     <div className="teacher-materials__content">
                         {parseMaterials(data)}
-                        <div className="teacher-material teacher-material__add-button">
-                         <span className="plus">+</span>   
-                        </div>
+                        <PlusButon OnClick={() => {}} link={`${url}/materials/create`}></PlusButon>
                     </div>
                 </div>
             </div>
@@ -191,7 +200,7 @@ const TeacherLessonDetail:react.FC<IELessonDetail> = (props) => {
                     <div className="teacher-materials__heading">Добавьте тесты к уроку</div>
                     <div className="teacher-tests__content">
                         {parseTests(data)}
-                        <PlusButon OnClick={() => {}}/>
+                        <PlusButon OnClick={() => {}} link={`${url}/tests/create`}/>
                     </div>
                     
                 </div>
@@ -201,18 +210,23 @@ const TeacherLessonDetail:react.FC<IELessonDetail> = (props) => {
         
     </div>
 
+    <Switch>
+        <Route path={`${url}/materials/create`}>
+            <CreateMaterialWidget></CreateMaterialWidget>
+        </Route>
+    </Switch>
+
 </div>
 }
 
 export const LessonDetails:react.FC = () => {
     const {createWorkLink} = useContext(ChildContext);
     const {id} = useParams<IEParams>();
-    let {loading, data} = useQuery(lessonDetalsQuery, {variables:{id:id}})
+    let {loading, data} = useGetLessonsInfoQuery({variables: {id:id}})
     if (loading) return <div>loading...</div>;
     console.log(data);
-    data = data.lessons as IEQuery;
     return <div>
-        { createWorkLink == "" ? <ChildLessonDetail data={data}></ChildLessonDetail> : 
+        { createWorkLink == "" ? <ChildLessonDetail data={data?.lessons}></ChildLessonDetail> : 
             <TeacherLessonDetail data={data}></TeacherLessonDetail>}
     </div> 
 }

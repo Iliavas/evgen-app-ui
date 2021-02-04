@@ -1,0 +1,53 @@
+.lineOfButtons {
+    height: 70px;
+    display: flex;
+    font-family:  'Montserrat', sans-serif;
+}
+
+.button {
+    height: 100%;
+    width: 15%;
+    font-size: 24px;
+    line-height: 70px;
+    text-align: center;
+    border-radius: 0.5rem;
+    border: 1px #EEEEEE;
+    border-style: solid;
+    background-color: rgb(255, 255, 255);
+    margin-right: 10px;
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -khtml-user-select: none;    /* Konqueror */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+    user-select: none;
+}
+
+/* .button:hover {
+    background-color: #707EFF;
+    transition-delay: 0.1s;
+    color: #ffffff;
+}  */
+
+.active{
+    height: 100%;
+    width: 15%;
+    font-size: 24px;
+    line-height: 70px;
+    text-align: center;
+    border-radius: 0.5rem;
+    border: 1px #EEEEEE;
+    border-style: solid;
+    background-color: #707EFF;
+    transition-delay: 0.1s;
+    color: #ffffff;
+}
+*{
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    list-style-type: none;
+    outline: none; 
+    cursor:default;  
+}

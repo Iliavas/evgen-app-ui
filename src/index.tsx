@@ -6,9 +6,9 @@ import {Registration} from "./screens/content/registration";
 
 import {Routing} from "./screens/content/routing"
 
-import {EmptyTask} from "./screens/childTestCompletion/emptyTask/index";
+import {LineButtons} from "./uiKit/LineOfButtons";
 
 ReactDom.render(
-    <EmptyTask></EmptyTask>,
+    <LineButtons></LineButtons>,
     document.getElementById("root")
 )

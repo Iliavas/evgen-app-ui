@@ -161,10 +161,17 @@ color: #565656;
     background-color: white;
     border-radius: 10px;
     border: 1px solid #eee;
+    
+    padding: 20px;
+    transition: 0.3s;
+}
 
+.teacher-materail__flex{
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 220px;
+    height: inherit;
 }
 .teacher-material__text{
     max-width: 70%;
@@ -273,4 +280,18 @@ color: #565656;
     flex-direction: row;
     flex-wrap: wrap;
     gap: 30px;
+}
+
+.teacher-material:hover .teacher-material__delete-button{
+    display: block;
+    opacity:1;
+}
+
+.teacher-material__delete-button{
+    float: left;
+    position: absolute;
+    display: block;
+    transition: 0.3s;
+    opacity:0;
+    color:#565656;
 }

@@ -1,29 +1,30 @@
-import react, {useContext} from "react"
+import react, {useContext, Context, useState} from "react"
 import {ChildContext} from "./childContext";
-import "../css/lesson-detail.css"
+import "../css/lesson-detail.css";
 
 import {Editor} from "../../uiKit/editor";
 
-import {MaterialCard} from "../../uiKit/materialCard";
-import {TestCard} from "../../uiKit/testCard";
-
 import {useParams, useRouteMatch} from "react-router-dom";
 
-import {useQuery} from "@apollo/client";
-
-import {lessonDetalsQuery} from "../../QUERIES/getLessonDetails"
-import { IEGetParams } from "./interfaces";
-import { TeacherClassCard } from "../../uiKit/teacherClassCard";
-
-import {useGetLessonsInfoQuery} from "../../generated/graphql";
+import {
+    useGetLessonsInfoQuery, 
+    useDeleteMaterialMutation
+} from "../../generated/graphql";
 
 import {Link, Switch, Route} from "react-router-dom";
 
 import {CreateMaterialWidget} from "./createMaterial"
 
+import bin from "../../images/trash-empty.svg";
+
 interface IEParams{
     id:string;
 }
+
+const TeacherContext = react.createContext({
+    changeMaterials: (e:any) => {},
+    
+})
 
 
 interface IEQuery{
@@ -44,7 +45,7 @@ interface IEQuery{
     }[]
     materials: {
         name:string,
-        data:string
+        data:string, id:string
     }[]
 }
 
@@ -54,6 +55,7 @@ function parseMaterials(data:IEQuery){
         res.push(
             <NewMaterialCard
                 name={material.data}
+                id={material.id}
             ></NewMaterialCard>
         )
     }
@@ -66,7 +68,8 @@ function parseTeacherTests(data:IEQuery){
 }
 
 interface IELessonDetail{
-    data: any
+    data: any,
+    id: string
 }
 
 const ChildLessonDetail:react.FC<IELessonDetail> = (props) => {
@@ -95,14 +98,31 @@ const ChildLessonDetail:react.FC<IELessonDetail> = (props) => {
 
 interface IEMaterialCard{
     name:string;
+    id:string;
 }
 
 const NewMaterialCard:react.FC<IEMaterialCard> = (props) => {
-    return <div className="teacher-material">
-    <span className="teacher-material__text">
-        {props.name}
-    </span>   
-</div>
+    const {url} = useRouteMatch()
+    const [deleteMaterial] = useDeleteMaterialMutation({variables: {id:props.id}});
+    return <div>
+        <div className="teacher-material">
+        <img src={bin} alt="" className="teacher-material__delete-button"
+            onClick = {(e) => {
+                deleteMaterial({variables: {id:props.id}})
+            }}
+            />
+            <Link to={`${url}/materials/${props.id}`} className="link teacher-materail__flex">
+                <span className="teacher-material__text">
+                    {props.name}
+                </span>
+            </Link>
+
+
+
+        </div>
+
+    </div>
+        
 }
 interface IETestCard{
     name:string;
@@ -124,7 +144,9 @@ const PlusButon:react.FC<IEPlusButton> = (props) => {
 
     return <Link to={props.link!}>
         <div className="teacher-material teacher-material__add-button" onClick={props.OnClick()}>
-            <span className="plus">+</span>
+            <div className="teacher-materail__flex">
+                <span className="plus">+</span>
+            </div>
         </div>
     </Link> 
 }
@@ -142,10 +164,12 @@ function parseTests(data:IEQuery){
     return res;
 }
 
+
 const TeacherLessonDetail:react.FC<IELessonDetail> = (props) => {
     const {url} = useRouteMatch();
-    const data = props.data.lessons;
-    return <div className="lesson-details__container">
+    const [data, setData] = useState(props.data.lessons);
+    return <TeacherContext.Provider value={{changeMaterials:setData}}>
+        <div className="lesson-details__container">
     <div className="lesson-details__heading">
         {data.typeLesson.name}, {data.typeLesson.group.name}, {data.name}, 27.09
     </div>
@@ -211,12 +235,17 @@ const TeacherLessonDetail:react.FC<IELessonDetail> = (props) => {
     </div>
 
     <Switch>
+        
         <Route path={`${url}/materials/create`}>
-            <CreateMaterialWidget></CreateMaterialWidget>
+            <CreateMaterialWidget id={props.id}></CreateMaterialWidget>
+        </Route>
+        <Route path={`${url}/materials/:id`}>
+            <CreateMaterialWidget id={props.id}></CreateMaterialWidget>
         </Route>
     </Switch>
 
 </div>
+    </TeacherContext.Provider> 
 }
 
 export const LessonDetails:react.FC = () => {
@@ -224,9 +253,9 @@ export const LessonDetails:react.FC = () => {
     const {id} = useParams<IEParams>();
     let {loading, data} = useGetLessonsInfoQuery({variables: {id:id}})
     if (loading) return <div>loading...</div>;
-    console.log(data);
     return <div>
-        { createWorkLink == "" ? <ChildLessonDetail data={data?.lessons}></ChildLessonDetail> : 
-            <TeacherLessonDetail data={data}></TeacherLessonDetail>}
-    </div> 
+            { createWorkLink == "" ? <ChildLessonDetail data={data?.lessons} id={id}></ChildLessonDetail> : 
+            <TeacherLessonDetail data={data} id={id}></TeacherLessonDetail>}
+        </div> 
+
 }

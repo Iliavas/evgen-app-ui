@@ -9,6 +9,6 @@ import {Routing} from "./screens/content/routing"
 import {EmptyTask} from "./screens/childTestCompletion/emptyTask/index";
 
 ReactDom.render(
-    <EmptyTask></EmptyTask>,
+    <Routing></Routing>,
     document.getElementById("root")
 )

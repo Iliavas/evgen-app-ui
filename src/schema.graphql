@@ -11,7 +11,7 @@ query getLessonsInfo($id:ID!) {
         name, id, taskLen, deadline
       },
       materials{
-        name, data
+        name, data, id
       }
     }
 }
@@ -97,6 +97,12 @@ query getTeacherClasses($id:ID!){
     }
 }
 
+query material($id:ID!){
+  material(id:$id) {
+    name, data, Type
+  }
+}
+
 mutation getTokenByNameAndPassword($username:String!, $password:String!){
     tokenAuth(username:$username, password:$password){
       token
@@ -107,4 +113,27 @@ mutation registerUser($username:String!, $password:String!){
     registerUser(input:{username:$username, password:$password}){
       ok
     }
+}
+
+
+mutation addMaterial($id:ID!, $data:String!, $type:String!, $name:String!){
+  createMaterial(data:$data, lessonId:$id, lessonType:$type, name:$name){
+    material{
+      data
+    }
   }
+}
+
+mutation changeMaterial($id:ID!, $data:String!, $name:String!){
+  changeMaterial(materialId:$id, name:$name, data:$data){
+    material{
+      name, data
+    }
+  }
+}
+
+mutation deleteMaterial($id:ID!){
+  deleteMaterial(materialId:$id){
+    ok
+  }
+}

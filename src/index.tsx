@@ -2,13 +2,9 @@ import react from "react";
 
 import ReactDom from "react-dom";
 
-import {Registration} from "./screens/content/registration";
-
-import {Routing} from "./screens/content/routing"
-
-import {LineButtons} from "./uiKit/LineOfButtons";
+import {Card} from "./uiKit/TestCardHW"
 
 ReactDom.render(
-    <LineButtons></LineButtons>,
+    <Card></Card>,
     document.getElementById("root")
 )

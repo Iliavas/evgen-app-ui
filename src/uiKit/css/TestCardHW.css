@@ -1,0 +1,79 @@
+.card {
+    height: 100px;
+    width: 1000px;
+    border-radius: 0.5rem;
+    border: 1px #EEEEEE;
+    border-style: solid;
+    display: flex;
+    font-family: Montserrat;
+}
+
+.row {
+    height: 100px;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    
+}
+
+.title {
+    height: 30px;
+    font-size: large;
+    font-weight: bold;
+    margin-top: 12px;
+    margin-left: 25px;
+}
+
+.minutes {
+    color: #8ca75b;
+    margin-left: 25px;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+.answer {
+    height: 30px;
+    color: #707EFF;
+    font-size: large;
+    font-weight: 700;
+    margin-top: 12px;
+    text-align: center;
+}
+
+.check {
+    border-radius: 0.5rem;
+    border: 1px #EEEEEE;
+    border-style: solid;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-top: 10px;
+}
+
+.balls {
+    height: 30px;
+    font-size: large;
+    margin-top: 12px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.points {
+    border-radius: 0.5rem;
+    border: 1px #EEEEEE;
+    border-style: solid;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background-color: #F5F5F5;
+    color: #707EFF;
+    margin-top: 10px;
+}

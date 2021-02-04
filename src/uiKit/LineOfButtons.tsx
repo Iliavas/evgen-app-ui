@@ -1,9 +1,10 @@
-import react from "react";
+import React, {useState} from 'react';
+import ReactDOM from 'react-dom';
+import "./css/LineOfButtons.css"
 
-import "./emptyTask.css";
 
 
-export const EmptyTask:react.FC = () => {
+export const LineButtons : React.FC = () => {
     return <div className="lineOfButtons">
         <div className="button">to</div>
         <div className="button">with</div>

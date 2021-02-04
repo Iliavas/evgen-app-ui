@@ -137,3 +137,9 @@ mutation deleteMaterial($id:ID!){
     ok
   }
 }
+
+mutation changelesson($lessonId:ID!, $descr:String!, $name:String!){
+  updateLessonRegistration(id:$lessonId, descr:$descr, name:$name){
+    ok
+  }
+}

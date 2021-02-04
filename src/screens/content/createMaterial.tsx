@@ -66,6 +66,7 @@ const LinkMaterial:react.FC<MaterialCreation> = (props) => {
                 name:name!
                 }})
             returnRedaction(history, url);
+            window.location.reload()
         }}>Сохранить</DefaultButton>
     </div>
 }

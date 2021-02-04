@@ -1771,6 +1771,15 @@ export type DeleteMaterialMutationVariables = Exact<{
 
 export type DeleteMaterialMutation = { __typename?: 'Mutation', deleteMaterial?: Maybe<{ __typename?: 'DeleteMaterial', ok?: Maybe<boolean> }> };
 
+export type ChangelessonMutationVariables = Exact<{
+  lessonId: Scalars['ID'];
+  descr: Scalars['String'];
+  name: Scalars['String'];
+}>;
+
+
+export type ChangelessonMutation = { __typename?: 'Mutation', updateLessonRegistration?: Maybe<{ __typename?: 'UpdateLessonRegistration', ok?: Maybe<boolean> }> };
+
 
 export const GetLessonsInfoDocument = gql`
     query getLessonsInfo($id: ID!) {
@@ -2234,3 +2243,37 @@ export function useDeleteMaterialMutation(baseOptions?: Apollo.MutationHookOptio
 export type DeleteMaterialMutationHookResult = ReturnType<typeof useDeleteMaterialMutation>;
 export type DeleteMaterialMutationResult = Apollo.MutationResult<DeleteMaterialMutation>;
 export type DeleteMaterialMutationOptions = Apollo.BaseMutationOptions<DeleteMaterialMutation, DeleteMaterialMutationVariables>;
+export const ChangelessonDocument = gql`
+    mutation changelesson($lessonId: ID!, $descr: String!, $name: String!) {
+  updateLessonRegistration(id: $lessonId, descr: $descr, name: $name) {
+    ok
+  }
+}
+    `;
+export type ChangelessonMutationFn = Apollo.MutationFunction<ChangelessonMutation, ChangelessonMutationVariables>;
+
+/**
+ * __useChangelessonMutation__
+ *
+ * To run a mutation, you first call `useChangelessonMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangelessonMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changelessonMutation, { data, loading, error }] = useChangelessonMutation({
+ *   variables: {
+ *      lessonId: // value for 'lessonId'
+ *      descr: // value for 'descr'
+ *      name: // value for 'name'
+ *   },
+ * });
+ */
+export function useChangelessonMutation(baseOptions?: Apollo.MutationHookOptions<ChangelessonMutation, ChangelessonMutationVariables>) {
+        return Apollo.useMutation<ChangelessonMutation, ChangelessonMutationVariables>(ChangelessonDocument, baseOptions);
+      }
+export type ChangelessonMutationHookResult = ReturnType<typeof useChangelessonMutation>;
+export type ChangelessonMutationResult = Apollo.MutationResult<ChangelessonMutation>;
+export type ChangelessonMutationOptions = Apollo.BaseMutationOptions<ChangelessonMutation, ChangelessonMutationVariables>;

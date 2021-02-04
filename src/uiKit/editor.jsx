@@ -4,6 +4,8 @@ import {CKEditor} from "@ckeditor/ckeditor5-react";
 
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
+
+
 import "./css/editor.css"
 
 export const Editor = (props) => {
@@ -21,7 +23,9 @@ export const Editor = (props) => {
         disabled = {props.child}
         config = {
             {
-                
+                ckfinder: {
+                    uploadUrl: "./rep"
+                }
             }
         }
         

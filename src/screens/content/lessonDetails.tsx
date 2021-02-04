@@ -1,14 +1,18 @@
-import react, {useContext, Context, useState} from "react"
+import react, {useContext, Context, useState, useReducer, useEffect} from "react"
 import {ChildContext} from "./childContext";
 import "../css/lesson-detail.css";
 
 import {Editor} from "../../uiKit/editor";
 
 import {useParams, useRouteMatch} from "react-router-dom";
+import client from "../../client";
 
 import {
     useGetLessonsInfoQuery, 
-    useDeleteMaterialMutation
+    useDeleteMaterialMutation,
+    GetLessonsInfoDocument,
+    UserInfoDocument,
+    useChangelessonMutation
 } from "../../generated/graphql";
 
 import {Link, Switch, Route} from "react-router-dom";
@@ -17,12 +21,14 @@ import {CreateMaterialWidget} from "./createMaterial"
 
 import bin from "../../images/trash-empty.svg";
 
+
+
 interface IEParams{
     id:string;
 }
 
 const TeacherContext = react.createContext({
-    changeMaterials: (e:any) => {},
+    changeMaterials: () => {},
     
 })
 
@@ -103,12 +109,14 @@ interface IEMaterialCard{
 
 const NewMaterialCard:react.FC<IEMaterialCard> = (props) => {
     const {url} = useRouteMatch()
+    const {changeMaterials} = useContext(TeacherContext)
     const [deleteMaterial] = useDeleteMaterialMutation({variables: {id:props.id}});
     return <div>
         <div className="teacher-material">
         <img src={bin} alt="" className="teacher-material__delete-button"
             onClick = {(e) => {
                 deleteMaterial({variables: {id:props.id}})
+                window.location.reload()
             }}
             />
             <Link to={`${url}/materials/${props.id}`} className="link teacher-materail__flex">
@@ -116,8 +124,6 @@ const NewMaterialCard:react.FC<IEMaterialCard> = (props) => {
                     {props.name}
                 </span>
             </Link>
-
-
 
         </div>
 
@@ -166,9 +172,13 @@ function parseTests(data:IEQuery){
 
 
 const TeacherLessonDetail:react.FC<IELessonDetail> = (props) => {
+    const [changeLesson] = useChangelessonMutation()
+    
     const {url} = useRouteMatch();
     const [data, setData] = useState(props.data.lessons);
-    return <TeacherContext.Provider value={{changeMaterials:setData}}>
+    let [name, setName] = useState(data.name)
+    let [descr, setDescr] = useState(data.descr)
+    return <div>
         <div className="lesson-details__container">
     <div className="lesson-details__heading">
         {data.typeLesson.name}, {data.typeLesson.group.name}, {data.name}, 27.09
@@ -203,13 +213,21 @@ const TeacherLessonDetail:react.FC<IELessonDetail> = (props) => {
                     <div className="teacher-lesson-theme__heading">
                         Тема урока
                     </div>
-                    <input type="text" placeholder="Введите тему урока" className="lesson-theme__input" value={data.name}/>
+                    <input type="text" placeholder="Введите тему урока" 
+                        className="lesson-theme__input" value={name}
+                        onChange = {(e:any) => {setName(e.target.value);
+                            changeLesson({variables: {name:name, descr:descr, lessonId:props.id}})
+                        }}
+                        
+                        />
                 </div>
                 <div className="teacher-lesson__materials">
                     <div className="teacher-materials__heading">Добавьте материалы к уроку</div>
                     <div className="teacher-materials__content">
                         {parseMaterials(data)}
-                        <PlusButon OnClick={() => {}} link={`${url}/materials/create`}></PlusButon>
+                        <PlusButon OnClick={() => {}} 
+                            link={`${url}/materials/create`}
+                            ></PlusButon>
                     </div>
                 </div>
             </div>
@@ -218,7 +236,11 @@ const TeacherLessonDetail:react.FC<IELessonDetail> = (props) => {
                     <div className="teacher-lesson-theme__heading">
                         Описание урока
                     </div>
-                    <textarea className="teacher-descr__input" placeholder="Описание урока">{data.content}</textarea>
+                    <textarea className="teacher-descr__input" placeholder="Описание урока" onChange = {(e:any) => {
+                        setDescr(e.target.value);
+                        console.log(descr)
+                        changeLesson({variables: {name:name, descr:e.target.value, lessonId:props.id}})
+                    } } value={descr}></textarea>
                 </div>
                 <div className="teacher-lesson__tests">
                     <div className="teacher-materials__heading">Добавьте тесты к уроку</div>
@@ -245,17 +267,22 @@ const TeacherLessonDetail:react.FC<IELessonDetail> = (props) => {
     </Switch>
 
 </div>
-    </TeacherContext.Provider> 
+</div>
 }
 
 export const LessonDetails:react.FC = () => {
     const {createWorkLink} = useContext(ChildContext);
     const {id} = useParams<IEParams>();
+    const [ignored, forceUpdate] = useReducer(x => x+1, 0);
     let {loading, data} = useGetLessonsInfoQuery({variables: {id:id}})
+    let [materials, setMaterials] = useState(data);
     if (loading) return <div>loading...</div>;
-    return <div>
+    function setData() {
+        forceUpdate()
+    }
+    return <TeacherContext.Provider value = {{changeMaterials:setData}}>
             { createWorkLink == "" ? <ChildLessonDetail data={data?.lessons} id={id}></ChildLessonDetail> : 
             <TeacherLessonDetail data={data} id={id}></TeacherLessonDetail>}
-        </div> 
+        </TeacherContext.Provider> 
 
 }

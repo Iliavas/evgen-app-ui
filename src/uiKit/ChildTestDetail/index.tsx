@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
-import ReactDOM from 'react-dom';
-import "./css/ChildTestDetail.css";
+import "./childTestDetail.module.css";
 
 interface TaskRowConfig{
     states:Array<boolean>

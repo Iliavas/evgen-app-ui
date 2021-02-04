@@ -1,12 +1,9 @@
 import React, {useState}from 'react';
 import ReactDOM from 'react-dom';
-import "./css/Calendar.css"
+import "./calendar.module.css"
 import "react-modern-calendar-datepicker/lib/DatePicker.css";
-
 import { Calendar } from "react-modern-calendar-datepicker";
 
-
-const appRoot = document.getElementById('app-root');
 const modalRoot = document.getElementById('modal-root');
 
 class Modal extends React.Component {
@@ -14,15 +11,12 @@ class Modal extends React.Component {
     super(props);
     this.el = document.createElement('div');
   }
-
   componentDidMount() {
     modalRoot.appendChild(this.el);
   }
-
   componentWillUnmount() {
     modalRoot.removeChild(this.el);
   }
-  
   render() {
     return ReactDOM.createPortal(
       this.props.children,
@@ -31,30 +25,17 @@ class Modal extends React.Component {
   }
 }
 
-
-
 const MyCalendar = (props) => {
   let date = new Date()
+  let testDays = new Array()
+  const [selectedDay, setSelectedDay] = useState(defaultValue);
+  let [showModal,setShowModal] = useState(false)
   const defaultValue = {
     year: Number(date.getFullYear()),
     month: Number(date.getMonth())+1,
     day: Number(date.getDate()),
   };
-  const [selectedDay, setSelectedDay] = useState(defaultValue);
-
-
-   let [showModal,setShowModal] = useState(false)
-    
-
-  function handleShow() {
-    setShowModal(true);
-  }
-  
-  function handleHide() {
-    setShowModal(false);
-  }
-
-    const modal = showModal ? (
+  const modal = showModal ? (
       <Modal>
         <div className="modal">
           <div>
@@ -66,19 +47,10 @@ const MyCalendar = (props) => {
     ) : null;
 
   function OnChange(event){
-    let el = document.createElement('div');
-
-    const appRoot = document.getElementById('app-root');
-    const modalRoot = document.getElementById('modal-root');
-
     setSelectedDay(event)
     setShowModal(!showModal)
-
-
   }
   
-  let testDays = new Array()
-
   props.testDays.forEach((el) => {
     date = new Date(el)
     testDays.push({ year: Number(date.getFullYear()), month:  Number(date.getMonth())+1, day:  Number(date.getDate()), className: 'orangeDay'})
@@ -101,7 +73,6 @@ const MyCalendar = (props) => {
     />
     {modal}
     </div>
-    
   );
 };
 export default MyCalendar

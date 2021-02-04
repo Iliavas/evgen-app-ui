@@ -1,6 +1,5 @@
-import React, {useImperativeHandle, useState} from 'react';
-import ReactDOM from 'react-dom';
-import "./css/Select.css"
+import React, {useState} from 'react';
+import "./saveSelect.module.css"
 
 interface SelectConfig{
     handleChange:Function;
@@ -9,14 +8,10 @@ interface SelectConfig{
 interface typeElInterface{
     text:Array<String>;
 }
-
 interface SaveSelectConfig{
     el:Array<String>;
-
 }
-
 function typeEl (props:typeElInterface){
-
     var finalArray = new Array<JSX.Element>();
     props.text.forEach(function(item){
         finalArray.push(<option>{item}</option>);
@@ -25,7 +20,6 @@ function typeEl (props:typeElInterface){
         finalArray
     );
 }
-
 export const MySelect : React.FC<SelectConfig> = (props) => {
     return (
         <select className="mySelect" onChange={(event)=> props.handleChange(event)}>
@@ -33,14 +27,10 @@ export const MySelect : React.FC<SelectConfig> = (props) => {
         </select>
     );
 }
-
-
-
 export const SaveSelect: React.FC<SaveSelectConfig> = (props) => {
     var [list, setList] = useState(new Array<any>());
     var [cmpList, setCmpList]  = useState(new Array<JSX.Element>())
     var [el, setEl] = useState(props.el)
-
     function handleClick(mlist:any, id:any){
         mlist.forEach((el:any, index:number) => {
             let cmList = cmpList;
@@ -53,10 +43,7 @@ export const SaveSelect: React.FC<SaveSelectConfig> = (props) => {
             setList(mlist)
             setCmpList(cmList)
           })
-        
     }
-
-
     function OnChange(event:any){
         let ind = el.indexOf(event.target.value)  
         if(ind != 0){
@@ -65,18 +52,12 @@ export const SaveSelect: React.FC<SaveSelectConfig> = (props) => {
                 button:<button id = {event.target.value} onClick={(event) => handleClick(list, event.target)}>{event.target.value}</button>, 
                 id:event.target.value
         }
-
-
             delete svEl[ind]
             setEl(svEl)
             setList([...list, cmp])
             setCmpList([...cmpList, cmp.button ])
-
         }
-
     }
-
-
     return(
         <div>
             <div>

@@ -57,8 +57,6 @@ export const ExpTimeCol : React.FC<TimeColConfig> = (props) => {
             </div>
             <button onClick={() => showModal=false}>+</button>
         </div>
-
-
     );
 }
 

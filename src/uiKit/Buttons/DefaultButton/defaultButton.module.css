@@ -1,6 +1,4 @@
 .defaultButton{
-
-        
     background: #707EFF;    
     border: 1px solid #5E77FF;
     box-sizing: border-box;
@@ -23,21 +21,4 @@
     outline: none;
     box-shadow: 0px 0px 1vw 0.5vw  #707EFF;
 
-}
-
-.DownloadButton{
-    padding:1vw;
-    background: #FFFFFF;
-    border: 0.25vw solid #98C7FF;
-    box-sizing: border-box;
-    border-radius: 1vw;
-}
-.DownloadButton:hover{
-    box-shadow: 0px 0px 0.5vw 0.25vw rgba(101, 171, 255, 0.5);
-}
-.DownloadButton:active{
-    background: #DFEAF8;
-}
-*{
-    outline: none;
 }

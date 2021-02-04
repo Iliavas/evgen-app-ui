@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
-import ReactDOM from 'react-dom';
-import "./css/conformity.css";
+import "./conformity.module.css.css";
 import {DragDropContext, Droppable,Draggable  } from 'react-beautiful-dnd'
-import cursor from "../images/cursor.svg"
 
 
 interface ColumnProps {
@@ -36,8 +34,6 @@ interface ItemProps {
                 <div className="circle"></div>
                 <div className="circle"></div>
              </div>
-            {/* <img src={cursor} className="cursor"/> */}
-
           </div>
         )}
       </Draggable>
@@ -83,26 +79,8 @@ export const Column: React.FC<ColumnProps> = ({ list }) => {
       )
   }
 
-
-  
-  export const UnDropColumn: React.FC<ConformityConfig> = (props) => {
-    var alphavit = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-
-    return (
-            <div className="col">
-              {props.answers.map((text, index) => (
-                <UnDropItem key={text} charPointer={alphavit.charAt(index)} text={text} index={index} />
-              ))}
-            </div>
-      )
-  }
-
-  const UnDropItem: React.FC<ItemProps> = (props) => {
-    return (
-          <div className="item">
-            <div className="txtDiv"><span className="charPointer">{props.charPointer + " "}</span>{props.text}</div>
-          </div>
-    );
-  }
-
-  
+//как пользоваться
+// <div className="myDiv">
+// <UnDropColumn answers={["спит","спать", "Петербург","бобра"]}></UnDropColumn>
+// <Conformity answers={["Пошла","Наелся и", "Съел","Санкт"]}></Conformity>
+// </div>,

@@ -1,0 +1,136 @@
+_content{
+    padding-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    height: 100%;
+    align-self:flex-start;
+}
+.TeacherText{
+    font-family:  'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 25px;
+    letter-spacing: 0.02vw;
+    color: #565656;
+
+}
+.SubjectText{
+    font-family:  'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+    display: block;
+    align-items: bottom;
+    letter-spacing: 0.02vw;
+
+    color: #000000;
+}
+
+.noTasks{
+    font-family:  'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 32px;
+    letter-spacing: 0.02vw;
+
+    color: #565656;
+}
+
+.colorized{
+    color:#707EFF!important;
+}
+
+
+.TeacherText{
+    text-align: start;
+}
+
+*{
+    outline: none;
+}
+
+
+
+.tkCard{
+    width: 30vw;
+    padding:2vw;
+    position: relative;
+    margin-left: 1vw;
+    background: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    box-sizing: border-box;
+    border-radius: 1.5vw;   
+    justify-content: center;
+    align-items:center;
+}
+
+.tkCard:hover{
+    box-shadow: 0px 0px 0.5vw 0.1vw #C8C8C8;
+}
+.tlCard:active{
+    box-shadow: 0px 0px 1vw 0.5vw  #C8C8C8;
+
+}
+.grade{
+    font-family:  'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 64px;
+    line-height: 64px;
+    /* identical to box height */
+
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.2px;
+
+    color: #707EFF
+}
+
+.p{
+    padding-top:4vw;
+    display: flex;
+    gap:2vw;
+}
+.grayGrade{
+    padding-left:1vw;
+
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 44px;
+    /* identical to box height */
+
+    letter-spacing: 0.2px;
+
+    color: #565656;
+}
+.purpleGrade{
+    padding-left:1vw;
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 44px;
+    /* identical to box height */
+
+    letter-spacing: 0.2px;
+
+    color: #707EFF;
+}
+
+.sbp{
+    padding:2vw;
+}
+
+@media screen and (max-device-width: 960px ) {
+    .image{
+        visibility: hidden;
+        size: 0
+    }
+}
+

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import "./css/Link.css"
+import "./link.module.css"
 
 interface LinkConfig{
     text:String;

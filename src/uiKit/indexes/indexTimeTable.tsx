@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import {TimeCell,  TimeCol, TimeTable} from "../TimeTable/timetable";
+import {TimeCell,  TimeCol, TimeTable} from "../TimeTable";
 
 function click(){
   console.log("походу работает")

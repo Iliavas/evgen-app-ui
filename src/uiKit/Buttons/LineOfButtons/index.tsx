@@ -23,7 +23,7 @@ export const LineButtons : React.FC<LineButtonsConfig> = (props) => {
     }
     let childrenes = new Array<JSX.Element>()
     let [classes,setClasses]= useState(simple)
-    
+
     props.answeres.forEach((el)=>{
         let n = props.answeres.indexOf(el)
         childrenes.push(<button onClick={()=>onChange(n)} className={classes[n]==false? "button":"button active"}>{el}</button>)
@@ -32,4 +32,4 @@ export const LineButtons : React.FC<LineButtonsConfig> = (props) => {
     return <div className="lineOfButtons">
         {childrenes}
     </div>
-} 
+}  

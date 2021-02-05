@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import "./css/Buttons.css"
+import "./toogleButton.css"
 import { ToggleButton, ToggleButtonGroup} from '@material-ui/lab';
 
 interface ToogleConfig{
@@ -10,6 +10,8 @@ interface ToogleConfig{
 
 
 export const MyToogleButton : React.FC<ToogleConfig> = (props) =>{
+
+
     let [active, setActive] = useState(false)
     const TGbtn = {
         fontFamily:  "'Montserrat', sans-serif",
@@ -43,9 +45,14 @@ export const MyToogleButton : React.FC<ToogleConfig> = (props) =>{
         
     }
 
+    function onChange(e:any){
+        props.handleChange(e.target.value)
+        setActive(!active)
+    }
+
     let buttons = new  Array<JSX.Element>()
     props.buttons.forEach((el) => {
-        buttons.push(<ToggleButton onClick={(e) => setActive(!active)} style={props.buttons.indexOf(el)==0?   active? TGbtn:TGbtnActive: !active? TGbtn:TGbtnActive} value={el} aria-label={el}>{el}</ToggleButton>)
+        buttons.push(<ToggleButton onClick={(e) => onChange(e)} style={props.buttons.indexOf(el)==0?   active? TGbtn:TGbtnActive: !active? TGbtn:TGbtnActive} value={el} aria-label={el}>{el}</ToggleButton>)
       })
     return(
         <ToggleButtonGroup style={TGbtnGroup} orientation="horizontal">

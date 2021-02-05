@@ -5,6 +5,7 @@
 }
 
 .button {
+    cursor: pointer;
     height: 100%;
     width: 15%;
     font-size: 24px;
@@ -30,6 +31,8 @@
 }  */
 
 .active{
+    cursor: pointer;
+
     height: 100%;
     width: 15%;
     font-size: 24px;

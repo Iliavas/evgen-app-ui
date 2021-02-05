@@ -1,10 +1,10 @@
 import React from 'react';
-import "./subjectCard.module.css";
-import image1 from "../images/cardImg.svg";
-import image2 from "../images/cardImg1.svg";
-import image3 from "../images/cardImg2.svg";
-import image4 from "../images/cardImg3.svg";
-import image5 from "../images/cardImg4.svg";
+import "./subjectCard.css";
+import image1 from "../../../images/cardImg.svg";
+import image2 from "../../../images/cardImg1.svg";
+import image3 from "../../../images/cardImg2.svg";
+import image4 from "../../../images/cardImg3.svg";
+import image5 from "../../../images/cardImg4.svg";
 
 
 

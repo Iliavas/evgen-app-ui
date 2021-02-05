@@ -1,0 +1,94 @@
+.wrapper{
+    padding-top:4vw;
+    padding-bottom:4vw;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    background: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    box-sizing: border-box;
+    border-radius: 10px;
+    gap:70px;
+    width: 90%;
+}
+.col{
+    gap:2vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.wrapper:hover{
+    box-shadow: 0px 0px 4px 1px #b1b1b1;
+}
+.question{
+    font-family:  'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+    display: block;
+    align-items: bottom;
+    letter-spacing: 0.02vw;
+
+    color: #000000;
+}
+.answer{
+    font-family:  'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 29px;
+    letter-spacing: 0.02vw;
+    
+    color: #707EFF;
+}
+
+.checking{
+    padding-left: 17%;
+    background: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    box-sizing: border-box;
+    border-radius: 10px;
+    font-family:  'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.2px;
+
+    color: #565656;
+}
+
+.minuts{
+    font-family:  'Montserrat', sans-serif;
+
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+    /* identical to box height */
+
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.2px;
+
+    color: #707EFF;
+}
+.min{
+    color: #707E56;
+}
+.card{
+    background: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    box-sizing: border-box;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}

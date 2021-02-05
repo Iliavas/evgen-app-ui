@@ -1,5 +1,5 @@
 import React  from 'react';
-import "./defaultButton.module.css"
+import "./defaultButton.css"
 
 
 interface ButtonsConfig{

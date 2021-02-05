@@ -12,6 +12,8 @@
     padding : 20px 20px;
     color: #FFFFFF;
     letter-spacing: 0.2px;
+    outline: none;
+
 }
 .defaultButton:hover{
     outline: none;
@@ -21,4 +23,7 @@
     outline: none;
     box-shadow: 0px 0px 1vw 0.5vw  #707EFF;
 
+}
+*{
+    outline: none;
 }

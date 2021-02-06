@@ -22,6 +22,10 @@
     color: #707EFF;
 }
 
+.lobby__content{
+    overflow: scroll;
+}
+
 .lobby-menu__content{
     margin-top:20vh;
     display: flex;

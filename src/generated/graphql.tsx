@@ -46,9 +46,6 @@ export type Query = {
   /** The ID of the object */
   subject?: Maybe<SubjectType>;
   /** The ID of the object */
-  task?: Maybe<TaskType>;
-  allTask?: Maybe<TaskTypeConnection>;
-  /** The ID of the object */
   answerSheet?: Maybe<AnswerSheetType>;
   allAnswerSheet?: Maybe<AnswerSheetTypeConnection>;
   /** The ID of the object */
@@ -63,6 +60,12 @@ export type Query = {
   materials?: Maybe<MaterialConnection>;
   /** The ID of the object */
   material?: Maybe<Material>;
+  /** The ID of the object */
+  gettaskType?: Maybe<TaskTypeType>;
+  taskTypes?: Maybe<TaskTypeTypeConnection>;
+  tasks?: Maybe<TaskTypeConnection>;
+  /** The ID of the object */
+  task?: Maybe<TaskType>;
   roles?: Maybe<Array<Maybe<RoleType>>>;
   organisations?: Maybe<OrganisationTypeConnection>;
   /** The ID of the object */
@@ -116,22 +119,6 @@ export type QueryAllSubjectArgs = {
 
 export type QuerySubjectArgs = {
   id: Scalars['ID'];
-};
-
-
-export type QueryTaskArgs = {
-  id: Scalars['ID'];
-};
-
-
-export type QueryAllTaskArgs = {
-  offset?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['String']>;
-  after?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
-  test?: Maybe<Scalars['ID']>;
-  types_Contains?: Maybe<Array<Maybe<Scalars['ID']>>>;
 };
 
 
@@ -213,6 +200,36 @@ export type QueryMaterialsArgs = {
 
 
 export type QueryMaterialArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryGettaskTypeArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryTaskTypesArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+};
+
+
+export type QueryTasksArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  test?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  types_Contains?: Maybe<Array<Maybe<Scalars['ID']>>>;
+};
+
+
+export type QueryTaskArgs = {
   id: Scalars['ID'];
 };
 
@@ -849,7 +866,7 @@ export type TestsTypeTaskSetArgs = {
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
-  test?: Maybe<Scalars['ID']>;
+  test?: Maybe<Array<Maybe<Scalars['ID']>>>;
   types_Contains?: Maybe<Array<Maybe<Scalars['ID']>>>;
 };
 
@@ -1093,10 +1110,46 @@ export type TaskType = Node & {
   id: Scalars['ID'];
   theory: Scalars['String'];
   practise: Scalars['String'];
-  test: TestsType;
+  test: TestsTypeConnection;
   number: Scalars['Int'];
   maxScore: Scalars['Int'];
+  isTiming: Scalars['Boolean'];
+  time: Scalars['Int'];
+  Type: TaskTypeType;
+  isAutocheck: Scalars['Boolean'];
+  autoCheckData: Scalars['String'];
   pk?: Maybe<Scalars['Int']>;
+};
+
+
+export type TaskTypeTestArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  name?: Maybe<Scalars['String']>;
+  name_Contains?: Maybe<Scalars['String']>;
+  lesson?: Maybe<Scalars['ID']>;
+};
+
+export type TaskTypeType = Node & {
+  __typename?: 'TaskTypeType';
+  /** The ID of the object. */
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  taskSet: TaskTypeConnection;
+};
+
+
+export type TaskTypeTypeTaskSetArgs = {
+  offset?: Maybe<Scalars['Int']>;
+  before?: Maybe<Scalars['String']>;
+  after?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
+  test?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  types_Contains?: Maybe<Array<Maybe<Scalars['ID']>>>;
 };
 
 export type AnswerTypeConnection = {
@@ -1141,6 +1194,23 @@ export type SubjectTypeEdge = {
   __typename?: 'SubjectTypeEdge';
   /** The item at the end of the edge */
   node?: Maybe<SubjectType>;
+  /** A cursor for use in pagination */
+  cursor: Scalars['String'];
+};
+
+export type TaskTypeTypeConnection = {
+  __typename?: 'TaskTypeTypeConnection';
+  /** Pagination data for this connection. */
+  pageInfo: PageInfo;
+  /** Contains the nodes in this connection. */
+  edges: Array<Maybe<TaskTypeTypeEdge>>;
+};
+
+/** A Relay edge containing a `TaskTypeType` and its cursor. */
+export type TaskTypeTypeEdge = {
+  __typename?: 'TaskTypeTypeEdge';
+  /** The item at the end of the edge */
+  node?: Maybe<TaskTypeType>;
   /** A cursor for use in pagination */
   cursor: Scalars['String'];
 };
@@ -1275,6 +1345,7 @@ export type MutationDeleteTestArgs = {
 
 
 export type MutationCreateTaskArgs = {
+  Type?: Maybe<Scalars['String']>;
   maxScore?: Maybe<Scalars['Int']>;
   number?: Maybe<Scalars['Int']>;
   practise?: Maybe<Scalars['String']>;
@@ -1284,11 +1355,16 @@ export type MutationCreateTaskArgs = {
 
 
 export type MutationUpdateTaskArgs = {
+  Type?: Maybe<Scalars['ID']>;
+  autoCheck?: Maybe<Scalars['Boolean']>;
+  autoCheckData?: Maybe<Scalars['String']>;
+  isTime?: Maybe<Scalars['Boolean']>;
   maxScore?: Maybe<Scalars['Int']>;
   number?: Maybe<Scalars['Int']>;
   practise?: Maybe<Scalars['String']>;
   taskId?: Maybe<Scalars['ID']>;
   theory?: Maybe<Scalars['String']>;
+  time?: Maybe<Scalars['Int']>;
 };
 
 
@@ -1729,6 +1805,25 @@ export type MaterialQueryVariables = Exact<{
 
 export type MaterialQuery = { __typename?: 'Query', material?: Maybe<{ __typename?: 'Material', name: string, data: string, Type: string }> };
 
+export type TestQueryVariables = Exact<{
+  testId: Scalars['ID'];
+}>;
+
+
+export type TestQuery = { __typename?: 'Query', test?: Maybe<{ __typename?: 'TestsType', name: string, deadline: any, taskSet: { __typename?: 'TaskTypeConnection', edges: Array<Maybe<{ __typename?: 'TaskTypeEdge', node?: Maybe<{ __typename?: 'TaskType', theory: string, practise: string, number: number, maxScore: number, id: string, isTiming: boolean, time: number, isAutocheck: boolean, Type: { __typename?: 'TaskTypeType', name: string } }> }>> } }> };
+
+export type TaskTypeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type TaskTypeQuery = { __typename?: 'Query', taskTypes?: Maybe<{ __typename?: 'TaskTypeTypeConnection', edges: Array<Maybe<{ __typename?: 'TaskTypeTypeEdge', node?: Maybe<{ __typename?: 'TaskTypeType', name: string, id: string }> }>> }> };
+
+export type TaskQueryVariables = Exact<{
+  taskId: Scalars['ID'];
+}>;
+
+
+export type TaskQuery = { __typename?: 'Query', task?: Maybe<{ __typename?: 'TaskType', theory: string, practise: string, maxScore: number, isTiming: boolean, time: number, isAutocheck: boolean, autoCheckData: string, Type: { __typename?: 'TaskTypeType', name: string } }>, taskTypes?: Maybe<{ __typename?: 'TaskTypeTypeConnection', edges: Array<Maybe<{ __typename?: 'TaskTypeTypeEdge', node?: Maybe<{ __typename?: 'TaskTypeType', name: string }> }>> }> };
+
 export type GetTokenByNameAndPasswordMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
@@ -1779,6 +1874,20 @@ export type ChangelessonMutationVariables = Exact<{
 
 
 export type ChangelessonMutation = { __typename?: 'Mutation', updateLessonRegistration?: Maybe<{ __typename?: 'UpdateLessonRegistration', ok?: Maybe<boolean> }> };
+
+export type CreateTestMutationVariables = Exact<{
+  lessonID: Scalars['ID'];
+}>;
+
+
+export type CreateTestMutation = { __typename?: 'Mutation', createTest?: Maybe<{ __typename?: 'CreateTest', test?: Maybe<{ __typename?: 'TestsType', id: string }> }> };
+
+export type AddTaskMutationVariables = Exact<{
+  testId: Scalars['ID'];
+}>;
+
+
+export type AddTaskMutation = { __typename?: 'Mutation', createTask?: Maybe<{ __typename?: 'createTask', task?: Maybe<{ __typename?: 'TaskType', theory: string, id: string, pk?: Maybe<number> }> }> };
 
 
 export const GetLessonsInfoDocument = gql`
@@ -2071,6 +2180,143 @@ export function useMaterialLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<M
 export type MaterialQueryHookResult = ReturnType<typeof useMaterialQuery>;
 export type MaterialLazyQueryHookResult = ReturnType<typeof useMaterialLazyQuery>;
 export type MaterialQueryResult = Apollo.QueryResult<MaterialQuery, MaterialQueryVariables>;
+export const TestDocument = gql`
+    query test($testId: ID!) {
+  test(id: $testId) {
+    name
+    deadline
+    taskSet {
+      edges {
+        node {
+          theory
+          practise
+          number
+          maxScore
+          id
+          isTiming
+          time
+          Type {
+            name
+          }
+          isAutocheck
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useTestQuery__
+ *
+ * To run a query within a React component, call `useTestQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTestQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTestQuery({
+ *   variables: {
+ *      testId: // value for 'testId'
+ *   },
+ * });
+ */
+export function useTestQuery(baseOptions: Apollo.QueryHookOptions<TestQuery, TestQueryVariables>) {
+        return Apollo.useQuery<TestQuery, TestQueryVariables>(TestDocument, baseOptions);
+      }
+export function useTestLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TestQuery, TestQueryVariables>) {
+          return Apollo.useLazyQuery<TestQuery, TestQueryVariables>(TestDocument, baseOptions);
+        }
+export type TestQueryHookResult = ReturnType<typeof useTestQuery>;
+export type TestLazyQueryHookResult = ReturnType<typeof useTestLazyQuery>;
+export type TestQueryResult = Apollo.QueryResult<TestQuery, TestQueryVariables>;
+export const TaskTypeDocument = gql`
+    query taskType {
+  taskTypes {
+    edges {
+      node {
+        name
+        id
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useTaskTypeQuery__
+ *
+ * To run a query within a React component, call `useTaskTypeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTaskTypeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTaskTypeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useTaskTypeQuery(baseOptions?: Apollo.QueryHookOptions<TaskTypeQuery, TaskTypeQueryVariables>) {
+        return Apollo.useQuery<TaskTypeQuery, TaskTypeQueryVariables>(TaskTypeDocument, baseOptions);
+      }
+export function useTaskTypeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TaskTypeQuery, TaskTypeQueryVariables>) {
+          return Apollo.useLazyQuery<TaskTypeQuery, TaskTypeQueryVariables>(TaskTypeDocument, baseOptions);
+        }
+export type TaskTypeQueryHookResult = ReturnType<typeof useTaskTypeQuery>;
+export type TaskTypeLazyQueryHookResult = ReturnType<typeof useTaskTypeLazyQuery>;
+export type TaskTypeQueryResult = Apollo.QueryResult<TaskTypeQuery, TaskTypeQueryVariables>;
+export const TaskDocument = gql`
+    query task($taskId: ID!) {
+  task(id: $taskId) {
+    theory
+    practise
+    maxScore
+    isTiming
+    time
+    Type {
+      name
+    }
+    isAutocheck
+    autoCheckData
+  }
+  taskTypes {
+    edges {
+      node {
+        name
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useTaskQuery__
+ *
+ * To run a query within a React component, call `useTaskQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTaskQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTaskQuery({
+ *   variables: {
+ *      taskId: // value for 'taskId'
+ *   },
+ * });
+ */
+export function useTaskQuery(baseOptions: Apollo.QueryHookOptions<TaskQuery, TaskQueryVariables>) {
+        return Apollo.useQuery<TaskQuery, TaskQueryVariables>(TaskDocument, baseOptions);
+      }
+export function useTaskLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TaskQuery, TaskQueryVariables>) {
+          return Apollo.useLazyQuery<TaskQuery, TaskQueryVariables>(TaskDocument, baseOptions);
+        }
+export type TaskQueryHookResult = ReturnType<typeof useTaskQuery>;
+export type TaskLazyQueryHookResult = ReturnType<typeof useTaskLazyQuery>;
+export type TaskQueryResult = Apollo.QueryResult<TaskQuery, TaskQueryVariables>;
 export const GetTokenByNameAndPasswordDocument = gql`
     mutation getTokenByNameAndPassword($username: String!, $password: String!) {
   tokenAuth(username: $username, password: $password) {
@@ -2277,3 +2523,80 @@ export function useChangelessonMutation(baseOptions?: Apollo.MutationHookOptions
 export type ChangelessonMutationHookResult = ReturnType<typeof useChangelessonMutation>;
 export type ChangelessonMutationResult = Apollo.MutationResult<ChangelessonMutation>;
 export type ChangelessonMutationOptions = Apollo.BaseMutationOptions<ChangelessonMutation, ChangelessonMutationVariables>;
+export const CreateTestDocument = gql`
+    mutation createTest($lessonID: ID!) {
+  createTest(name: "", lessonId: $lessonID) {
+    test {
+      id
+    }
+  }
+}
+    `;
+export type CreateTestMutationFn = Apollo.MutationFunction<CreateTestMutation, CreateTestMutationVariables>;
+
+/**
+ * __useCreateTestMutation__
+ *
+ * To run a mutation, you first call `useCreateTestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTestMutation, { data, loading, error }] = useCreateTestMutation({
+ *   variables: {
+ *      lessonID: // value for 'lessonID'
+ *   },
+ * });
+ */
+export function useCreateTestMutation(baseOptions?: Apollo.MutationHookOptions<CreateTestMutation, CreateTestMutationVariables>) {
+        return Apollo.useMutation<CreateTestMutation, CreateTestMutationVariables>(CreateTestDocument, baseOptions);
+      }
+export type CreateTestMutationHookResult = ReturnType<typeof useCreateTestMutation>;
+export type CreateTestMutationResult = Apollo.MutationResult<CreateTestMutation>;
+export type CreateTestMutationOptions = Apollo.BaseMutationOptions<CreateTestMutation, CreateTestMutationVariables>;
+export const AddTaskDocument = gql`
+    mutation addTask($testId: ID!) {
+  createTask(
+    testId: $testId
+    theory: ""
+    practise: ""
+    number: 1
+    maxScore: 0
+    Type: "VGFza1R5cGVUeXBlOjQ="
+  ) {
+    task {
+      theory
+      id
+      pk
+    }
+  }
+}
+    `;
+export type AddTaskMutationFn = Apollo.MutationFunction<AddTaskMutation, AddTaskMutationVariables>;
+
+/**
+ * __useAddTaskMutation__
+ *
+ * To run a mutation, you first call `useAddTaskMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddTaskMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addTaskMutation, { data, loading, error }] = useAddTaskMutation({
+ *   variables: {
+ *      testId: // value for 'testId'
+ *   },
+ * });
+ */
+export function useAddTaskMutation(baseOptions?: Apollo.MutationHookOptions<AddTaskMutation, AddTaskMutationVariables>) {
+        return Apollo.useMutation<AddTaskMutation, AddTaskMutationVariables>(AddTaskDocument, baseOptions);
+      }
+export type AddTaskMutationHookResult = ReturnType<typeof useAddTaskMutation>;
+export type AddTaskMutationResult = Apollo.MutationResult<AddTaskMutation>;
+export type AddTaskMutationOptions = Apollo.BaseMutationOptions<AddTaskMutation, AddTaskMutationVariables>;

@@ -5,7 +5,6 @@ import {CKEditor} from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 
-
 import "./css/editor.css"
 
 export const Editor = (props) => {
@@ -21,13 +20,23 @@ export const Editor = (props) => {
         editor={ClassicEditor}
         data = {props.content}
         disabled = {props.child}
-        config = {
-            {
-                ckfinder: {
-                    uploadUrl: "./rep"
-                }
-            }
+        onChange = {props.onChange}
+        plugins = {[]}
+        toolbar = {["imageInsert"]}
+        config={{ckfinder: {
+            // Upload the images to the server using the CKFinder QuickUpload command
+            // You have to change this address to your server that has the ckfinder php connector
+            filebrowserBrowseUrl: '/ckfinder/ckfinder.html',
+			filebrowserImageBrowseUrl: '/ckfinder/ckfinder.html?type=Images',
+			filebrowserUploadUrl: '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files',
+			filebrowserImageUploadUrl: '/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Images'
+        },
+        image : {
+                toolbar: ["imageTextAlternative"]
         }
+
+    }}
+        
         
     >
     </CKEditor>

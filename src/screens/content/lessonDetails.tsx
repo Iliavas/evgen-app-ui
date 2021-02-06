@@ -4,15 +4,17 @@ import "../css/lesson-detail.css";
 
 import {Editor} from "../../uiKit/editor";
 
-import {useParams, useRouteMatch} from "react-router-dom";
+import {useHistory, useParams, useRouteMatch} from "react-router-dom";
 import client from "../../client";
+
 
 import {
     useGetLessonsInfoQuery, 
     useDeleteMaterialMutation,
     GetLessonsInfoDocument,
     UserInfoDocument,
-    useChangelessonMutation
+    useChangelessonMutation,
+    useCreateTestMutation
 } from "../../generated/graphql";
 
 import {Link, Switch, Route} from "react-router-dom";
@@ -20,6 +22,9 @@ import {Link, Switch, Route} from "react-router-dom";
 import {CreateMaterialWidget} from "./createMaterial"
 
 import bin from "../../images/trash-empty.svg";
+
+import {TestCreation, TestCreateWidget} from "./testCreation"
+import { create } from "domain";
 
 
 
@@ -75,7 +80,7 @@ function parseTeacherTests(data:IEQuery){
 
 interface IELessonDetail{
     data: any,
-    id: string
+    id: string, url:string;
 }
 
 const ChildLessonDetail:react.FC<IELessonDetail> = (props) => {
@@ -95,7 +100,7 @@ const ChildLessonDetail:react.FC<IELessonDetail> = (props) => {
         <div className="tests">
             <div className="lesson-details__heading">Тесты</div>
             <div className="materials__content">
-                {parseTests(data)}
+                {parseTests(data, props.url)}
             </div>
         </div>
     </div>
@@ -133,6 +138,7 @@ const NewMaterialCard:react.FC<IEMaterialCard> = (props) => {
 interface IETestCard{
     name:string;
     questions:number;
+    id?:string;
 }
 const NewTestCard:react.FC<IETestCard> = (props) => {
     return <div className="teacher-test-card__container">
@@ -157,14 +163,17 @@ const PlusButon:react.FC<IEPlusButton> = (props) => {
     </Link> 
 }
 
-function parseTests(data:IEQuery){
+function parseTests(data:IEQuery, url:string){
     let res = []
     for (let test of data.tests){
         res.push(
-            <NewTestCard
-                name={test.name}
-                questions={test.taskLen}
-            ></NewTestCard>
+            <Link to={`${url}/tests/${test.id}`}>
+                <NewTestCard
+                    name={test.name}
+                    questions={test.taskLen}
+                ></NewTestCard>
+            </Link>
+
         );
     }
     return res;
@@ -172,13 +181,24 @@ function parseTests(data:IEQuery){
 
 
 const TeacherLessonDetail:react.FC<IELessonDetail> = (props) => {
-    const [changeLesson] = useChangelessonMutation()
-    
+    const [changeLesson] = useChangelessonMutation();
+    const history = useHistory();
+    const [createTest] = useCreateTestMutation({onCompleted: (data) => {
+        history.push(`${url}/tests/${data.createTest?.test?.id}`);
+    }, variables: {lessonID: props.id}})
     const {url} = useRouteMatch();
     const [data, setData] = useState(props.data.lessons);
     let [name, setName] = useState(data.name)
     let [descr, setDescr] = useState(data.descr)
-    return <div>
+    return <Switch>
+        <Route path={`${url}/tests/create`}>
+                    <TestCreateWidget id={props.id}></TestCreateWidget>
+        </Route>
+        <Route path={`${url}/tests/:id`}>
+            <TestCreation></TestCreation>
+        </Route>
+        <Route path={url}>
+        <div>
         <div className="lesson-details__container">
     <div className="lesson-details__heading">
         {data.typeLesson.name}, {data.typeLesson.group.name}, {data.name}, 27.09
@@ -245,7 +265,7 @@ const TeacherLessonDetail:react.FC<IELessonDetail> = (props) => {
                 <div className="teacher-lesson__tests">
                     <div className="teacher-materials__heading">Добавьте тесты к уроку</div>
                     <div className="teacher-tests__content">
-                        {parseTests(data)}
+                        {parseTests(data, url)}
                         <PlusButon OnClick={() => {}} link={`${url}/tests/create`}/>
                     </div>
                     
@@ -261,6 +281,7 @@ const TeacherLessonDetail:react.FC<IELessonDetail> = (props) => {
         <Route path={`${url}/materials/create`}>
             <CreateMaterialWidget id={props.id}></CreateMaterialWidget>
         </Route>
+
         <Route path={`${url}/materials/:id`}>
             <CreateMaterialWidget id={props.id}></CreateMaterialWidget>
         </Route>
@@ -268,9 +289,14 @@ const TeacherLessonDetail:react.FC<IELessonDetail> = (props) => {
 
 </div>
 </div>
+        </Route>
+
+
+        </Switch>
 }
 
 export const LessonDetails:react.FC = () => {
+    const {url} = useRouteMatch();
     const {createWorkLink} = useContext(ChildContext);
     const {id} = useParams<IEParams>();
     const [ignored, forceUpdate] = useReducer(x => x+1, 0);
@@ -281,8 +307,8 @@ export const LessonDetails:react.FC = () => {
         forceUpdate()
     }
     return <TeacherContext.Provider value = {{changeMaterials:setData}}>
-            { createWorkLink == "" ? <ChildLessonDetail data={data?.lessons} id={id}></ChildLessonDetail> : 
-            <TeacherLessonDetail data={data} id={id}></TeacherLessonDetail>}
+            { createWorkLink == "" ? <ChildLessonDetail data={data?.lessons} id={id} url={url}></ChildLessonDetail> : 
+            <TeacherLessonDetail url={url} data={data} id={id}></TeacherLessonDetail>}
         </TeacherContext.Provider> 
 
 }

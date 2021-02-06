@@ -103,6 +103,42 @@ query material($id:ID!){
   }
 }
 
+query test($testId:ID!){
+	test(id:$testId){
+    name, deadline
+    taskSet{
+      edges{
+        node{
+          theory, practise, number, maxScore, id, isTiming, time, Type{name}, isAutocheck
+        }
+      }
+    }
+  }
+}
+
+query taskType{
+  taskTypes{
+    edges{
+      node{
+        name, id
+      }
+    }
+  }
+}
+
+query task($taskId:ID!){
+  task(id:$taskId){
+    theory, practise, maxScore, isTiming, time, Type{name}, isAutocheck, autoCheckData
+  }
+  taskTypes{
+    edges{
+      node{
+        name
+      }
+    }
+  }
+}
+
 mutation getTokenByNameAndPassword($username:String!, $password:String!){
     tokenAuth(username:$username, password:$password){
       token
@@ -141,5 +177,21 @@ mutation deleteMaterial($id:ID!){
 mutation changelesson($lessonId:ID!, $descr:String!, $name:String!){
   updateLessonRegistration(id:$lessonId, descr:$descr, name:$name){
     ok
+  }
+}
+
+mutation createTest($lessonID:ID!){
+  createTest(name:"", lessonId:$lessonID){
+    test{
+      id
+    }
+  }
+}
+
+mutation addTask($testId:ID!){
+  createTask(testId:$testId, theory:"", practise:"", number:1, maxScore: 0, Type:"VGFza1R5cGVUeXBlOjQ="){
+    task{
+      theory, id, pk
+    }
   }
 }

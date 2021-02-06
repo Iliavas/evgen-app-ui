@@ -66,6 +66,7 @@ const MyCalendar = (props) => {
     ) : null;
 
   function OnChange(event){
+    props.onChange(event)
     let el = document.createElement('div');
 
     const appRoot = document.getElementById('app-root');

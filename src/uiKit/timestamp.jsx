@@ -37,7 +37,7 @@ class MyPicker extends Component {
     const {optionGroups, valueGroups} = this.state;
  
     return (
-      <Picker
+      <Picker className = "picker"
         optionGroups={optionGroups}
         valueGroups={valueGroups}
         onChange={this.handleChange} />

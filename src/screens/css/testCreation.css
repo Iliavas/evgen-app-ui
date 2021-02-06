@@ -1,0 +1,192 @@
+.task-card__container{
+    background-color: white;
+    border: 1px solid #eee;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    gap : 10vw;
+}
+
+.test-creation__container{
+    width: 100%;
+    display: flex;
+    gap: 30px;
+    flex-direction: column;
+}
+
+.task-card__heading{
+    font-family: Montserrat;
+font-style: normal;
+font-weight: 600;
+font-size: 24px;
+line-height: 29px;
+display: flex;
+align-items: center;
+letter-spacing: 0.2px;
+
+color: #000000;
+}
+
+.colorize{
+    color: #707EFF;
+}
+
+.task-card__time{
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.2px;
+
+    color: #565656;
+
+}
+
+.task-card__first-col{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 15vw;
+}
+
+.answer__type{
+    font-family: Montserrat;
+font-style: normal;
+font-weight: 600;
+font-size: 18px;
+
+color: #707EFF;
+
+}
+
+.autoCheck__info{
+    font-family: Montserrat;
+font-style: normal;
+font-weight: 600;
+font-size: 18px;
+line-height: 22px;
+display: flex;
+align-items: center;
+letter-spacing: 0.2px;
+
+color: #565656;
+
+}
+
+.points__heading{
+    font-family: Montserrat;
+font-style: normal;
+font-weight: 500;
+font-size: 18px;
+display: flex;
+align-items: center;
+letter-spacing: 0.2px;
+
+color: #000000;
+
+}
+
+
+.points__container{
+    align-items: center;
+}
+
+.points__content{
+    font-family: Montserrat;
+font-style: normal;
+font-weight: 600;
+font-size: 22px;
+display: flex;
+align-items: center;
+letter-spacing: 0.2px;
+
+color: #707EFF;
+}
+
+.name__input{
+    width:100%!important;
+}
+
+.name__heading{
+    font-family: Montserrat;
+    color: black;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.add-task-button{
+    height: 116px;
+    border: 1px solid #eee;
+    background-color: white;
+    border-radius: 10px;
+    font-size: 38px;
+
+    font-family: Montserrat;
+font-style: normal;
+font-weight: 600;
+letter-spacing: 0.2px;
+display: flex;
+align-items: center;justify-content: center;
+
+color: #707EFF;
+}
+
+.link{
+    display: block;
+    width: 100%;
+}
+
+.question-editing__container{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.checkbox__container{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+
+    font-family: Montserrat;
+font-style: normal;
+font-weight: 600;
+font-size: 18px;
+line-height: 22px;
+/* identical to box height */
+
+display: flex;
+align-items: center;
+letter-spacing: 0.2px;
+
+color: #565656;
+
+}
+
+.teacher__textarea{
+    display: block;
+    padding: 20px;
+    font-family: Montserrat;
+    margin:0;
+}
+
+.ta__container{
+    width:100%;
+}
+
+.answer-autoCheck__heading{
+    font-family: Montserrat;
+font-style: normal;
+font-weight: 600;
+font-size: 20px;
+line-height: 24px;
+
+color: #565656;;
+}
+
+.MuiInputBase-root{
+    margin-left: 100px!important;
+}

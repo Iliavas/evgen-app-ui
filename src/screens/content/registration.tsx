@@ -27,12 +27,12 @@ export const Registration:react.FC = () => {
     return (
     <div className="centered">
         <div className="registration__container">
-            <div className="heading">Добро пожаловать в EvgenApp</div>
+            <div className="heading-evgen-app">Добро пожаловать в EvgenApp</div>
             <div className="toggle__reg">
-                <Link to="Login">                
+                <Link to="/enter-user/Login">                
                     <div className={"toggle-text " + (isSign ? "" : "disabled")}>Вход</div>
                 </Link>
-                <Link to="Registration">
+                <Link to="/enter-user/Registration">
                     <div className={"toggle-text " + (isSign ? "disabled": "")}>Регистрация</div>
                 </Link>
             </div>

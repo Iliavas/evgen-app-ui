@@ -29,6 +29,7 @@ export const Login_inputs:React.FC = () =>
         <div className="password-refresh">Восстановить пароль</div>
         <DefaultButton handleClick={()=>{
             setToken({variables:{username:name, password:password}})
+            window.location.reload()
         }} class="reg-btn">
             Войти
         </DefaultButton>

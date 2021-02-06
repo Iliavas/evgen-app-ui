@@ -3,7 +3,8 @@ import React from "react";
 import {
     BrowserRouter as Router,
     Switch,
-    Route
+    Route,
+    Redirect
 } from "react-router-dom"
 import {
     ApolloProvider
@@ -16,8 +17,10 @@ import {OrganisationList} from "./organisations";
 
 import {ChildLobby} from "./LobbyContentRouter";
 
+import {checkToken} from "../../LocalStorageInteraction/checkToken"
 
 export const Routing = () => {
+
     return <ApolloProvider client={client}>
         <Router>
             <Switch>

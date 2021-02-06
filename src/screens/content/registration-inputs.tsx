@@ -9,8 +9,11 @@ import {register} from "../../MUTATIONS/registerUser"
 
 import {IEvent} from "./interfaces"
 
+import {useHistory} from "react-router-dom";
+
 
 export const Registration_inputs:React.FC = () => {
+    const history = useHistory();
     const [registerUser, {data}] = useMutation(register, {onCompleted: 
         (data) => {
             console.log(data);
@@ -31,6 +34,7 @@ export const Registration_inputs:React.FC = () => {
         <DefaultButton handleClick={()=>{
             registerUser({variables:{username:name_input, 
                 password:password_input}});
+            history.push("/enter-user/Login")
         }} class="reg-btn">
             Зарегистрироваться
         </DefaultButton>

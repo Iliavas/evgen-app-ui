@@ -12,8 +12,10 @@ import {getToken} from "../../LocalStorageInteraction/getToken";
 import {IEDataProcessing} from "./interfaces"
 
 import {
-    Route, Switch
+    Route, Switch, Redirect
 } from "react-router-dom";
+
+import {checkToken} from "../../LocalStorageInteraction/checkToken";
 
 import {
     LobbyContentRouter
@@ -41,6 +43,9 @@ export const OrganisationList:react.FC = () =>{
     const {loading, error, data} = useUserInfoQuery({variables: {id: getToken()!}})
     if (loading) return <div>loading...</div>
     console.log(data)
+    if (!checkToken()) {
+        return <Redirect to="/enter-user/Registration"></Redirect>
+    }
     return <Switch>
         <Route path="/:id/:type/">
             <LobbyContentRouter></LobbyContentRouter>

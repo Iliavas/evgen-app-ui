@@ -21,11 +21,11 @@ export const ChildLobbyContentRouter:react.FC = () => {
             setActiveName("subjects")
             break
         case "homework":
-            content = <div>shit</div>
+            content = <div>homework</div>
             setActiveName("homework")
             break
         case "marks":
-            content = <div>oh my</div>
+            content = <div>marks</div>
             setActiveName("marks")
             break
         case "add-material":

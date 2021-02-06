@@ -26,6 +26,7 @@ interface IESubjectDetail{
 
 interface IECreationButton{
     link:string;
+    subject:string;
 }
 
 interface QueryData{
@@ -60,7 +61,7 @@ function parseQuery(data:QueryData[], path:string){
 }
 
 const CreateButton:react.FC<IECreationButton> = (props) => {
-    return <Link to={`${props.link}`}>
+    return <Link to={`${props.link}/${props.subject}`}>
         <div className="create-button__container">
             Создать
         </div>
@@ -87,7 +88,7 @@ export const SubjectDetail:react.FC<IESubjectDetail> = () => {
                         {`${data.subjectClass.name}, ${data.subjectClass.group.name}`}
                     </p>
                     {
-                    createWorkLink != "" ? <CreateButton link={createWorkLink}></CreateButton> : <div></div>
+                    createWorkLink != "" ? <CreateButton link={createWorkLink} subject={id}></CreateButton> : <div></div>
                     }
                 </div>
                 {res}

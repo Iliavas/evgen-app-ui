@@ -24,7 +24,7 @@ import {CreateMaterialWidget} from "./createMaterial"
 import bin from "../../images/trash-empty.svg";
 
 import {TestCreation, TestCreateWidget} from "./testCreation"
-import { create } from "domain";
+import { DefaultButton } from "../../uiKit/Buttons";
 
 
 
@@ -83,28 +83,103 @@ interface IELessonDetail{
     id: string, url:string;
 }
 
+
+interface IEChildTestWidget{
+    name:string;
+    time:string;
+    id:string;
+    questions:string;
+}
+
+const ChildTestWidget:react.FC<IEChildTestWidget> = (props) => {
+    const {url} = useRouteMatch();
+    return <div className="child-test-widget__container">
+        <div className="child-test__heading">
+            {props.name}
+        </div>
+        <div className="time">Вопросов: &nbsp; <span className="colorize">{props.questions}</span></div>
+        <Link to={`${url}/test/${props.id}`}>
+        <DefaultButton handleClick={() => {}} class="submit-btn">Выполнить</DefaultButton>
+
+        </Link>
+    </div>
+}
+function parseChildTests(data:IEQuery) {
+    let res = []
+    for (let test of data.tests) {
+        res.push(
+            <ChildTestWidget
+            name={test.name}
+            id={test.id}
+            time={"~30 мин"}
+            questions={test.taskLen.toString()}
+            ></ChildTestWidget> 
+        )
+    }
+    return res;
+}
+
+
+interface IEChildMaterial{
+    name:string;
+    time:string;
+    link:string;
+}
+
+const ChildMaterialWidget:react.FC<IEChildMaterial> = (props) => {
+    return <div className= "child-material__container">
+        <div className="child-test__heading">
+            {props.name}
+        </div>
+        <div className="time">{props.time}</div>
+        <a href={`http://${props.link}`}>
+        <DefaultButton handleClick={() => {}} class="submit-btn">Прочитать</DefaultButton>
+
+        </a>
+
+    </div>
+}
+
+
+function parseChildMaterials(data:IEQuery) {
+    let res = []
+    for (let material of data.materials){
+        res.push(<ChildMaterialWidget
+            name={material.name}
+            time={"~30мин"}
+            link={material.data}
+        ></ChildMaterialWidget>)
+    }
+    return res;
+}
+
 const ChildLessonDetail:react.FC<IELessonDetail> = (props) => {
     const data = props.data;
-    return <div className="lesson-details__container">
-    <div className="lesson-details__heading">
-        {data.typeLesson.name}, {data.typeLesson.group.name}, {data.name}, 27.09
-        <Editor content={data!.content}></Editor>
-        <div className="materials">
-            <div className="lesson-details__heading">
-                Материалы
+    const {url} = useRouteMatch();
+    return <Switch>
+        <Route path={url}>
+            <div className="lesson-details__container">
+                <div className="lesson-details__heading">
+                    {data.typeLesson.name}, {data.typeLesson.group.name}, {data.name}, 27.09
+                    <div className="materials">
+                        <div className="lesson-details__heading">
+                            Материалы
+                        </div>
+                        <div className="materials__content__child">
+                            {parseChildMaterials(data)}
+                        </div>
+                    </div>
+                    <div className="tests">
+                        <div className="lesson-details__heading">Тесты</div>
+                        <div className="materials__content__child">
+                            {parseChildTests(data)}
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div className="materials__content">
-                {parseMaterials(data)}
-            </div>
-        </div>
-        <div className="tests">
-            <div className="lesson-details__heading">Тесты</div>
-            <div className="materials__content">
-                {parseTests(data, props.url)}
-            </div>
-        </div>
-    </div>
-</div>
+        </Route>
+    </Switch>
+
 }
 
 interface IEMaterialCard{
@@ -118,12 +193,15 @@ const NewMaterialCard:react.FC<IEMaterialCard> = (props) => {
     const [deleteMaterial] = useDeleteMaterialMutation({variables: {id:props.id}});
     return <div>
         <div className="teacher-material">
-        <img src={bin} alt="" className="teacher-material__delete-button"
-            onClick = {(e) => {
-                deleteMaterial({variables: {id:props.id}})
-                window.location.reload()
-            }}
+            <div className="img__container">
+                <img src={bin} alt="" className="teacher-material__delete-button"
+                onClick = {(e) => {
+                    deleteMaterial({variables: {id:props.id}})
+                    window.location.reload()
+                }}
             />
+            </div>
+
             <Link to={`${url}/materials/${props.id}`} className="link teacher-materail__flex">
                 <span className="teacher-material__text">
                     {props.name}
@@ -141,10 +219,13 @@ interface IETestCard{
     id?:string;
 }
 const NewTestCard:react.FC<IETestCard> = (props) => {
-    return <div className="teacher-test-card__container">
-            <div className="test-card__heading">Тест.{props.name}</div>
-            <div className="test-card__questions"> Вопросов:&nbsp;<span className="colorize"> {props.questions} </span></div>
-        </div>
+    return  <div className="teacher-material">
+                <div className="teacher-container">
+                    <div className="test-card__heading">Тест.{props.name}</div>
+                    <div className="test-card__questions"> Вопросов:&nbsp;<span className="colorize"> {props.questions} </span></div>
+                </div>
+            </div>
+            
 }
 
 interface IEPlusButton{
@@ -195,7 +276,7 @@ const TeacherLessonDetail:react.FC<IELessonDetail> = (props) => {
                     <TestCreateWidget id={props.id}></TestCreateWidget>
         </Route>
         <Route path={`${url}/tests/:id`}>
-            <TestCreation></TestCreation>
+            <TestCreation link={url}></TestCreation>
         </Route>
         <Route path={url}>
         <div>

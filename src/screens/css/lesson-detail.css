@@ -164,10 +164,19 @@ color: #565656;
     
     padding: 20px;
     transition: 0.3s;
+
+}
+
+.teacher-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100%;
 }
 
 .teacher-materail__flex{
-    display: flex;
+    display: flex!important;
     justify-content: center;
     align-items: center;
     width: 220px;
@@ -289,9 +298,73 @@ color: #565656;
 
 .teacher-material__delete-button{
     float: left;
-    position: absolute;
     display: block;
     transition: 0.3s;
     opacity:0;
     color:#565656;
+}
+.img__container{
+    width: 0px;
+    height: 0px;
+    overflow: visbible;
+}
+
+.child-test-widget__container{
+    padding:20px;
+    background: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    box-sizing: border-box;
+    border-radius: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.link{
+    height: 70px;
+}
+
+.materials__content__child{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.child-test__heading{
+    font-family: Montserrat;
+font-style: normal;
+font-weight: 600;
+font-size: 26px;
+line-height: normal!important;
+letter-spacing: 0.2px;
+
+color: #000000;
+}
+
+.time{
+    font-family: Montserrat;
+font-style: normal;
+font-weight: 600;
+font-size: 20px;
+line-height: 24px;
+display: flex;
+align-items: center;
+letter-spacing: 0.2px;
+
+color: #454545;
+}
+
+.submit-btn{
+    margin-top: 30px;
+    display: inline-block;
+    width: 40%;
+    padding: 15px;
+}
+
+.child-material__container{
+    background: #FFFFFF;
+border: 1px solid #EEEEEE;
+box-sizing: border-box;
+border-radius: 10px;
+padding: 20px;
 }

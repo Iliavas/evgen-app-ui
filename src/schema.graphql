@@ -128,12 +128,12 @@ query taskType{
 
 query task($taskId:ID!){
   task(id:$taskId){
-    theory, practise, maxScore, isTiming, time, Type{name}, isAutocheck, autoCheckData
+    theory, practise, maxScore, isTiming, time, Type{name, id}, isAutocheck, autoCheckData
   }
   taskTypes{
     edges{
       node{
-        name
+        name, id
       }
     }
   }
@@ -192,6 +192,39 @@ mutation addTask($testId:ID!){
   createTask(testId:$testId, theory:"", practise:"", number:1, maxScore: 0, Type:"VGFza1R5cGVUeXBlOjQ="){
     task{
       theory, id, pk
+    }
+  }
+}
+
+mutation changeTask($Type:ID!, $autoCheck:Boolean!, $theory:String!, $time:Int!
+  	$autoCheckData:String!, $isTime:Boolean!, $maxScore:Int!, $practise:String!, $taskId:ID!){
+  updateTask(Type:$Type, autoCheck:$autoCheck
+    autoCheckData:$autoCheckData, isTime:$isTime, maxScore:$maxScore, number:1, practise:$practise,
+  	theory:$theory, time:$time, taskId:$taskId){
+      task{
+        theory, practise, number, maxScore, isTiming, time, isAutocheck, autoCheckData, 
+      }
+    }
+}
+
+mutation changeTestName($name:String!, $testId:ID!){
+  updateTestRegistration(name:$name, testId:$testId){
+    test{
+      name
+    }
+  }
+}
+
+mutation deleteTest($testId:ID!) {
+  deleteTest(testId:$testId) {
+    ok
+  }
+}
+
+mutation createLesson($subjectId:ID!){
+  createLesson(subject:$subjectId, name:"", descr:"") {
+    ok, lesson{
+      id
     }
   }
 }

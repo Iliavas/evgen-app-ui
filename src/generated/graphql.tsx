@@ -1564,6 +1564,7 @@ export type GetProfile = {
 export type CreateLesson = {
   __typename?: 'CreateLesson';
   ok?: Maybe<Scalars['Boolean']>;
+  lesson?: Maybe<LessonType>;
 };
 
 export type UpdateLessonRegistration = {
@@ -1822,7 +1823,7 @@ export type TaskQueryVariables = Exact<{
 }>;
 
 
-export type TaskQuery = { __typename?: 'Query', task?: Maybe<{ __typename?: 'TaskType', theory: string, practise: string, maxScore: number, isTiming: boolean, time: number, isAutocheck: boolean, autoCheckData: string, Type: { __typename?: 'TaskTypeType', name: string } }>, taskTypes?: Maybe<{ __typename?: 'TaskTypeTypeConnection', edges: Array<Maybe<{ __typename?: 'TaskTypeTypeEdge', node?: Maybe<{ __typename?: 'TaskTypeType', name: string }> }>> }> };
+export type TaskQuery = { __typename?: 'Query', task?: Maybe<{ __typename?: 'TaskType', theory: string, practise: string, maxScore: number, isTiming: boolean, time: number, isAutocheck: boolean, autoCheckData: string, Type: { __typename?: 'TaskTypeType', name: string, id: string } }>, taskTypes?: Maybe<{ __typename?: 'TaskTypeTypeConnection', edges: Array<Maybe<{ __typename?: 'TaskTypeTypeEdge', node?: Maybe<{ __typename?: 'TaskTypeType', name: string, id: string }> }>> }> };
 
 export type GetTokenByNameAndPasswordMutationVariables = Exact<{
   username: Scalars['String'];
@@ -1888,6 +1889,43 @@ export type AddTaskMutationVariables = Exact<{
 
 
 export type AddTaskMutation = { __typename?: 'Mutation', createTask?: Maybe<{ __typename?: 'createTask', task?: Maybe<{ __typename?: 'TaskType', theory: string, id: string, pk?: Maybe<number> }> }> };
+
+export type ChangeTaskMutationVariables = Exact<{
+  Type: Scalars['ID'];
+  autoCheck: Scalars['Boolean'];
+  theory: Scalars['String'];
+  time: Scalars['Int'];
+  autoCheckData: Scalars['String'];
+  isTime: Scalars['Boolean'];
+  maxScore: Scalars['Int'];
+  practise: Scalars['String'];
+  taskId: Scalars['ID'];
+}>;
+
+
+export type ChangeTaskMutation = { __typename?: 'Mutation', updateTask?: Maybe<{ __typename?: 'updateTask', task?: Maybe<{ __typename?: 'TaskType', theory: string, practise: string, number: number, maxScore: number, isTiming: boolean, time: number, isAutocheck: boolean, autoCheckData: string }> }> };
+
+export type ChangeTestNameMutationVariables = Exact<{
+  name: Scalars['String'];
+  testId: Scalars['ID'];
+}>;
+
+
+export type ChangeTestNameMutation = { __typename?: 'Mutation', updateTestRegistration?: Maybe<{ __typename?: 'updateTestRegistration', test?: Maybe<{ __typename?: 'TestsType', name: string }> }> };
+
+export type DeleteTestMutationVariables = Exact<{
+  testId: Scalars['ID'];
+}>;
+
+
+export type DeleteTestMutation = { __typename?: 'Mutation', deleteTest?: Maybe<{ __typename?: 'deleteTest', ok?: Maybe<boolean> }> };
+
+export type CreateLessonMutationVariables = Exact<{
+  subjectId: Scalars['ID'];
+}>;
+
+
+export type CreateLessonMutation = { __typename?: 'Mutation', createLesson?: Maybe<{ __typename?: 'CreateLesson', ok?: Maybe<boolean>, lesson?: Maybe<{ __typename?: 'LessonType', id: string }> }> };
 
 
 export const GetLessonsInfoDocument = gql`
@@ -2278,6 +2316,7 @@ export const TaskDocument = gql`
     time
     Type {
       name
+      id
     }
     isAutocheck
     autoCheckData
@@ -2286,6 +2325,7 @@ export const TaskDocument = gql`
     edges {
       node {
         name
+        id
       }
     }
   }
@@ -2600,3 +2640,165 @@ export function useAddTaskMutation(baseOptions?: Apollo.MutationHookOptions<AddT
 export type AddTaskMutationHookResult = ReturnType<typeof useAddTaskMutation>;
 export type AddTaskMutationResult = Apollo.MutationResult<AddTaskMutation>;
 export type AddTaskMutationOptions = Apollo.BaseMutationOptions<AddTaskMutation, AddTaskMutationVariables>;
+export const ChangeTaskDocument = gql`
+    mutation changeTask($Type: ID!, $autoCheck: Boolean!, $theory: String!, $time: Int!, $autoCheckData: String!, $isTime: Boolean!, $maxScore: Int!, $practise: String!, $taskId: ID!) {
+  updateTask(
+    Type: $Type
+    autoCheck: $autoCheck
+    autoCheckData: $autoCheckData
+    isTime: $isTime
+    maxScore: $maxScore
+    number: 1
+    practise: $practise
+    theory: $theory
+    time: $time
+    taskId: $taskId
+  ) {
+    task {
+      theory
+      practise
+      number
+      maxScore
+      isTiming
+      time
+      isAutocheck
+      autoCheckData
+    }
+  }
+}
+    `;
+export type ChangeTaskMutationFn = Apollo.MutationFunction<ChangeTaskMutation, ChangeTaskMutationVariables>;
+
+/**
+ * __useChangeTaskMutation__
+ *
+ * To run a mutation, you first call `useChangeTaskMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeTaskMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeTaskMutation, { data, loading, error }] = useChangeTaskMutation({
+ *   variables: {
+ *      Type: // value for 'Type'
+ *      autoCheck: // value for 'autoCheck'
+ *      theory: // value for 'theory'
+ *      time: // value for 'time'
+ *      autoCheckData: // value for 'autoCheckData'
+ *      isTime: // value for 'isTime'
+ *      maxScore: // value for 'maxScore'
+ *      practise: // value for 'practise'
+ *      taskId: // value for 'taskId'
+ *   },
+ * });
+ */
+export function useChangeTaskMutation(baseOptions?: Apollo.MutationHookOptions<ChangeTaskMutation, ChangeTaskMutationVariables>) {
+        return Apollo.useMutation<ChangeTaskMutation, ChangeTaskMutationVariables>(ChangeTaskDocument, baseOptions);
+      }
+export type ChangeTaskMutationHookResult = ReturnType<typeof useChangeTaskMutation>;
+export type ChangeTaskMutationResult = Apollo.MutationResult<ChangeTaskMutation>;
+export type ChangeTaskMutationOptions = Apollo.BaseMutationOptions<ChangeTaskMutation, ChangeTaskMutationVariables>;
+export const ChangeTestNameDocument = gql`
+    mutation changeTestName($name: String!, $testId: ID!) {
+  updateTestRegistration(name: $name, testId: $testId) {
+    test {
+      name
+    }
+  }
+}
+    `;
+export type ChangeTestNameMutationFn = Apollo.MutationFunction<ChangeTestNameMutation, ChangeTestNameMutationVariables>;
+
+/**
+ * __useChangeTestNameMutation__
+ *
+ * To run a mutation, you first call `useChangeTestNameMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useChangeTestNameMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [changeTestNameMutation, { data, loading, error }] = useChangeTestNameMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      testId: // value for 'testId'
+ *   },
+ * });
+ */
+export function useChangeTestNameMutation(baseOptions?: Apollo.MutationHookOptions<ChangeTestNameMutation, ChangeTestNameMutationVariables>) {
+        return Apollo.useMutation<ChangeTestNameMutation, ChangeTestNameMutationVariables>(ChangeTestNameDocument, baseOptions);
+      }
+export type ChangeTestNameMutationHookResult = ReturnType<typeof useChangeTestNameMutation>;
+export type ChangeTestNameMutationResult = Apollo.MutationResult<ChangeTestNameMutation>;
+export type ChangeTestNameMutationOptions = Apollo.BaseMutationOptions<ChangeTestNameMutation, ChangeTestNameMutationVariables>;
+export const DeleteTestDocument = gql`
+    mutation deleteTest($testId: ID!) {
+  deleteTest(testId: $testId) {
+    ok
+  }
+}
+    `;
+export type DeleteTestMutationFn = Apollo.MutationFunction<DeleteTestMutation, DeleteTestMutationVariables>;
+
+/**
+ * __useDeleteTestMutation__
+ *
+ * To run a mutation, you first call `useDeleteTestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteTestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteTestMutation, { data, loading, error }] = useDeleteTestMutation({
+ *   variables: {
+ *      testId: // value for 'testId'
+ *   },
+ * });
+ */
+export function useDeleteTestMutation(baseOptions?: Apollo.MutationHookOptions<DeleteTestMutation, DeleteTestMutationVariables>) {
+        return Apollo.useMutation<DeleteTestMutation, DeleteTestMutationVariables>(DeleteTestDocument, baseOptions);
+      }
+export type DeleteTestMutationHookResult = ReturnType<typeof useDeleteTestMutation>;
+export type DeleteTestMutationResult = Apollo.MutationResult<DeleteTestMutation>;
+export type DeleteTestMutationOptions = Apollo.BaseMutationOptions<DeleteTestMutation, DeleteTestMutationVariables>;
+export const CreateLessonDocument = gql`
+    mutation createLesson($subjectId: ID!) {
+  createLesson(subject: $subjectId, name: "", descr: "") {
+    ok
+    lesson {
+      id
+    }
+  }
+}
+    `;
+export type CreateLessonMutationFn = Apollo.MutationFunction<CreateLessonMutation, CreateLessonMutationVariables>;
+
+/**
+ * __useCreateLessonMutation__
+ *
+ * To run a mutation, you first call `useCreateLessonMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateLessonMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createLessonMutation, { data, loading, error }] = useCreateLessonMutation({
+ *   variables: {
+ *      subjectId: // value for 'subjectId'
+ *   },
+ * });
+ */
+export function useCreateLessonMutation(baseOptions?: Apollo.MutationHookOptions<CreateLessonMutation, CreateLessonMutationVariables>) {
+        return Apollo.useMutation<CreateLessonMutation, CreateLessonMutationVariables>(CreateLessonDocument, baseOptions);
+      }
+export type CreateLessonMutationHookResult = ReturnType<typeof useCreateLessonMutation>;
+export type CreateLessonMutationResult = Apollo.MutationResult<CreateLessonMutation>;
+export type CreateLessonMutationOptions = Apollo.BaseMutationOptions<CreateLessonMutation, CreateLessonMutationVariables>;

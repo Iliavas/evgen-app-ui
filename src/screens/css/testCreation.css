@@ -190,3 +190,7 @@ color: #565656;;
 .MuiInputBase-root{
     margin-left: 100px!important;
 }
+
+.bin{
+    float:right;
+}

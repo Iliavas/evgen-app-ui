@@ -4,11 +4,12 @@ import {
     useCreateTestMutation,
     useTestQuery, TestQuery,
     useTaskTypeQuery, useAddTaskMutation,
-    useTaskQuery
+    useTaskQuery, useChangeTaskMutation,
+    useChangeTestNameMutation, useDeleteTestMutation
 } from "../../generated/graphql"
 
 import {
-    Redirect, useRouteMatch, useParams, Route, Switch, Link
+    Redirect, useRouteMatch, useParams, Route, Switch, Link, useHistory
 } from "react-router-dom";
 import {
     DefaultInput
@@ -20,6 +21,9 @@ import {Editor} from "../../uiKit/editor";
 
 import {TextField} from "@material-ui/core";
 import { DefaultButton } from "../../uiKit/Buttons";
+
+
+import bin from "../../images/trash-empty.svg";
 
 
 interface IETesctCreate{
@@ -70,7 +74,7 @@ const TaskCard:react.FC<IETaskCard> = (props) => {
     return <div className="task-card__container">
         <div className="task-card__first-col">
             <div className="task-card__heading">
-                {props.name}
+                {props.name.replaceAll("<p>", "").replaceAll("</p>", "")}
             </div>
             <div className="task-card__time">время: 
                 <span className="colorize">&nbsp; {props.time}</span></div>
@@ -153,10 +157,15 @@ interface IEHandleExtendedWriteAnswer{
     data:string;
 }
 
-const HandleExtendedWriteAnswer = (isAutoCheck:boolean, data:any) => {
+const HandleExtendedWriteAnswer = (isAutoCheck:boolean, data:any, onChange=Function) => {
     console.log(data, isAutoCheck)
     return <div className="ta__container">
-        <Editor className="teacher__textarea" content={(isAutoCheck ? data : "")} child={!isAutoCheck}>
+        <Editor 
+        className="teacher__textarea" 
+        content={(isAutoCheck ? data : "")} 
+        child={!isAutoCheck}
+        onChange={onChange}
+        >
             
         </Editor>
     </div>
@@ -171,10 +180,10 @@ const handleFunctions:Map<string, Function> = new Map(
     ) 
 
 
-function parseHandlers(handler:Function|undefined, arg:any, isAutoCheck:boolean){
+function parseHandlers(handler:Function|undefined, arg:any, isAutoCheck:boolean, onChange:Function){
     console.log(isAutoCheck)
     try{
-        return handler!(isAutoCheck, arg)
+        return handler!(isAutoCheck, arg, onChange)
     } catch {
         return <div>error...</div>
     }
@@ -196,25 +205,52 @@ function reformatDataToNumber(time:string){
     return minutes * 60 + secs;
 }
 
-const QuestionEditing:react.FC = () => {
+interface IEQuestionEditing{
+    testLink:string;
+}
+
+const QuestionEditing:react.FC<IEQuestionEditing> = (props) => {
     const {id} = useParams<IEParams>();
+    const history = useHistory()
     const {loading, data} = useTaskQuery({variables: {taskId:id}})
     const [flag, setFlag] = useState(false)
     const [theory, setTheory] = useState(data?.task?.theory)
     const [isAutoChecked, setChecked] = useState(data?.task?.isAutocheck);
     const [Type, setType] = useState(data?.task?.Type.name);
+    const [TypeId, setTypeId] = useState(data?.task?.Type.id)
     const [isTiming, setIsTiming] = useState(data?.task?.isTiming)
     const [points, setPoints] = useState(data?.task?.maxScore)
     const [time, setTime] = useState(data?.task?.time)
+    const [maxPoints, setMaxPoints] = useState(data?.task?.maxScore)
+    const [autoCheckData, setAutoCheck] = useState(data?.task?.autoCheckData);
+    let typeName = data?.task?.Type.name;
+    const changeTask = useChangeTaskMutation({variables: {
+        Type: Type!,
+        autoCheck: isAutoChecked!,
+        theory: theory!,
+        time: time!,
+        autoCheckData: autoCheckData!,
+        isTime: isTiming!,
+        maxScore: maxPoints!,
+        taskId: id,
+        practise: autoCheckData!
+    }, onCompleted: (data) => {
+        console.log(data);
+    }})
     const handler:Function = handleFunctions.get(Type!)!
     console.log(handler, "handler", Type)
     console.log(data)
     if (loading) return <div>loading...</div>
     if (!flag){
         setFlag(true)
-        setType(data?.task?.Type.name)
+        setType(data?.task?.Type.id)
         setChecked(data?.task?.isAutocheck)
         setIsTiming(data?.task?.isTiming);
+        setMaxPoints(data?.task?.maxScore);
+        setAutoCheck(data?.task?.autoCheckData);
+        setTheory(data?.task?.theory)
+        setTime(data?.task?.time)
+        typeName = data?.task?.Type.name;
         console.log(handler, "handler", Type, data, isAutoChecked)
 
     }
@@ -225,10 +261,10 @@ const QuestionEditing:react.FC = () => {
             content={data?.task?.theory!}>
         </Editor>
         <div className="name__heading">Само задание</div>
-        <select className="selected" onChange={(e) => {setType(e.target.value)}}>
+        <select className="selected" onChange={(e) => {setType(e.target.value); typeName = e.target.innerHTML}}>
             {data?.taskTypes?.edges?.map((e) => {
                 return <option selected = 
-                 {e?.node?.name == data.task?.Type.name}>{e?.node?.name}</option>})}
+                 {e?.node?.name == data.task?.Type.name} value={e?.node?.id}>{e?.node?.name}</option>})}
         </select>
         <div className="checkbox__container">
             <input type="checkbox"
@@ -241,7 +277,8 @@ const QuestionEditing:react.FC = () => {
             isAutoChecked ? <div className="answer-autoCheck__heading">Введите правильный ответ</div> : 
                 <div className="answer-autoCheck__heading">Как будет выглядеть задание у учеников</div>
             }
-            {parseHandlers(handleFunctions.get(Type!)!, data?.task?.autoCheckData, isAutoChecked!)}
+            {parseHandlers(handleFunctions.get(typeName!)!, data?.task?.autoCheckData, isAutoChecked!, 
+                (e:any, editor:any) => {setAutoCheck(editor.getData()); console.log()})}
 
         </div>
         <div className="timing checkbox__container">
@@ -258,37 +295,80 @@ const QuestionEditing:react.FC = () => {
         </div>
         <div className="how-many-points">
             <div className="points__label checkbox__container">Сколько макимум баллов:</div>
-            <input type="number" onChange={(e) => {}} min={0} step={1} pattern={"\d*"}/>
+            <input type="number" onChange={(e) => {setMaxPoints(Number(e.target.value))}} min={0} step={1} pattern={"\d*"} 
+                value={maxPoints}/>
         </div>
 
         <div className="save">
-            <DefaultButton handleClick={() => {}} class="name__input">Сохранить</DefaultButton>
+            <DefaultButton handleClick={() => {
+                console.log({
+                    Type: Type!,
+                    autoCheck: isAutoChecked!,
+                    theory: theory!,
+                    time: time!,
+                    autoCheckData: autoCheckData!,
+                    isTime: isTiming!,
+                    maxScore: maxPoints!,
+                    taskId: id,
+                    practise: autoCheckData!
+                })
+                changeTask[0]()
+                history.push(props.testLink)
+                window.location.reload()
+            }} class="name__input">Сохранить</DefaultButton>
         </div>
     </div>
 }
 
+interface IETestCreation{
+    link:string;
+}
 
-export const TestCreation:react.FC = () => {
+export const TestCreation:react.FC<IETestCreation> = (props) => {
     const {id} = useParams<IEParams>();
+    const history = useHistory();
+    const [flag, setFlag] = useState(false);
     const {loading, data} = useTestQuery({variables: {testId:id}})
     const [name, setName] = useState(data?.test?.name)
     const {url} = useRouteMatch();
+    const deleteTest = useDeleteTestMutation({variables: {testId:id}})
+    const changeName = useChangeTestNameMutation({variables: {
+        name:name!,
+        testId: id
+    }});
     if (loading) return <div>loading...</div>
     console.log(data);
+
+    if (!flag){
+        setFlag(true)
+        setName(data?.test?.name)
+    }
+    console.log(name)
+    
     return <Switch>
             <Route path={`${url}/create`}>
                 <AddQuestion testId={id} link={url}></AddQuestion>
             </Route>
             <Route path={`${url}/task/:id`}>
-                <QuestionEditing></QuestionEditing>
+                <QuestionEditing testLink={url}></QuestionEditing>
             </Route>
         <Route path={`${url}`}>
             <div className="test-creation__container">
                 <div className="name__heading">
-                    Название теста
+                    Название теста <img src={bin} alt="" className="bin" onClick = {() => {
+                        deleteTest[0]()
+                        history.push(props.link)
+                        window.location.reload()
+                    }}/>
                 </div>
+                
                 <DefaultInput class="name__input" value={name} handleChange={
-                    (e:any) => {setName(e.target.value)}} placeHolder="начните вводить..."></DefaultInput>
+                        (e:any) => {
+                            setName(e.target.value)
+                            changeName[0]()
+                        }
+                    } 
+                        placeHolder="начните вводить..."></DefaultInput>
                 <div className="name__heading">
                     Задания теста
                 </div>

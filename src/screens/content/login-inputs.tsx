@@ -10,15 +10,21 @@ import {useMutation} from "@apollo/client";
 
 import {getToken} from "../../MUTATIONS/getToken"
 
+import {useHistory} from "react-router-dom";
+
 import {IEvent} from "./interfaces";
 
 
 export const Login_inputs:React.FC = () =>
 {
     let name:string, password:string;
-
+    let history = useHistory();
     const [setToken] = useMutation(getToken, {onCompleted:(data) => {
-        writeToken(data.tokenAuth.token)}})
+        writeToken(data.tokenAuth.token)
+        history.push("/")
+    }
+        
+    })
     return <div className="inputs_flex">
         <DefaultInput handleChange={(e:IEvent) => {
             name = e.target.value;
@@ -29,7 +35,6 @@ export const Login_inputs:React.FC = () =>
         <div className="password-refresh">Восстановить пароль</div>
         <DefaultButton handleClick={()=>{
             setToken({variables:{username:name, password:password}})
-            window.location.reload()
         }} class="reg-btn">
             Войти
         </DefaultButton>

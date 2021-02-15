@@ -1,0 +1,125 @@
+
+.card{
+    padding-left: 2vw;
+    background: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    box-sizing: border-box;
+    border-radius: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    gap:4vw
+}
+
+.name{
+    font-family:  'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.2px;
+    color: #000000;
+}
+.time{
+    font-family:  'Montserrat', sans-serif;
+    
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 22px;
+
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.2px;
+
+    color: #707E56;
+
+}
+.colorized{
+    color: #707EFF!important;
+}
+.type{
+    font-family:  'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+
+    color: #707EFF;
+}
+.check{
+    font-family:  'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.2px;
+    background: #FFFFFF;
+    border: 1px solid #EEEEEE;
+    box-sizing: border-box;
+    border-radius: 10px;
+    color: #565656;
+    margin-top:10%
+}
+.balls{
+    padding: 0;
+    margin:0;
+    font-family:  'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 24px;
+    line-height: 29px;
+    display: flex;
+    align-items: center;
+    letter-spacing: 0.2px;
+
+    color: #000000;
+}
+.in{
+    margin-top: 1vw;
+    font-family:  'Montserrat', sans-serif;
+    border: none;
+    background: #F5F5F5;
+    border-radius: 10px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 36px;
+    line-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.2px;
+    padding-left: 3px;
+    padding-right: 3px;
+    width: 60px;
+
+
+    color: #707EFF;
+}
+.card:hover{
+    box-shadow: 0px 0px 0.5vw 0.1vw #C8C8C8;
+
+}
+.cont{
+    margin:16px;
+    margin-left:4vw;
+}
+.img{
+    float: right;
+    cursor: pointer;
+}
+
+*{
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none;   /* Chrome/Safari/Opera */
+    -khtml-user-select: none;    /* Konqueror */
+    -moz-user-select: none;      /* Firefox */
+    -ms-user-select: none;       /* Internet Explorer/Edge */
+    user-select: none;
+    outline: none;
+}

@@ -1,0 +1,21 @@
+.brainhub-drop-area__button{
+    font-family: Montserrat;
+    color: #707EFF;
+    font-weight: 600;
+}
+
+.brainhub-drop-area__info{
+    color: #707EFF;
+    width: 100%;
+}
+
+.brainhub-drop-area--dragging{
+    border : 1px solid #707eff;
+    border-radius: 5px;
+    font-family: Montserrat;
+    font-weight: 600;
+}   
+
+.descr-image__container{
+    width: 100%;
+}

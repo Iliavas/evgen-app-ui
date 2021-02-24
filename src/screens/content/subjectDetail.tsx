@@ -1,4 +1,4 @@
-import react, {useContext} from "react";
+import react, {useContext, useState} from "react";
 
 import {LessonWidget} from "../../uiKit/lessonWidget";
 
@@ -70,10 +70,12 @@ const CreateButton:react.FC<IECreationButton> = (props) => {
 }
 
 export const SubjectDetail:react.FC<IESubjectDetail> = () => {
+    const [flag, setFlag] = useState(false)
     const {createWorkLink} = useContext(ChildContext)
     const {url} = useRouteMatch()
     const {id} = useParams<IEParams>()
     const {loading, data} = useQuery(lessonInfoQuery, {variables:{id:id}});
+    
     if (loading) return <div>loading..</div>
     console.log(data)
     let res = parseQuery(data.subjectClass.lessonSet.edges, url)

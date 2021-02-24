@@ -1,0 +1,24 @@
+.mark-widget__container{
+    display: flex;
+    gap: 30px;
+}
+
+.mark__container{
+    width: 48px;
+    height: 48px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #eee;
+    border-radius: 10px;
+
+    font-family: Montserrat;
+    font-weight: 600;
+    color: black;
+}
+
+.mark__container-active{
+    background-color: #5E77FF;
+    color: white;
+}

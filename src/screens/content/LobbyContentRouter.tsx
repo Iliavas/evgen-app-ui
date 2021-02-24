@@ -67,8 +67,8 @@ export const Lobby:react.FC<IELobby> = (props) => {
             </Link>
         );
     }
-
-    return <ChildContext.Provider value={{id, setActiveName, createWorkLink:props.createWork}}>
+    localStorage.setItem("id", id)
+    return <ChildContext.Provider value={{id:id, setActiveName, createWorkLink:props.createWork}}>
         <div className="lobby__container">
         <div className="lobby__menu">
             <div className="lobby__heading">

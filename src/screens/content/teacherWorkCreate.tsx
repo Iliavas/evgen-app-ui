@@ -1,4 +1,4 @@
-import react from "react";
+import react, { useState } from "react";
 
 import {useCreateLessonMutation} from "../../generated/graphql"
 
@@ -10,19 +10,25 @@ interface IETeacherWorkCreate{
 }
 
 interface IEParams{
-    id:string;
+    subject_id:string;
 }
 
 export const TeacherWorkCreate:react.FC<IETeacherWorkCreate> = (props) => {
     
     const history = useHistory()
-    const {id} = useParams<IEParams>()
+    const {subject_id} = useParams<IEParams>()
+    const [flag, setFlag] = useState(false);
+    console.log(props.link, subject_id)
     const [createLesson] = useCreateLessonMutation({variables: {
-        subjectId: id
+        subjectId: subject_id
     }, onCompleted: (data) => {
-        history.push(`${props.link}/${id}/${data.createLesson?.lesson?.id}`)
+        history.push(`${props.link}/${subject_id}/${data.createLesson?.lesson?.id}`)
     }});
-    createLesson();
+    if (!flag) {
+        setFlag(true)
+        createLesson();
+
+    }
     return <div></div>
 
 }

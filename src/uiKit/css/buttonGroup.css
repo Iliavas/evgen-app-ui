@@ -1,0 +1,37 @@
+.button-button__button{
+    background-color: white;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    width: 260px;
+    height: 62px;
+    font-family: Montserrat;
+    font-weight: 600;
+}
+
+.button-group__container{
+    display: flex;
+    gap: 30px;
+}
+
+.button-button__active{
+    background-color: #707EFF;
+    color: white;
+}
+
+.button-button__active-label{
+    font-family: Montserrat;
+font-style: normal;
+font-weight: 600;
+font-size: 12px;
+line-height: 12px;
+letter-spacing: 0.2px;
+
+color: #6C6C6C;
+}
+
+.button-button__container{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    align-items: center;
+}

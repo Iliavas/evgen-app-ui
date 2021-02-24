@@ -7,11 +7,10 @@
     font-style: normal;
     font-weight: 600;
     font-size: 20px;
-    line-height: 56px;
     letter-spacing: 0.2px;
 
     color: #666666;
-
+    padding:20px 0px;
 }
 
 .materials__content{
@@ -367,4 +366,8 @@ border: 1px solid #EEEEEE;
 box-sizing: border-box;
 border-radius: 10px;
 padding: 20px;
+}
+
+.delete-button__teacher-lesson{
+    float:right;
 }

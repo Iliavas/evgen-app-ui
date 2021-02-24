@@ -15,5 +15,6 @@
 }
 
 .ck-editor__editable_inline{
-    height: 30vw!important;
+    min-height: 260px!important;
 }
+

@@ -14,7 +14,8 @@ import {
     GetLessonsInfoDocument,
     UserInfoDocument,
     useChangelessonMutation,
-    useCreateTestMutation
+    useCreateTestMutation, useDeleteLessonMutation
+    
 } from "../../generated/graphql";
 
 import {Link, Switch, Route} from "react-router-dom";
@@ -25,7 +26,7 @@ import bin from "../../images/trash-empty.svg";
 
 import {TestCreation, TestCreateWidget} from "./testCreation"
 import { DefaultButton } from "../../uiKit/Buttons";
-
+import {TestCompletion} from "./testCompletion";
 
 
 interface IEParams{
@@ -98,7 +99,7 @@ const ChildTestWidget:react.FC<IEChildTestWidget> = (props) => {
             {props.name}
         </div>
         <div className="time">Вопросов: &nbsp; <span className="colorize">{props.questions}</span></div>
-        <Link to={`${url}/test/${props.id}`}>
+        <Link to={`/test/${props.id}`}>
         <DefaultButton handleClick={() => {}} class="submit-btn">Выполнить</DefaultButton>
 
         </Link>
@@ -156,7 +157,11 @@ function parseChildMaterials(data:IEQuery) {
 const ChildLessonDetail:react.FC<IELessonDetail> = (props) => {
     const data = props.data;
     const {url} = useRouteMatch();
-    return <Switch>
+    
+    return <Switch> 
+        <Route path={`/test/:id`}>
+            <TestCompletion link={url}></TestCompletion>
+        </Route>
         <Route path={url}>
             <div className="lesson-details__container">
                 <div className="lesson-details__heading">
@@ -264,6 +269,8 @@ function parseTests(data:IEQuery, url:string){
 const TeacherLessonDetail:react.FC<IELessonDetail> = (props) => {
     const [changeLesson] = useChangelessonMutation();
     const history = useHistory();
+    const deleteTest = useDeleteLessonMutation({variables: {ID:props.id}})
+    console.log(props.id, "id")
     const [createTest] = useCreateTestMutation({onCompleted: (data) => {
         history.push(`${url}/tests/${data.createTest?.test?.id}`);
     }, variables: {lessonID: props.id}})
@@ -271,6 +278,7 @@ const TeacherLessonDetail:react.FC<IELessonDetail> = (props) => {
     const [data, setData] = useState(props.data.lessons);
     let [name, setName] = useState(data.name)
     let [descr, setDescr] = useState(data.descr)
+
     return <Switch>
         <Route path={`${url}/tests/create`}>
                     <TestCreateWidget id={props.id}></TestCreateWidget>
@@ -283,6 +291,12 @@ const TeacherLessonDetail:react.FC<IELessonDetail> = (props) => {
         <div className="lesson-details__container">
     <div className="lesson-details__heading">
         {data.typeLesson.name}, {data.typeLesson.group.name}, {data.name}, 27.09
+        <img src={bin} alt="" className="delete-button__teacher-lesson" onClick = {() => {
+            deleteTest[0]()
+            window.location.reload()
+            history.goBack()
+            
+        }}/>
     </div>
     <div className="teacher-lesson-detail__container">
         <div className="teacher-lesson-detail__heading">

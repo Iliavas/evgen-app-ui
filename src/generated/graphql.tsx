@@ -133,8 +133,6 @@ export type QueryAllAnswerSheetArgs = {
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
-  test?: Maybe<Scalars['ID']>;
-  child?: Maybe<Scalars['ID']>;
 };
 
 
@@ -150,6 +148,7 @@ export type QueryAllAnswerArgs = {
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
   sheet?: Maybe<Scalars['ID']>;
+  number?: Maybe<Scalars['Int']>;
 };
 
 
@@ -226,6 +225,7 @@ export type QueryTasksArgs = {
   last?: Maybe<Scalars['Int']>;
   test?: Maybe<Array<Maybe<Scalars['ID']>>>;
   types_Contains?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  number?: Maybe<Scalars['Int']>;
 };
 
 
@@ -677,8 +677,6 @@ export type ChildTypeAnswersheetSetArgs = {
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
-  test?: Maybe<Scalars['ID']>;
-  child?: Maybe<Scalars['ID']>;
 };
 
 export type ProfileType = Node & {
@@ -844,6 +842,7 @@ export type AnswerSheetTypeAnswerSetArgs = {
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
   sheet?: Maybe<Scalars['ID']>;
+  number?: Maybe<Scalars['Int']>;
 };
 
 export type TestsType = Node & {
@@ -853,10 +852,13 @@ export type TestsType = Node & {
   name: Scalars['String'];
   deadline: Scalars['DateTime'];
   lesson: LessonType;
+  isTiming: Scalars['Boolean'];
+  timeSec: Scalars['Int'];
   taskSet: TaskTypeConnection;
   answersheetSet: AnswerSheetTypeConnection;
   pk?: Maybe<Scalars['Int']>;
   taskLen?: Maybe<Scalars['Int']>;
+  answerLen?: Maybe<Scalars['Int']>;
 };
 
 
@@ -868,6 +870,7 @@ export type TestsTypeTaskSetArgs = {
   last?: Maybe<Scalars['Int']>;
   test?: Maybe<Array<Maybe<Scalars['ID']>>>;
   types_Contains?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  number?: Maybe<Scalars['Int']>;
 };
 
 
@@ -877,8 +880,6 @@ export type TestsTypeAnswersheetSetArgs = {
   after?: Maybe<Scalars['String']>;
   first?: Maybe<Scalars['Int']>;
   last?: Maybe<Scalars['Int']>;
-  test?: Maybe<Scalars['ID']>;
-  child?: Maybe<Scalars['ID']>;
 };
 
 export type LessonType = Node & {
@@ -1150,6 +1151,7 @@ export type TaskTypeTypeTaskSetArgs = {
   last?: Maybe<Scalars['Int']>;
   test?: Maybe<Array<Maybe<Scalars['ID']>>>;
   types_Contains?: Maybe<Array<Maybe<Scalars['ID']>>>;
+  number?: Maybe<Scalars['Int']>;
 };
 
 export type AnswerTypeConnection = {
@@ -1281,6 +1283,9 @@ export type Mutation = {
   createMaterial?: Maybe<CreateMaterial>;
   deleteMaterial?: Maybe<DeleteMaterial>;
   changeMaterial?: Maybe<ChangeMaterail>;
+  createAnwerSheet?: Maybe<CreateAnwerSheet>;
+  createAnswer?: Maybe<CreateAnswer>;
+  scoringTasks?: Maybe<ScoringTasks>;
   createOrg?: Maybe<CreateOrg>;
   createGroup?: Maybe<CreateGroup>;
   addGroupToOrg?: Maybe<AddGroupToOrg>;
@@ -1458,6 +1463,26 @@ export type MutationChangeMaterialArgs = {
   data?: Maybe<Scalars['String']>;
   materialId?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
+};
+
+
+export type MutationCreateAnwerSheetArgs = {
+  child?: Maybe<Scalars['ID']>;
+  test?: Maybe<Scalars['ID']>;
+};
+
+
+export type MutationCreateAnswerArgs = {
+  data?: Maybe<Scalars['String']>;
+  number?: Maybe<Scalars['Int']>;
+  sheet?: Maybe<Scalars['ID']>;
+};
+
+
+export type MutationScoringTasksArgs = {
+  answerSheetId?: Maybe<Scalars['ID']>;
+  number?: Maybe<Scalars['Int']>;
+  score?: Maybe<Scalars['Int']>;
 };
 
 
@@ -1678,6 +1703,21 @@ export type ChangeMaterail = {
   material?: Maybe<Material>;
 };
 
+export type CreateAnwerSheet = {
+  __typename?: 'CreateAnwerSheet';
+  answer?: Maybe<AnswerSheetType>;
+};
+
+export type CreateAnswer = {
+  __typename?: 'CreateAnswer';
+  answer?: Maybe<AnswerType>;
+};
+
+export type ScoringTasks = {
+  __typename?: 'ScoringTasks';
+  answer?: Maybe<AnswerType>;
+};
+
 export type CreateOrg = {
   __typename?: 'CreateOrg';
   Org?: Maybe<OrganisationType>;
@@ -1825,6 +1865,35 @@ export type TaskQueryVariables = Exact<{
 
 export type TaskQuery = { __typename?: 'Query', task?: Maybe<{ __typename?: 'TaskType', theory: string, practise: string, maxScore: number, isTiming: boolean, time: number, isAutocheck: boolean, autoCheckData: string, Type: { __typename?: 'TaskTypeType', name: string, id: string } }>, taskTypes?: Maybe<{ __typename?: 'TaskTypeTypeConnection', edges: Array<Maybe<{ __typename?: 'TaskTypeTypeEdge', node?: Maybe<{ __typename?: 'TaskTypeType', name: string, id: string }> }>> }> };
 
+export type ChildtestQueryVariables = Exact<{
+  testId: Scalars['ID'];
+}>;
+
+
+export type ChildtestQuery = { __typename?: 'Query', test?: Maybe<{ __typename?: 'TestsType', name: string, lesson: { __typename?: 'LessonType', typeLesson: { __typename?: 'LocalSubjectType', name: string } }, taskSet: { __typename?: 'TaskTypeConnection', edges: Array<Maybe<{ __typename?: 'TaskTypeEdge', node?: Maybe<{ __typename?: 'TaskType', theory: string, practise: string, isTiming: boolean, time: number, Type: { __typename?: 'TaskTypeType', name: string, id: string } }> }>> } }> };
+
+export type AllTeacherTestQueryVariables = Exact<{
+  teacherID: Scalars['ID'];
+}>;
+
+
+export type AllTeacherTestQuery = { __typename?: 'Query', teacher?: Maybe<{ __typename?: 'TeacherType', subjectclasslocalSet: { __typename?: 'LocalSubjectTypeConnection', edges: Array<Maybe<{ __typename?: 'LocalSubjectTypeEdge', node?: Maybe<{ __typename?: 'LocalSubjectType', name: string, lessonSet: { __typename?: 'LessonTypeConnection', edges: Array<Maybe<{ __typename?: 'LessonTypeEdge', node?: Maybe<{ __typename?: 'LessonType', tests?: Maybe<Array<Maybe<{ __typename?: 'TestsType', id: string, name: string, taskLen?: Maybe<number>, answerLen?: Maybe<number> }>>> }> }>> } }> }>> } }> };
+
+export type TestDetailQueryVariables = Exact<{
+  testId: Scalars['ID'];
+}>;
+
+
+export type TestDetailQuery = { __typename?: 'Query', test?: Maybe<{ __typename?: 'TestsType', answersheetSet: { __typename?: 'AnswerSheetTypeConnection', edges: Array<Maybe<{ __typename?: 'AnswerSheetTypeEdge', node?: Maybe<{ __typename?: 'AnswerSheetType', id: string, child: { __typename?: 'ChildType', name: string, surname: string }, answerSet: { __typename?: 'AnswerTypeConnection', edges: Array<Maybe<{ __typename?: 'AnswerTypeEdge', node?: Maybe<{ __typename?: 'AnswerType', completed: boolean, number: number, score: number }> }>> } }> }>> } }> };
+
+export type AnswerTeacherDetailQueryVariables = Exact<{
+  answerId?: Maybe<Scalars['ID']>;
+  number?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type AnswerTeacherDetailQuery = { __typename?: 'Query', allAnswer?: Maybe<{ __typename?: 'AnswerTypeConnection', edges: Array<Maybe<{ __typename?: 'AnswerTypeEdge', node?: Maybe<{ __typename?: 'AnswerType', content: string, score: number, sheet: { __typename?: 'AnswerSheetType', test: { __typename?: 'TestsType', taskSet: { __typename?: 'TaskTypeConnection', edges: Array<Maybe<{ __typename?: 'TaskTypeEdge', node?: Maybe<{ __typename?: 'TaskType', maxScore: number, Type: { __typename?: 'TaskTypeType', name: string } }> }>> } } } }> }>> }> };
+
 export type GetTokenByNameAndPasswordMutationVariables = Exact<{
   username: Scalars['String'];
   password: Scalars['String'];
@@ -1885,6 +1954,7 @@ export type CreateTestMutation = { __typename?: 'Mutation', createTest?: Maybe<{
 
 export type AddTaskMutationVariables = Exact<{
   testId: Scalars['ID'];
+  number?: Maybe<Scalars['Int']>;
 }>;
 
 
@@ -1926,6 +1996,39 @@ export type CreateLessonMutationVariables = Exact<{
 
 
 export type CreateLessonMutation = { __typename?: 'Mutation', createLesson?: Maybe<{ __typename?: 'CreateLesson', ok?: Maybe<boolean>, lesson?: Maybe<{ __typename?: 'LessonType', id: string }> }> };
+
+export type DeleteLessonMutationVariables = Exact<{
+  ID: Scalars['ID'];
+}>;
+
+
+export type DeleteLessonMutation = { __typename?: 'Mutation', deleteLesson?: Maybe<{ __typename?: 'DeleteLesson', ok?: Maybe<boolean> }> };
+
+export type CreateSheetMutationVariables = Exact<{
+  child: Scalars['ID'];
+  test: Scalars['ID'];
+}>;
+
+
+export type CreateSheetMutation = { __typename?: 'Mutation', createAnwerSheet?: Maybe<{ __typename?: 'CreateAnwerSheet', answer?: Maybe<{ __typename?: 'AnswerSheetType', id: string }> }> };
+
+export type CreateAnswerMutationVariables = Exact<{
+  sheet: Scalars['ID'];
+  data?: Maybe<Scalars['String']>;
+  number?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type CreateAnswerMutation = { __typename?: 'Mutation', createAnswer?: Maybe<{ __typename?: 'CreateAnswer', answer?: Maybe<{ __typename?: 'AnswerType', content: string, id: string }> }> };
+
+export type ScoringMutationVariables = Exact<{
+  answerSheetId: Scalars['ID'];
+  score?: Maybe<Scalars['Int']>;
+  number?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type ScoringMutation = { __typename?: 'Mutation', scoringTasks?: Maybe<{ __typename?: 'ScoringTasks', answer?: Maybe<{ __typename?: 'AnswerType', score: number }> }> };
 
 
 export const GetLessonsInfoDocument = gql`
@@ -2357,6 +2460,214 @@ export function useTaskLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TaskQ
 export type TaskQueryHookResult = ReturnType<typeof useTaskQuery>;
 export type TaskLazyQueryHookResult = ReturnType<typeof useTaskLazyQuery>;
 export type TaskQueryResult = Apollo.QueryResult<TaskQuery, TaskQueryVariables>;
+export const ChildtestDocument = gql`
+    query Childtest($testId: ID!) {
+  test(id: $testId) {
+    lesson {
+      typeLesson {
+        name
+      }
+    }
+    name
+    taskSet {
+      edges {
+        node {
+          theory
+          practise
+          isTiming
+          Type {
+            name
+            id
+          }
+          time
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useChildtestQuery__
+ *
+ * To run a query within a React component, call `useChildtestQuery` and pass it any options that fit your needs.
+ * When your component renders, `useChildtestQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useChildtestQuery({
+ *   variables: {
+ *      testId: // value for 'testId'
+ *   },
+ * });
+ */
+export function useChildtestQuery(baseOptions: Apollo.QueryHookOptions<ChildtestQuery, ChildtestQueryVariables>) {
+        return Apollo.useQuery<ChildtestQuery, ChildtestQueryVariables>(ChildtestDocument, baseOptions);
+      }
+export function useChildtestLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ChildtestQuery, ChildtestQueryVariables>) {
+          return Apollo.useLazyQuery<ChildtestQuery, ChildtestQueryVariables>(ChildtestDocument, baseOptions);
+        }
+export type ChildtestQueryHookResult = ReturnType<typeof useChildtestQuery>;
+export type ChildtestLazyQueryHookResult = ReturnType<typeof useChildtestLazyQuery>;
+export type ChildtestQueryResult = Apollo.QueryResult<ChildtestQuery, ChildtestQueryVariables>;
+export const AllTeacherTestDocument = gql`
+    query allTeacherTest($teacherID: ID!) {
+  teacher(id: $teacherID) {
+    subjectclasslocalSet {
+      edges {
+        node {
+          name
+          lessonSet {
+            edges {
+              node {
+                tests {
+                  id
+                  name
+                  taskLen
+                  answerLen
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useAllTeacherTestQuery__
+ *
+ * To run a query within a React component, call `useAllTeacherTestQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAllTeacherTestQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAllTeacherTestQuery({
+ *   variables: {
+ *      teacherID: // value for 'teacherID'
+ *   },
+ * });
+ */
+export function useAllTeacherTestQuery(baseOptions: Apollo.QueryHookOptions<AllTeacherTestQuery, AllTeacherTestQueryVariables>) {
+        return Apollo.useQuery<AllTeacherTestQuery, AllTeacherTestQueryVariables>(AllTeacherTestDocument, baseOptions);
+      }
+export function useAllTeacherTestLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AllTeacherTestQuery, AllTeacherTestQueryVariables>) {
+          return Apollo.useLazyQuery<AllTeacherTestQuery, AllTeacherTestQueryVariables>(AllTeacherTestDocument, baseOptions);
+        }
+export type AllTeacherTestQueryHookResult = ReturnType<typeof useAllTeacherTestQuery>;
+export type AllTeacherTestLazyQueryHookResult = ReturnType<typeof useAllTeacherTestLazyQuery>;
+export type AllTeacherTestQueryResult = Apollo.QueryResult<AllTeacherTestQuery, AllTeacherTestQueryVariables>;
+export const TestDetailDocument = gql`
+    query testDetail($testId: ID!) {
+  test(id: $testId) {
+    answersheetSet {
+      edges {
+        node {
+          id
+          child {
+            name
+            surname
+          }
+          answerSet {
+            edges {
+              node {
+                completed
+                number
+                score
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useTestDetailQuery__
+ *
+ * To run a query within a React component, call `useTestDetailQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTestDetailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTestDetailQuery({
+ *   variables: {
+ *      testId: // value for 'testId'
+ *   },
+ * });
+ */
+export function useTestDetailQuery(baseOptions: Apollo.QueryHookOptions<TestDetailQuery, TestDetailQueryVariables>) {
+        return Apollo.useQuery<TestDetailQuery, TestDetailQueryVariables>(TestDetailDocument, baseOptions);
+      }
+export function useTestDetailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TestDetailQuery, TestDetailQueryVariables>) {
+          return Apollo.useLazyQuery<TestDetailQuery, TestDetailQueryVariables>(TestDetailDocument, baseOptions);
+        }
+export type TestDetailQueryHookResult = ReturnType<typeof useTestDetailQuery>;
+export type TestDetailLazyQueryHookResult = ReturnType<typeof useTestDetailLazyQuery>;
+export type TestDetailQueryResult = Apollo.QueryResult<TestDetailQuery, TestDetailQueryVariables>;
+export const AnswerTeacherDetailDocument = gql`
+    query answerTeacherDetail($answerId: ID, $number: Int) {
+  allAnswer(sheet: $answerId, number: $number) {
+    edges {
+      node {
+        content
+        score
+        sheet {
+          test {
+            taskSet(number: $number) {
+              edges {
+                node {
+                  maxScore
+                  Type {
+                    name
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useAnswerTeacherDetailQuery__
+ *
+ * To run a query within a React component, call `useAnswerTeacherDetailQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAnswerTeacherDetailQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAnswerTeacherDetailQuery({
+ *   variables: {
+ *      answerId: // value for 'answerId'
+ *      number: // value for 'number'
+ *   },
+ * });
+ */
+export function useAnswerTeacherDetailQuery(baseOptions?: Apollo.QueryHookOptions<AnswerTeacherDetailQuery, AnswerTeacherDetailQueryVariables>) {
+        return Apollo.useQuery<AnswerTeacherDetailQuery, AnswerTeacherDetailQueryVariables>(AnswerTeacherDetailDocument, baseOptions);
+      }
+export function useAnswerTeacherDetailLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AnswerTeacherDetailQuery, AnswerTeacherDetailQueryVariables>) {
+          return Apollo.useLazyQuery<AnswerTeacherDetailQuery, AnswerTeacherDetailQueryVariables>(AnswerTeacherDetailDocument, baseOptions);
+        }
+export type AnswerTeacherDetailQueryHookResult = ReturnType<typeof useAnswerTeacherDetailQuery>;
+export type AnswerTeacherDetailLazyQueryHookResult = ReturnType<typeof useAnswerTeacherDetailLazyQuery>;
+export type AnswerTeacherDetailQueryResult = Apollo.QueryResult<AnswerTeacherDetailQuery, AnswerTeacherDetailQueryVariables>;
 export const GetTokenByNameAndPasswordDocument = gql`
     mutation getTokenByNameAndPassword($username: String!, $password: String!) {
   tokenAuth(username: $username, password: $password) {
@@ -2598,12 +2909,12 @@ export type CreateTestMutationHookResult = ReturnType<typeof useCreateTestMutati
 export type CreateTestMutationResult = Apollo.MutationResult<CreateTestMutation>;
 export type CreateTestMutationOptions = Apollo.BaseMutationOptions<CreateTestMutation, CreateTestMutationVariables>;
 export const AddTaskDocument = gql`
-    mutation addTask($testId: ID!) {
+    mutation addTask($testId: ID!, $number: Int) {
   createTask(
     testId: $testId
     theory: ""
     practise: ""
-    number: 1
+    number: $number
     maxScore: 0
     Type: "VGFza1R5cGVUeXBlOjQ="
   ) {
@@ -2631,6 +2942,7 @@ export type AddTaskMutationFn = Apollo.MutationFunction<AddTaskMutation, AddTask
  * const [addTaskMutation, { data, loading, error }] = useAddTaskMutation({
  *   variables: {
  *      testId: // value for 'testId'
+ *      number: // value for 'number'
  *   },
  * });
  */
@@ -2802,3 +3114,143 @@ export function useCreateLessonMutation(baseOptions?: Apollo.MutationHookOptions
 export type CreateLessonMutationHookResult = ReturnType<typeof useCreateLessonMutation>;
 export type CreateLessonMutationResult = Apollo.MutationResult<CreateLessonMutation>;
 export type CreateLessonMutationOptions = Apollo.BaseMutationOptions<CreateLessonMutation, CreateLessonMutationVariables>;
+export const DeleteLessonDocument = gql`
+    mutation deleteLesson($ID: ID!) {
+  deleteLesson(id: $ID) {
+    ok
+  }
+}
+    `;
+export type DeleteLessonMutationFn = Apollo.MutationFunction<DeleteLessonMutation, DeleteLessonMutationVariables>;
+
+/**
+ * __useDeleteLessonMutation__
+ *
+ * To run a mutation, you first call `useDeleteLessonMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteLessonMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteLessonMutation, { data, loading, error }] = useDeleteLessonMutation({
+ *   variables: {
+ *      ID: // value for 'ID'
+ *   },
+ * });
+ */
+export function useDeleteLessonMutation(baseOptions?: Apollo.MutationHookOptions<DeleteLessonMutation, DeleteLessonMutationVariables>) {
+        return Apollo.useMutation<DeleteLessonMutation, DeleteLessonMutationVariables>(DeleteLessonDocument, baseOptions);
+      }
+export type DeleteLessonMutationHookResult = ReturnType<typeof useDeleteLessonMutation>;
+export type DeleteLessonMutationResult = Apollo.MutationResult<DeleteLessonMutation>;
+export type DeleteLessonMutationOptions = Apollo.BaseMutationOptions<DeleteLessonMutation, DeleteLessonMutationVariables>;
+export const CreateSheetDocument = gql`
+    mutation createSheet($child: ID!, $test: ID!) {
+  createAnwerSheet(child: $child, test: $test) {
+    answer {
+      id
+    }
+  }
+}
+    `;
+export type CreateSheetMutationFn = Apollo.MutationFunction<CreateSheetMutation, CreateSheetMutationVariables>;
+
+/**
+ * __useCreateSheetMutation__
+ *
+ * To run a mutation, you first call `useCreateSheetMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateSheetMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createSheetMutation, { data, loading, error }] = useCreateSheetMutation({
+ *   variables: {
+ *      child: // value for 'child'
+ *      test: // value for 'test'
+ *   },
+ * });
+ */
+export function useCreateSheetMutation(baseOptions?: Apollo.MutationHookOptions<CreateSheetMutation, CreateSheetMutationVariables>) {
+        return Apollo.useMutation<CreateSheetMutation, CreateSheetMutationVariables>(CreateSheetDocument, baseOptions);
+      }
+export type CreateSheetMutationHookResult = ReturnType<typeof useCreateSheetMutation>;
+export type CreateSheetMutationResult = Apollo.MutationResult<CreateSheetMutation>;
+export type CreateSheetMutationOptions = Apollo.BaseMutationOptions<CreateSheetMutation, CreateSheetMutationVariables>;
+export const CreateAnswerDocument = gql`
+    mutation createAnswer($sheet: ID!, $data: String, $number: Int) {
+  createAnswer(data: $data, sheet: $sheet, number: $number) {
+    answer {
+      content
+      id
+    }
+  }
+}
+    `;
+export type CreateAnswerMutationFn = Apollo.MutationFunction<CreateAnswerMutation, CreateAnswerMutationVariables>;
+
+/**
+ * __useCreateAnswerMutation__
+ *
+ * To run a mutation, you first call `useCreateAnswerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateAnswerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createAnswerMutation, { data, loading, error }] = useCreateAnswerMutation({
+ *   variables: {
+ *      sheet: // value for 'sheet'
+ *      data: // value for 'data'
+ *      number: // value for 'number'
+ *   },
+ * });
+ */
+export function useCreateAnswerMutation(baseOptions?: Apollo.MutationHookOptions<CreateAnswerMutation, CreateAnswerMutationVariables>) {
+        return Apollo.useMutation<CreateAnswerMutation, CreateAnswerMutationVariables>(CreateAnswerDocument, baseOptions);
+      }
+export type CreateAnswerMutationHookResult = ReturnType<typeof useCreateAnswerMutation>;
+export type CreateAnswerMutationResult = Apollo.MutationResult<CreateAnswerMutation>;
+export type CreateAnswerMutationOptions = Apollo.BaseMutationOptions<CreateAnswerMutation, CreateAnswerMutationVariables>;
+export const ScoringDocument = gql`
+    mutation scoring($answerSheetId: ID!, $score: Int, $number: Int) {
+  scoringTasks(score: $score, answerSheetId: $answerSheetId, number: $number) {
+    answer {
+      score
+    }
+  }
+}
+    `;
+export type ScoringMutationFn = Apollo.MutationFunction<ScoringMutation, ScoringMutationVariables>;
+
+/**
+ * __useScoringMutation__
+ *
+ * To run a mutation, you first call `useScoringMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useScoringMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [scoringMutation, { data, loading, error }] = useScoringMutation({
+ *   variables: {
+ *      answerSheetId: // value for 'answerSheetId'
+ *      score: // value for 'score'
+ *      number: // value for 'number'
+ *   },
+ * });
+ */
+export function useScoringMutation(baseOptions?: Apollo.MutationHookOptions<ScoringMutation, ScoringMutationVariables>) {
+        return Apollo.useMutation<ScoringMutation, ScoringMutationVariables>(ScoringDocument, baseOptions);
+      }
+export type ScoringMutationHookResult = ReturnType<typeof useScoringMutation>;
+export type ScoringMutationResult = Apollo.MutationResult<ScoringMutation>;
+export type ScoringMutationOptions = Apollo.BaseMutationOptions<ScoringMutation, ScoringMutationVariables>;

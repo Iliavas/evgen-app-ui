@@ -128,12 +128,98 @@ query taskType{
 
 query task($taskId:ID!){
   task(id:$taskId){
-    theory, practise, maxScore, isTiming, time, Type{name, id}, isAutocheck, autoCheckData
+    theory, practise, maxScore, isTiming, time, Type{name, id}, isAutocheck, autoCheckData,
   }
   taskTypes{
     edges{
       node{
         name, id
+      }
+    }
+  }
+}
+
+query Childtest($testId:ID!){
+  test(id:$testId){
+    lesson{
+      typeLesson{
+        name
+      }
+    },
+    name, taskSet{
+      edges{
+        node{
+          theory, practise, isTiming, Type{name, id}, time,
+          
+        }
+      }
+    }
+  }
+}
+query allTeacherTest($teacherID:ID!){
+  teacher(id:$teacherID){
+    subjectclasslocalSet{
+      edges{
+        node{
+          name
+          lessonSet{
+            edges{
+              node{
+                tests{
+                  id, name, taskLen, answerLen
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+query testDetail($testId:ID!){
+  test(id:$testId){
+    answersheetSet{
+      edges{
+        node{
+          id,
+          child{
+            name, surname,
+          }
+          answerSet{
+            edges{
+              node{
+                completed
+                number
+                score              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+query answerTeacherDetail($answerId:ID, $number:Int){
+  allAnswer(sheet:$answerId, number:$number){
+    edges{
+      node{
+        content,
+        score,
+        sheet{
+          test{
+            taskSet(number:$number){
+              edges{
+                node{
+                  maxScore,
+                  Type {
+                    name
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -188,8 +274,8 @@ mutation createTest($lessonID:ID!){
   }
 }
 
-mutation addTask($testId:ID!){
-  createTask(testId:$testId, theory:"", practise:"", number:1, maxScore: 0, Type:"VGFza1R5cGVUeXBlOjQ="){
+mutation addTask($testId:ID!, $number:Int){
+  createTask(testId:$testId, theory:"", practise:"", number:$number, maxScore: 0, Type:"VGFza1R5cGVUeXBlOjQ="){
     task{
       theory, id, pk
     }
@@ -227,4 +313,34 @@ mutation createLesson($subjectId:ID!){
       id
     }
   }
+}
+
+mutation deleteLesson($ID:ID!){
+  deleteLesson(id:$ID){
+    ok
+  }
+}
+
+mutation createSheet($child:ID!, $test:ID!){
+  createAnwerSheet(child:$child, test:$test){
+    answer{
+      id
+    }
+  }
+}
+
+mutation createAnswer($sheet:ID!, $data:String, $number:Int){
+  createAnswer(data:$data, sheet:$sheet, number:$number){
+    answer{
+      content, id
+    }
+  }
+}
+
+mutation scoring($answerSheetId:ID!, $score:Int, $number:Int){
+ 	scoringTasks(score:$score, answerSheetId:$answerSheetId, number:$number) {
+  	answer{
+    	score
+  	}
+	}
 }

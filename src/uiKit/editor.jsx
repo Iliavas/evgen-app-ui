@@ -11,8 +11,14 @@ export const Editor = (props) => {
     useEffect(() => {
         let a = document.getElementsByClassName("ck-editor__top")[0]
         if (props.child) {
-            a.style = "display:none!important";
+            try{
+                console.log(a)
+                a.style = "display:none!important";
+            } catch{
+                
+            }
         }
+        console.log("hello from useEffect")
     })
 
     return <CKEditor

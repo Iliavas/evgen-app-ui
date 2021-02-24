@@ -1,0 +1,117 @@
+.teacher-work-check__container{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.test-widget__container{
+    border-radius: 10px;
+    border: 1px solid #eee;
+    background-color: white;
+    padding: 20px;
+    display: flex;
+    gap: 5vw;
+}
+
+.test-widget__heading{
+    font-family: Montserrat;
+font-style: normal;
+font-weight: 600;
+font-size: 24px;
+line-height: 29px;
+letter-spacing: 0.2px;
+
+color: #000000;
+}
+
+.how-many-solved{
+
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: 0.2px;
+    
+    color: #565656;
+    margin-top: 8px;
+}
+
+.class__solved{
+    font-family: Montserrat;
+font-style: normal;
+font-weight: 600;
+font-size: 20px;
+line-height: 24px;
+
+color: #6F6F6F;
+margin-top: 50px;
+}
+
+.how-many-questions{
+    font-family: Montserrat;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    
+    color: #565656;
+    
+}
+
+.test-sheet__container{
+    background-color: white;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    padding: 20px;
+    display: flex;
+    gap: 36px;
+    align-items: center;
+    height: 40px;
+}
+
+.teacher-test-detail__container{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.answer{
+    width: 36px;
+    height: 36px;
+    border-radius: 5px;
+    background-color: red;
+}
+
+.test-sheet__cred{
+    font-family: Montserrat;
+font-style: normal;
+font-weight: 600;
+font-size: 18px;
+width: 320px;
+/* identical to box height */
+
+
+color: #000000;
+}
+
+.checked{
+    background-color: #707EFF;
+}
+
+.unchecked{
+    background-color: white;
+    border: 1px solid #eee;
+}
+
+.answer-teacher__container{
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding: 20px;
+}
+
+.answer-detail__container{
+    margin-top: 20px;
+}

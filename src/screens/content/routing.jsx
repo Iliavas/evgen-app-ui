@@ -19,6 +19,8 @@ import {ChildLobby} from "./LobbyContentRouter";
 
 import {checkToken} from "../../LocalStorageInteraction/checkToken"
 
+import {TestCompletion} from "./testCompletion"
+
 export const Routing = () => {
 
     return <ApolloProvider client={client}>
@@ -26,6 +28,9 @@ export const Routing = () => {
             <Switch>
                 <Route path="/enter-user">
                     <Registration></Registration>
+                </Route>
+                <Route path="/test/:id">
+                    <TestCompletion></TestCompletion>
                 </Route>
                 <Route path="/">
                     <OrganisationList></OrganisationList>

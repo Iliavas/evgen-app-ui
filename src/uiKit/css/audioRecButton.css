@@ -1,0 +1,48 @@
+.audio-rec-button__container{
+    background: #4A5CFF;
+    border: 1px solid #eee;
+    border-radius:10px;
+    width: 220px;
+    height:62px;
+    color: white;
+    font-family:Montserrat;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    align-items: center;
+    width: 100%;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.audio-rec-button__active{
+    background: linear-gradient(92.06deg, #8A96FF 0%, #4A5CFF 100%);
+    background-size: 300% 300%;
+
+    animation: gradient 3s ease infinite;
+
+}
+
+@keyframes gradient {
+	0% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
+
+.audio-rec__image{
+    width: 26px;
+}
+
+.visualizer{
+    display: none;
+}
+
+.button-container{
+    width:100%;
+}

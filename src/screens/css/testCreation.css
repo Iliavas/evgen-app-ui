@@ -184,7 +184,8 @@ font-weight: 600;
 font-size: 20px;
 line-height: 24px;
 
-color: #565656;;
+color: #565656;
+margin-bottom: 20px;
 }
 
 .MuiInputBase-root{
@@ -193,4 +194,121 @@ color: #565656;;
 
 .bin{
     float:right;
+}
+
+.desc-image__container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.theme{
+    display: block;
+    padding : 20px;
+    width: calc(100% - 40px);
+    border: 1px solid #eee;
+    border-radius: 10px;
+    
+    background-color: white;
+    font-family: Montserrat;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.theme-selection__add-button{
+    height: 62px;
+    width: 100%!important;
+    padding: 0px;
+    font-size: 48px;
+    color: #707EFF;
+}
+
+.theme-selection__container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap : 20px;
+}
+
+.theme__container{
+    width: 100%;
+    display: flex;
+    gap : 30px;
+}
+
+.task-type-selection__black-container{
+    position: fixed;
+    top:0px;
+    left:0px;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0.7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.task-type-selection__container{
+    width: 80vw;
+    background-color: #FBFBFB;
+    border-radius: 10px;
+}
+
+.task-type-selection__centered{
+    z-index: 10;
+    position: fixed;
+    top: 0px;
+    left:0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.task-type-selection__container{
+    overflow: scroll;
+    padding: 20px;
+    padding-bottom: 60px;
+}
+
+.task-type__cross{
+    float: right;
+    position: absolute;
+}
+
+.global-task-type__container{
+    display: flex;
+    gap: 30px;
+    
+    font-family: Montserrat;
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.selected-task-type{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #eee;
+    background-color: white;
+    padding: 20px;
+
+    border-radius: 10px;
+
+    width: 420px;
+}
+
+.select-type{
+    padding: 20px;
+    background-color: #707EFF;
+    border-radius: 10px;
+    color: white;
+    width: 420px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

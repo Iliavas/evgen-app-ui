@@ -30,7 +30,6 @@ export const TeacherClassCard:react.FC<IETeacherClassCard> = (props) => {
                     Уроков всего <span className="colorized">{props.lessonsLen}</span>
                 </div>
                 <div className="last-lesson">
-                    Задана работа <span className="colorized">27.09</span>
                 </div>
             </div>
         </div>

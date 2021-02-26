@@ -27,7 +27,7 @@ import bin from "../../images/trash-empty.svg";
 import {TestCreation, TestCreateWidget} from "./testCreation"
 import { DefaultButton } from "../../uiKit/Buttons";
 import {TestCompletion} from "./testCompletion";
-
+import {BackLink} from "../../uiKit/backLink";
 
 interface IEParams{
     id:string;
@@ -82,6 +82,7 @@ function parseTeacherTests(data:IEQuery){
 interface IELessonDetail{
     data: any,
     id: string, url:string;
+    prevUrl:string;
 }
 
 
@@ -165,7 +166,8 @@ const ChildLessonDetail:react.FC<IELessonDetail> = (props) => {
         <Route path={url}>
             <div className="lesson-details__container">
                 <div className="lesson-details__heading">
-                    {data.typeLesson.name}, {data.typeLesson.group.name}, {data.name}, 27.09
+                    {data.typeLesson.name}, {data.typeLesson.group.name}, {data.name}
+                    <BackLink link={props.prevUrl}></BackLink>
                     <div className="materials">
                         <div className="lesson-details__heading">
                             Материалы
@@ -290,7 +292,10 @@ const TeacherLessonDetail:react.FC<IELessonDetail> = (props) => {
         <div>
         <div className="lesson-details__container">
     <div className="lesson-details__heading">
-        {data.typeLesson.name}, {data.typeLesson.group.name}, {data.name}, 27.09
+        <span>{data.typeLesson.name}</span>, 
+        <span>{data.typeLesson.group.name}</span>, 
+        <span>{data.name}</span>
+        <BackLink link={props.prevUrl}></BackLink>
         <img src={bin} alt="" className="delete-button__teacher-lesson" onClick = {() => {
             deleteTest[0]()
             window.location.reload()
@@ -299,29 +304,6 @@ const TeacherLessonDetail:react.FC<IELessonDetail> = (props) => {
         }}/>
     </div>
     <div className="teacher-lesson-detail__container">
-        <div className="teacher-lesson-detail__heading">
-            <div className="teacher-lesson-detail__info">
-                <div className="teacher-lesson-detail__class-name">
-                    8.3 класс
-                </div>
-                <div className="teacher-lesson-detail__subject-name">
-                    Английский язык
-                </div>
-            </div>
-
-            <div className="teacher-lesson__times">
-                <div className="deadline__date">
-                    урок доступен с <span className="colorize">27.09 </span>
-                    до <span className="colorize">27.10</span> 
-                </div>
-                <div className="deadline__time">
-                    с <span className="colorize">11:00</span> до <span className="colorize">22:00</span>
-                </div>
-                <div className="change__time">
-                    Изменить время
-                </div>
-            </div>
-        </div>
         <div className="teacher-lesson__content">
             <div className="teacher-content__first-row">
                 <div className="teacher-lesson__theme">
@@ -390,7 +372,11 @@ const TeacherLessonDetail:react.FC<IELessonDetail> = (props) => {
         </Switch>
 }
 
-export const LessonDetails:react.FC = () => {
+interface IELessonDetailUrl{
+    prevUrl:string;
+}
+
+export const LessonDetails:react.FC<IELessonDetailUrl> = (props) => {
     const {url} = useRouteMatch();
     const {createWorkLink} = useContext(ChildContext);
     const {id} = useParams<IEParams>();
@@ -402,8 +388,8 @@ export const LessonDetails:react.FC = () => {
         forceUpdate()
     }
     return <TeacherContext.Provider value = {{changeMaterials:setData}}>
-            { createWorkLink == "" ? <ChildLessonDetail data={data?.lessons} id={id} url={url}></ChildLessonDetail> : 
-            <TeacherLessonDetail url={url} data={data} id={id}></TeacherLessonDetail>}
+            { createWorkLink == "" ? <ChildLessonDetail data={data?.lessons} id={id} url={url} prevUrl={props.prevUrl}></ChildLessonDetail> : 
+            <TeacherLessonDetail url={url} data={data} id={id} prevUrl={props.prevUrl}></TeacherLessonDetail>}
         </TeacherContext.Provider> 
 
 }

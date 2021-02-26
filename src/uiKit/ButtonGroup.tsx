@@ -12,6 +12,7 @@ interface IEButtonGroup{
     onChange:Function;
     group:string[];
     button_underName:string;
+    active?:string;
 }
 
 interface IEButtonButtonGroup{
@@ -35,9 +36,10 @@ const ButtonButtonGroup:react.FC<IEButtonButtonGroup> = (props) => {
 }
 
 export const ButtonGroup:react.FC<IEButtonGroup> = (props) => {
-    const [active, setActive] = useState(props.group.map((e) => {return {active:false, name:e}}))
+    const [active, setActive] = useState(props.group.map((e) => {return {active:props.active == e, name:e}})) 
     return <ButtonContext.Provider value={{
         setActive: (name:string) => {
+            props.onChange(name)
             setActive(
                 active.map(
                     (e) => {
@@ -47,7 +49,7 @@ export const ButtonGroup:react.FC<IEButtonGroup> = (props) => {
                         }
                     }
                 )
-            )
+            );
         },
         underName: props.button_underName
     }}>

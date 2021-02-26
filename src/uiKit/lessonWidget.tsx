@@ -31,19 +31,15 @@ export const LessonWidget:react.FC<IELessonWidget> = (props) => {
                         Тестов: <span className="colorized">{props.testsLen}</span>
                     </div>
                     <div className="deadline">
-                        Дедлайн: <span className="colorized">27.09</span>
                     </div>
                 </div>
             </div>
             <div className="completed-results">
                 <div className="materials-viewed">
-                    Просмотрено: <span className="colorized">3</span>
                 </div>
                 <div className="materials-viewed test__compl">
-                    Решено: <span className="colorized">1</span>
                 </div>
                 <div className="materials-viewed time-to-deadline">
-                    До конца: <span className="colorized">1ч 30мин</span>
                 </div>
             </div>
         </div>

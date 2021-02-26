@@ -31,9 +31,6 @@ export const LobbyContentRouter:react.FC = () => {
         case "child":
             items = new Map([
                 ["subjects", {name: "Предметы"}],
-                ["homework", {name: "Домашняя работа"}],
-                ["marks", {name: "Оценки"}],
-                ["add-material", {name: "Доп. материал"}]
             ]);
 
             return <Lobby createWork="" defaultPath="subjects" items={items} ContentRouter={
@@ -43,7 +40,6 @@ export const LobbyContentRouter:react.FC = () => {
                 ["my-classes", {name: "Мои классы"}],
                 ["create-work", {name:"Создать работу"}],
                 ["check-works", {name:"Проверить работы"}],
-                ["works-archieve", {name: "Архив работ"}]
             ])
             return <Lobby createWork={`${url}/create-work`} defaultPath="my-classes" items={items} ContentRouter={
                 <TeacherLobbyContentRouter></TeacherLobbyContentRouter>
@@ -77,7 +73,6 @@ export const Lobby:react.FC<IELobby> = (props) => {
             <div className="lobby-menu__content">
                 {widgets}
             </div>
-            <div className="company">© Gladio. Dev</div>
         </div>
         <div className="lobby__content">
             <Switch>

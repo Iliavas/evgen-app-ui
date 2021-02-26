@@ -1825,6 +1825,14 @@ export type UserInfoQueryVariables = Exact<{
 
 export type UserInfoQuery = { __typename?: 'Query', userInfo?: Maybe<{ __typename?: 'UserType', profile?: Maybe<{ __typename?: 'ProfileType', childSet: { __typename?: 'ChildTypeConnection', edges: Array<Maybe<{ __typename?: 'ChildTypeEdge', node?: Maybe<{ __typename?: 'ChildType', id: string, pk?: Maybe<number>, org: { __typename?: 'OrganisationType', name: string, classesLength?: Maybe<number>, childrenLength?: Maybe<number>, subjects?: Maybe<Array<Maybe<string>>> } }> }>> }, teacherSet: { __typename?: 'TeacherTypeConnection', edges: Array<Maybe<{ __typename?: 'TeacherTypeEdge', node?: Maybe<{ __typename?: 'TeacherType', id: string, pk?: Maybe<number>, org: { __typename?: 'OrganisationType', name: string, classesLength?: Maybe<number>, childrenLength?: Maybe<number>, subjects?: Maybe<Array<Maybe<string>>> } }> }>> } }> }> };
 
+export type GetAnswerDataQueryVariables = Exact<{
+  answerSheetId: Scalars['ID'];
+  number?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type GetAnswerDataQuery = { __typename?: 'Query', answerSheet?: Maybe<{ __typename?: 'AnswerSheetType', answerSet: { __typename?: 'AnswerTypeConnection', edges: Array<Maybe<{ __typename?: 'AnswerTypeEdge', node?: Maybe<{ __typename?: 'AnswerType', content: string }> }>> } }> };
+
 export type ChildSubjectsQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -2193,6 +2201,46 @@ export function useUserInfoLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<U
 export type UserInfoQueryHookResult = ReturnType<typeof useUserInfoQuery>;
 export type UserInfoLazyQueryHookResult = ReturnType<typeof useUserInfoLazyQuery>;
 export type UserInfoQueryResult = Apollo.QueryResult<UserInfoQuery, UserInfoQueryVariables>;
+export const GetAnswerDataDocument = gql`
+    query getAnswerData($answerSheetId: ID!, $number: Int) {
+  answerSheet(id: $answerSheetId) {
+    answerSet(number: $number) {
+      edges {
+        node {
+          content
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAnswerDataQuery__
+ *
+ * To run a query within a React component, call `useGetAnswerDataQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAnswerDataQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAnswerDataQuery({
+ *   variables: {
+ *      answerSheetId: // value for 'answerSheetId'
+ *      number: // value for 'number'
+ *   },
+ * });
+ */
+export function useGetAnswerDataQuery(baseOptions: Apollo.QueryHookOptions<GetAnswerDataQuery, GetAnswerDataQueryVariables>) {
+        return Apollo.useQuery<GetAnswerDataQuery, GetAnswerDataQueryVariables>(GetAnswerDataDocument, baseOptions);
+      }
+export function useGetAnswerDataLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAnswerDataQuery, GetAnswerDataQueryVariables>) {
+          return Apollo.useLazyQuery<GetAnswerDataQuery, GetAnswerDataQueryVariables>(GetAnswerDataDocument, baseOptions);
+        }
+export type GetAnswerDataQueryHookResult = ReturnType<typeof useGetAnswerDataQuery>;
+export type GetAnswerDataLazyQueryHookResult = ReturnType<typeof useGetAnswerDataLazyQuery>;
+export type GetAnswerDataQueryResult = Apollo.QueryResult<GetAnswerDataQuery, GetAnswerDataQueryVariables>;
 export const ChildSubjectsDocument = gql`
     query childSubjects($id: ID!) {
   child(id: $id) {

@@ -23,6 +23,11 @@ import "../css/teacherCheckWorks.css"
 import { useRouteMatch, Link, Switch, Route, useParams, useLocation, Redirect } from "react-router-dom";
 import {DefaultButton} from "../../uiKit/Buttons"; 
 
+import {BackLink} from "../../uiKit/backLink";
+
+import {TrueFalseQuestionWidget} from "../../uiKit/TrueFalseQuestion";
+import { printIntrospectionSchema } from "graphql";
+
 function parseData(data:AllTeacherTestQuery, link:string){
     let res = []
     for (let subject of data.teacher?.subjectclasslocalSet.edges!){
@@ -79,19 +84,31 @@ const TeacherTestWidget:react.FC<IETeacherTestWidget> = (props) => {
 interface IETestSheetInfo{
     name:string;
     surname:string;
-    answers:boolean[];
+    answers:{
+        isCompleted:boolean;
+        mark:number;
+    }[];
     id:string;
 }
 
 const TestSheetInfo:react.FC<IETestSheetInfo> = (props) => {
     const {url} = useRouteMatch()
+    let mark = 0;
+    for (let i of props.answers) {
+        mark += i.mark;
+    }
     return <Link to={`${url}/${props.id}`}>
     <div className="test-sheet__container">
         <div className="test-sheet__cred">
-            {props.name} {props.surname}
+            <div className="name__surname">
+                {props.name} {props.surname}
+            </div>
+            <div className="mark">
+                Баллов: &nbsp; <span className="colorize">{mark}</span>
+            </div>
         </div>
         {props.answers.map((e) => {
-            return <div className={"answer " + (e ? "checked" : "unchecked")}></div>
+            return <div className={"answer " + (e.isCompleted ? "checked" : "unchecked")}></div>
         })}
     </div>
     
@@ -108,7 +125,10 @@ function parseTestDetail(data:TestDetailQuery){
             surname={node?.node?.child.surname!}
             answers={
                 node?.node?.answerSet.edges.map((e) => {
-                    return e?.node?.completed!
+                    return {
+                        isCompleted: e?.node?.completed!,
+                        mark: e?.node?.score!
+                    }
                 })!
             }
             id={node?.node?.id!}
@@ -174,7 +194,19 @@ const RenderAnswer:Map<string, Function> = new Map([
     ]
 )
 
+const TrueFalseQuestion:react.FC<IErenderAnswer> = (props) => {
+    let parsedData = (JSON.parse(props.data) as {data:boolean}).data;
+    return <div>
+        <TrueFalseQuestionWidget
+        onChange = {() => {}}
+        isTrue = {parsedData!}
+        ></TrueFalseQuestionWidget>
+    </div>
+}
+
 RenderAnswer.set("монологическое высказывание на выбранную тему", RenderAnswerProvider(ThemeSelectionParse))
+RenderAnswer.set("правда/ложь", RenderAnswerProvider(TrueFalseQuestion)) 
+
 
 function renderAnswer(Type:string, answerInstance:any) {
     
@@ -200,13 +232,12 @@ const AnswerTeacherDetail:react.FC<IEAnswerTeacherDetail> = (props) => {
         score: score,
         number:Number(number)
     }})
-
+    console.log(props.testId, number)
     const {setActive} = useContext(TestCompletionContext);
     const {loading, data} = useAnswerTeacherDetailQuery({
         variables: {answerId:props.testId, number:Number(number)}})
     setActive(Number(number))
     if (loading) return <div>loading..</div>
-    console.log(data)
     const answerInstance = data?.allAnswer?.edges[0]!.node;
     const question = answerInstance?.sheet.test.taskSet.edges[0]!.node;
     const answerInstanceType = answerInstance?.sheet.test.taskSet.edges[0]?.node?.Type.name!;
@@ -217,11 +248,12 @@ const AnswerTeacherDetail:react.FC<IEAnswerTeacherDetail> = (props) => {
         setFlag(true);
         setScore(answerInstance?.score!)
     }
+    console.log(data, "markData");
     return <div className="answer-teacher__container">
             {content} 
-            <MarkWidget active={score} len={question?.maxScore!} onChange={(e:any) => {
+            <MarkWidget active={data?.allAnswer?.edges[0]?.node?.score} len={question?.maxScore!} onChange={(e:any) => {
                 try{
-                    setScore(e[0].idx)
+                    setScore(e[0].idx); 
                 }
                 catch{}
                 }}></MarkWidget>
@@ -232,12 +264,16 @@ const AnswerTeacherDetail:react.FC<IEAnswerTeacherDetail> = (props) => {
     </div> 
 }
 interface IEAnswerDetail{
-    length:number;
+    data:TestDetailQuery;
+    backUrl:string;
 }
 const AnswerDetail:react.FC<IEAnswerDetail> = (props) => {
+    console.log(props, "props")
     const {url} = useRouteMatch()
     const [active, setActive] = useState(0);
     const {id} = useParams<{id:string}>();
+    let currentRouteLen = props.data.test?.answersheetSet.edges.filter(
+        (e) => {return e?.node?.id == id})[0]?.node?.answerSet.edges.length!;
     console.log(url)
     return <TestCompletionContext.Provider value={{
             link:url, setActive:setActive, test:[] as ChildtestQuery,
@@ -245,11 +281,20 @@ const AnswerDetail:react.FC<IEAnswerDetail> = (props) => {
             }}>
         <div className="answer-detail__container">
             <Pagination
-                length={props.length}
+                length={currentRouteLen} 
                 link={url}
                 active={active}
             >
             </Pagination>
+            <div style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                marginTop: "20px",
+                marginBottom: "20px" 
+            }}>
+                <BackLink link={props.backUrl}></BackLink>
+            </div>
             <Switch>
                 <Route path={`${url}/:number`}>
                     <AnswerTeacherDetail testId={id}></AnswerTeacherDetail>
@@ -264,21 +309,22 @@ const AnswerDetail:react.FC<IEAnswerDetail> = (props) => {
 
 }
 
-const TeacherTestDetail:react.FC = () => {
+const TeacherTestDetail:react.FC<{backUrl:string}> = (props) => {
     const {url} = useRouteMatch();
     const {testId} = useParams<{testId:string}>()
     const {data, loading } = useTestDetailQuery({variables: {testId:testId}});
     if (loading) {
         return <div>loading...</div>
     }
+    console.log(data, "data");
     const res = parseTestDetail(data!)
     return <Switch>
         <Route path={`${url}/:id`}>
-            <AnswerDetail length={
-                data?.test?.answersheetSet.edges[0]?.node?.answerSet.edges.length!}></AnswerDetail>
+            <AnswerDetail data={data!} backUrl={url}></AnswerDetail>
         </Route>
         <Route path={url}>
             <div className="teacher-test-detail__container">
+                <BackLink link={props.backUrl}></BackLink>
                 {res}
             </div>
         </Route>
@@ -298,7 +344,7 @@ export const TeacherWorkCheck:react.FC = () => {
             
 
             <Route path={`${url}/:testId`}>
-                <TeacherTestDetail></TeacherTestDetail>
+                <TeacherTestDetail backUrl={url}></TeacherTestDetail>
             </Route>
             <Route path={url}>
                 <div className="teacher-work-check__container">

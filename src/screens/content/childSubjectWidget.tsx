@@ -67,7 +67,7 @@ export const ChildSubject:react.FC = (props) => {
     let res = parseData(data?.child?.groups.edges, match.url);
     return <Switch>
         <Route path={`${match.url}/:id`}>
-            <SubjectDetail></SubjectDetail>
+            <SubjectDetail prevLink={match.url}></SubjectDetail>
         </Route>
 
         <Route path={`${location.pathname}`}>

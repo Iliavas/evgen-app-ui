@@ -24,6 +24,7 @@ interface IEMarkWidget{
 }
 
 export const MarkWidget:react.FC<IEMarkWidget> = (props) => {
+    console.log(props, "markProps")
     const [active, setActive] = useState(([...Array(props.len).keys()]).map((e) => {return {state: e == props.active, idx:e};}))
     console.log(active)
     props.onChange(active.filter((e) => {return e.state == true}))

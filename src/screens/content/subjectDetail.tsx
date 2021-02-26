@@ -14,7 +14,7 @@ import {
 } from "react-router-dom";
 import {LessonDetails} from "./lessonDetails";
 import { create } from "domain";
-
+import {BackLink} from "../../uiKit/backLink";
 
 interface IEParams{
     id:string;
@@ -22,6 +22,7 @@ interface IEParams{
 
 interface IESubjectDetail{
     isTeacher?:boolean;
+    prevLink:string;
 }
 
 interface IECreationButton{
@@ -69,7 +70,9 @@ const CreateButton:react.FC<IECreationButton> = (props) => {
 
 }
 
-export const SubjectDetail:react.FC<IESubjectDetail> = () => {
+
+
+export const SubjectDetail:react.FC<IESubjectDetail> = (props) => {
     const [flag, setFlag] = useState(false)
     const {createWorkLink} = useContext(ChildContext)
     const {url} = useRouteMatch()
@@ -81,7 +84,7 @@ export const SubjectDetail:react.FC<IESubjectDetail> = () => {
     let res = parseQuery(data.subjectClass.lessonSet.edges, url)
     return <Switch>
         <Route path={`${url}/:id`}>
-            <LessonDetails></LessonDetails>
+            <LessonDetails prevUrl={url}></LessonDetails>
         </Route>
         <Route path={url}>
             <div className="subject-detail__container">
@@ -92,6 +95,7 @@ export const SubjectDetail:react.FC<IESubjectDetail> = () => {
                     {
                     createWorkLink != "" ? <CreateButton link={createWorkLink} subject={id}></CreateButton> : <div></div>
                     }
+                    <BackLink link={props.prevLink}></BackLink>
                 </div>
                 {res}
             </div>

@@ -9,7 +9,9 @@ import {
 } from "react-router-dom";
 import ReactPlayer from "react-player";
 import {
-    useChildtestQuery, ChildtestQuery, useCreateSheetMutation, useCreateAnswerMutation
+    useChildtestQuery, ChildtestQuery, useCreateSheetMutation, useCreateAnswerMutation,
+    useGetAnswerDataQuery,
+    useAnswerTeacherDetailQuery
 } from "../../generated/graphql"
 
 import {Pagination} from "../../uiKit/truePagination";
@@ -22,6 +24,8 @@ import {ChildContext} from "./childContext";
 import {Editor} from "../../uiKit/editor";
 import {ButtonGroup} from "../../uiKit/ButtonGroup";
 import {AudioRecButton} from "../../uiKit/audioRecButton";
+
+import {TrueFalseQuestionWidget} from "../../uiKit/TrueFalseQuestion";
 
 export const TestCompletionContext = react.createContext({
     setActive: (e:number) => {},
@@ -62,18 +66,42 @@ const SelectionThemeParse:react.FC<IETestCompletionPart> = (props) => {
         theme: "",
         audio: ""
     });
+    console.log(res, "res")
+    const {answersheetId} = useContext(TestCompletionContext);
+    const {index} = useParams<{index:string}>();
+    const {loading, data} = useGetAnswerDataQuery({variables:{
+        answerSheetId: answersheetId,
+        number: Number(index)
+    }})
+    if (loading) return <div>loading...</div>;
+    console.log(data);
+    let currentTheme = "";
+    try {
+        console.log(data)
+        currentTheme = 
+            (JSON.parse(
+                data?.answerSheet?.answerSet.edges[0]?.node?.content!
+                ) as {data:{theme:string}}).data.theme
+    } catch{}
     props.varChange(JSON.stringify(res));
     let themes = 
         JSON.parse(props.data.test?.taskSet.edges![Number(props.id)]?.node?.practise!) as IESelectionThemeTheme
-    console.log(themes, "themes")
+    console.log(themes, "themes", currentTheme)
     return <div className="selection-theme-page__container">
-        <ButtonGroup onChange={() => {}} group={
+        <ButtonGroup onChange={(e:string) => {
+            console.log(e, "name", res, res.audio)
+            setRes({
+                audio:res.audio,
+                theme:e
+        })}} group={
             themes.data.map((e)=> {
                 return e.value
             })
         } 
-        button_underName="Выбранная тема"></ButtonGroup>
-        <AudioRecButton onChange = {(data:string) => {setRes({
+        button_underName="Выбранная тема" active={currentTheme}></ButtonGroup>
+        <AudioRecButton onChange = {(data:string) => {
+            console.log(res, res.theme, "theme")
+            setRes({
             theme: res.theme,
             audio: data
         })}}></AudioRecButton>
@@ -89,14 +117,47 @@ function TaskProvider(elem:react.FC<IETestCompletionPart>) {
     }
 }
 
+const GetAnswerFunction = (questionNumber:number) => {
+    const {answersheetId} = useContext(TestCompletionContext);
+    const {loading, data} = useGetAnswerDataQuery({variables:{
+        answerSheetId:answersheetId,
+        number:questionNumber
+    }});
+    
+}
+
+const TrueFalseQuestion:react.FC<IETestCompletionPart> = (props) => {
+    const {index} = useParams<{index:string}>();
+    const {answersheetId} = useContext(TestCompletionContext);
+    const {data, loading} = useGetAnswerDataQuery({variables: {
+        answerSheetId:answersheetId,
+        number: Number(index)
+    }})
+    if (loading) {return <div>loading..</div>}
+    let contentContainer = data?.answerSheet?.answerSet.edges[0]?.node?.content;
+    try {
+        contentContainer = (JSON.parse(contentContainer!) as {data:string}).data;
+    }
+    catch {}
+    //const {data, loading} = "";
+    return <div>
+        <TrueFalseQuestionWidget isTrue={Boolean(contentContainer)} onChange={
+            (e:boolean) => {
+                props.varChange(JSON.stringify({data: e}));
+            }}></TrueFalseQuestionWidget>
+    </div>;
+}
+
 const TestCompletionTaskManager = new Map<string, Function>([
     ["расширенный письменный ответ", TaskProvider(ExtendedInputParse)],
-    ["монологическое высказывание на выбранную тему", TaskProvider(SelectionThemeParse)]
+    ["монологическое высказывание на выбранную тему", TaskProvider(SelectionThemeParse)],
+    ["правда/ложь", TaskProvider(TrueFalseQuestion)] 
 ])
 
 const TestCompletionTaskDecoder = new Map<string, Function>([
     ["расширенный письменный ответ", ExtendedInputDecode],
-    ["монологическое высказывание на выбранную тему", ExtendedInputDecode]
+    ["монологическое высказывание на выбранную тему", ExtendedInputDecode],
+    ["правда/ложь", ExtendedInputDecode] 
 ])
 
 const Timer:react.FC = () => {
@@ -108,6 +169,7 @@ const Timer:react.FC = () => {
 }
 
 const TestCompletionRoute:react.FC = () => {
+    const {url} = useRouteMatch()
     const {test, setActive, getAnswerSheetId, answersheetId} = useContext(TestCompletionContext);
     const [data, setData] = useState("")
     console.log(data)
@@ -131,11 +193,23 @@ const TestCompletionRoute:react.FC = () => {
         </div>
         {widget}
         <DefaultButton handleClick={() => {
-            console.log(answersheetId)
+            console.log(data, "data")
             Answer[0]()
         }} class="btn answer-btn">Ответить</DefaultButton>
-        <Link to="/" className="btn-test-compl">
+        <Link to={`${url}/complete`} className="btn-test-compl">
         <button className="btn-test-comp__canceled btn-test-compl end-btn">Закончить</button>
+
+        </Link>
+    </div>
+}
+
+const CompleteWidget:react.FC = () => {
+    return <div className="complete__container">
+        <div className="complete__haders">
+            Спасибо что выполнили тест
+        </div>
+        <Link to="/">
+            <button className="btn-test-comp__canceled btn-test-compl end-btn">Вернуться на главную</button>
 
         </Link>
     </div>
@@ -173,9 +247,13 @@ export const TestCompletion:react.FC<IETestCompletion> = (props) => {
             <Timer></Timer>
             <div className="test-completion__main-content">
                 <Switch>
+                <Route path={`${url}/:index/complete`}>
+                        <CompleteWidget></CompleteWidget>
+                    </Route>
                     <Route path={`${url}/:index`}>
                         <TestCompletionRoute></TestCompletionRoute>
                     </Route>
+        
                     <Route path={url}>
                         <div className="test-completion__heading">
                             {data?.test?.name.trim()}

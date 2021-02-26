@@ -25,6 +25,8 @@ import { DefaultButton } from "../../uiKit/Buttons";
 
 import { TaskTypeWidget } from "../../uiKit/TaskType";
 
+import {TrueFalseQuestionWidget} from "../../uiKit/TrueFalseQuestion"
+import {BackLink} from "../../uiKit/backLink";
 import bin from "../../images/trash-empty.svg";
 import cross from "../../images/cross.svg";
 interface IETesctCreate{
@@ -205,9 +207,12 @@ interface IEHandleSelectionTheme{
     onChange:Function;
 }
 
-const HandleSelectionTheme:react.FC<IEHandleSelectionTheme> = (props) => {
+const HandleSelectionTheme:react.FC<IETestCreationPart> = (props) => {
     console.log(props)
-    const parsedData:IEHandSelectionThemeData = JSON.parse(props.data);
+    let parsedData = {data: []} as IEHandSelectionThemeData;
+    try{
+        parsedData = JSON.parse(props.data)
+    }catch{}
     //const [inputs, setInputs] = useState(parsedData)
     const [inputs, setInputs] = useState(parsedData)
     props.onChange(JSON.stringify(inputs))
@@ -255,11 +260,42 @@ const HandleSelectionThemeProvider = (isAutoCheck:boolean, data:string, onChange
     ></HandleSelectionTheme>
 }
 
+interface IETestCreationPart{
+    isAutoCheck:boolean;
+    data:string;
+    onChange:Function;
+}
+
+function TaskProvider(elem:react.FC<IETestCreationPart>) {
+    return function(props:IETestCreationPart){
+        return react.createElement(
+            elem, 
+            {...props},
+            )
+    }
+}
+
+const TrueFalseQuestion:react.FC<IETestCreationPart> = (props) => {
+    let parsedData = false;
+    try{
+        parsedData = (JSON.parse(props.data) as {data:boolean}).data;
+    } catch{}
+    const [state, setState] = useState(parsedData);
+    console.log(props.data, parsedData, state, "state")
+    props.onChange(`{"data" : ${state}}`);
+    return <div>
+        <TrueFalseQuestionWidget isTrue={state} onChange={
+            (e:boolean) => {setState(e);}
+            }></TrueFalseQuestionWidget>
+    </div>
+}
+
 const handleFunctions:Map<string, Function> = new Map(
     [
         ["расширенный письменный ответ", HandleExtendedWriteAnswerProvider],
         ["опишите устно изображение", HandleDescrImageVerbose as Function],
-        ["монологическое высказывание на выбранную тему", HandleSelectionThemeProvider]
+        ["монологическое высказывание на выбранную тему", TaskProvider(HandleSelectionTheme)],
+        ["правда/ложь", TaskProvider(TrueFalseQuestion)]
     ]
     
     ) 
@@ -268,7 +304,7 @@ const handleFunctions:Map<string, Function> = new Map(
 function parseHandlers(handler:Function|undefined, arg:any, isAutoCheck:boolean, onChange:Function){
     console.log(handler)
     try{
-        return handler!(isAutoCheck, arg, onChange)
+        return handler!({isAutoCheck:isAutoCheck, data:arg, onChange:onChange})
     } catch (e) {
         console.log(e, handler)
         return <div>error...</div>
@@ -345,7 +381,10 @@ const QuestionEditing:react.FC<IEQuestionEditing> = (props) => {
 
     }
     return <div className="question-editing__container">
-        <div className="name__heading">Формулировка Задания</div>
+        <div className="name__heading">
+            Формулировка Задания &nbsp;
+            <BackLink link={props.testLink}></BackLink>
+        </div>
         <Editor onChange={(event:any, editor:any) => {
             setTheory(editor.getData());}}
             content={data?.task?.theory!}>
@@ -465,7 +504,9 @@ export const TestCreation:react.FC<IETestCreation> = (props) => {
         <Route path={`${url}`}>
             <div className="test-creation__container">
                 <div className="name__heading">
-                    Название теста <img src={bin} alt="" className="bin" onClick = {() => {
+                    Название теста &nbsp;
+                    <BackLink link={props.link}></BackLink>
+                    <img src={bin} alt="" className="bin" onClick = {() => {
                         deleteTest[0]()
                         history.push(props.link)
                         window.location.reload()

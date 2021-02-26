@@ -52,9 +52,5 @@ export const Pagination:react.FC<IEPagination> = (props) => {
                 {res} 
             </div>
     </div> 
-    </PaginationContext.Provider> 
-    
-
-
-
+    </PaginationContext.Provider>
 }

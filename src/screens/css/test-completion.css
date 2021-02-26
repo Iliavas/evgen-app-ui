@@ -144,3 +144,10 @@ color: #1D1D1D;
     align-items: center;
     width: 100%;
 }
+
+.complete__haders{
+    font-family: Montserrat;
+    font-size: 32px;
+    font-weight: 600;
+    margin-top: 150px;
+}

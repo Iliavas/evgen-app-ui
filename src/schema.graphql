@@ -63,6 +63,18 @@ query userInfo($id:String!){
     }
 }
 
+query getAnswerData($answerSheetId:ID!, $number:Int){
+  answerSheet(id:$answerSheetId) {
+    answerSet(number:$number){
+      edges{
+        node{
+          content
+        }
+      }
+    }
+  }
+}
+
 query childSubjects($id:ID!){
     child(id:$id){
       name, pk

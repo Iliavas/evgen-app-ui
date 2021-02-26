@@ -50,10 +50,11 @@ export const TeacherClasses:react.FC = () => {
     console.log(data);
     data = data.teacher.subjectclasslocalSet.edges as IETeacherClass[];
     const res = parseData(data, url);
+    let a = "";
     return <div className="teacher-classes__content">
         <Switch>
-            <Route path={`${url}/:id`}>
-                <SubjectDetail></SubjectDetail>
+            <Route path={`${url}/:id`}> 
+                <SubjectDetail prevLink={url}></SubjectDetail> 
             </Route>
             <Route path={`${url}`}>
                 <div className="teacher-classes__heading">Ваши классы</div>

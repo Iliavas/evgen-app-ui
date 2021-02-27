@@ -28,7 +28,7 @@ export const Registration_inputs:React.FC = () => {
         }} class="reg-input" placeHolder="E-mail"></DefaultInput>
         <DefaultInput handleChange={(e:IEvent) => {
             password_input = e.target.value;
-        }} class="reg-input" placeHolder="Password"></DefaultInput>
+        }} class="reg-input" placeHolder="Password" type="password"></DefaultInput>
         
         
         <DefaultButton handleClick={()=>{

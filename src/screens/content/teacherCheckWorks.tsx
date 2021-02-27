@@ -171,12 +171,18 @@ function fromDecodedStringToUrl(data:string) {
 }
 
 const ThemeSelectionParse:react.FC<IErenderAnswer> = (props) => {
-    let data = JSON.parse(props.data) as IEThemeSelection;
-    let parsedData = JSON.parse(data.data) as {theme:string; audio:string;}
-    let audioUrl = fromDecodedStringToUrl(parsedData.audio)
-    
-        return <div>
-        <Player url={audioUrl!}></Player>
+    let data = {} as IEThemeSelection;
+    let audioUrl = "";
+    try{
+        data = JSON.parse(props.data) as IEThemeSelection;
+        let parsedData = JSON.parse(data.data) as {theme:string; audio:string;}
+        let audioUrl = fromDecodedStringToUrl(parsedData.audio)
+    }catch{}
+    return <div>
+            {
+                audioUrl.length ? <Player url={audioUrl!}></Player> :
+                <div>Ученик не дал ответа</div>
+            }
     </div>
 }
 
@@ -195,7 +201,10 @@ const RenderAnswer:Map<string, Function> = new Map([
 )
 
 const TrueFalseQuestion:react.FC<IErenderAnswer> = (props) => {
-    let parsedData = (JSON.parse(props.data) as {data:boolean}).data;
+    let parsedData = true; 
+    try{
+        parsedData = (JSON.parse(props.data) as {data:boolean}).data;
+    } catch{}
     return <div>
         <TrueFalseQuestionWidget
         onChange = {() => {}}

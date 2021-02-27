@@ -44,12 +44,13 @@ export const Registration:react.FC = () => {
                     <Registration_inputs></Registration_inputs>
                 </Route>
             </Switch>
-            <div className="or-container">
-                <div className="line"></div>
-                <div className="or-content">или</div>
-                <div className="line"></div>
-            </div>
-            <DefaultButton handleClick={()=>{}} class="reg-btn vk-btn">
+            
+        </div>
+    </div>
+    );
+}
+//
+/*<DefaultButton handleClick={()=>{}} class="reg-btn vk-btn">
                 <div className="vk-button">
                     <img src={vkImg} alt="" className="vk-button__img"/>
                     <span className="vk-button__text">
@@ -68,8 +69,4 @@ export const Registration:react.FC = () => {
                             </span>
                         </span>
                     </div>
-            </DefaultButton>
-        </div>
-    </div>
-    );
-}
+            </DefaultButton>*/

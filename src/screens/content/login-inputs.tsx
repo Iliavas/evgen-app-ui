@@ -28,10 +28,10 @@ export const Login_inputs:React.FC = () =>
     return <div className="inputs_flex">
         <DefaultInput handleChange={(e:IEvent) => {
             name = e.target.value;
-        }} class="reg-input" placeHolder="E-mail"></DefaultInput>
+        }} class="reg-input" placeHolder="Логин"></DefaultInput>
         <DefaultInput handleChange={(e:IEvent) => {
             password = e.target.value;
-        }} class="reg-input" placeHolder="Password"></DefaultInput>
+        }} class="reg-input" placeHolder="Пароль" type="password"></DefaultInput>
         <div className="password-refresh">Восстановить пароль</div>
         <DefaultButton handleClick={()=>{
             setToken({variables:{username:name, password:password}})

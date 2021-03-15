@@ -5,7 +5,8 @@ import {
     Link,
     Switch,
     Route,
-    useHistory
+    useHistory,
+    Redirect
 } from "react-router-dom";
 import ReactPlayer from "react-player";
 import {
@@ -26,13 +27,17 @@ import {ButtonGroup} from "../../uiKit/ButtonGroup";
 import {AudioRecButton} from "../../uiKit/audioRecButton";
 
 import {TrueFalseQuestionWidget} from "../../uiKit/TrueFalseQuestion";
+import { RSA_NO_PADDING } from "constants";
 
 export const TestCompletionContext = react.createContext({
     setActive: (e:number) => {},
     link: "",
     test: [] as ChildtestQuery,
     answersheetId: "",
-    getAnswerSheetId: () => {return String();}
+    getAnswerSheetId: () => {return String();},
+    setTimePreview: (res:boolean) => {},
+    setIsTiming: (res:boolean) => {},
+    
 })
 
 function ExtendedInputDecode(data:string) {
@@ -62,10 +67,11 @@ interface IESelectionThemeTheme{
 }
 
 const SelectionThemeParse:react.FC<IETestCompletionPart> = (props) => {
+
     const [res, setRes] = useState({
         theme: "",
         audio: ""
-    });
+    })
     console.log(res, "res")
     const {answersheetId} = useContext(TestCompletionContext);
     const {index} = useParams<{index:string}>();
@@ -90,10 +96,8 @@ const SelectionThemeParse:react.FC<IETestCompletionPart> = (props) => {
     return <div className="selection-theme-page__container">
         <ButtonGroup onChange={(e:string) => {
             console.log(e, "name", res, res.audio)
-            setRes({
-                audio:res.audio,
-                theme:e
-        })}} group={
+            setRes({audio:res.audio, theme:e})
+            }} group={
             themes.data.map((e)=> {
                 return e.value
             })
@@ -102,19 +106,62 @@ const SelectionThemeParse:react.FC<IETestCompletionPart> = (props) => {
         <AudioRecButton onChange = {(data:string) => {
             console.log(res, res.theme, "theme")
             setRes({
-            theme: res.theme,
-            audio: data
-        })}}></AudioRecButton>
+                theme: res.theme, audio:data
+            })
+            }}></AudioRecButton>
     </div>
 }
 
+
+interface IEWidget{
+    __typename?: "TaskType" | undefined;
+    theory: string;
+    practise: string;
+    isTiming: boolean;
+    time: number;
+    Type: {
+        __typename?: "TaskTypeType" | undefined;
+        name: string;
+        id: string;
+    };
+}
+
+
+const TimeTaskPreview:react.FC<IETimeCompletionPreview> = (props) => {
+    const {setIsTiming} = useContext(TestCompletionTestRouteContext)
+
+    const [flag, setFlag] = useState(true);
+
+    return <div>
+        {flag ? <div className="time__container">
+    <p className="time-text">
+        Этот вопрос на время, он будет доступен только один раз
+    </p>
+    <DefaultButton handleClick={() => {setIsTiming(false);setFlag(false)}} class="time-btn">Я знаю</DefaultButton>
+    </div> : <Redirect to={props.link}></Redirect>} 
+    </div>
+     
+}
+
+
+interface IETimeCompletionPreview{
+    link:string;
+}
+
+interface IETestCompletionPartTiming extends IETestCompletionPart{
+    widget?:react.FC<IETestCompletionPart>;
+}
+
+
 function TaskProvider(elem:react.FC<IETestCompletionPart>) {
-    return function(props:IETestCompletionPart){
-        return react.createElement(
-            elem, 
-            {...props},
-            )
+    const Instance:react.FC<IETestCompletionPart> = (props) => {
+        let elemProvider = react.createElement(elem, {...props});
+        const widget = props.data.test?.taskSet.edges[Number(props.id)]?.node;
+        console.log(widget, "widget");
+
+        return <div>{elemProvider}</div> 
     }
+    return Instance;
 }
 
 const GetAnswerFunction = (questionNumber:number) => {
@@ -168,8 +215,21 @@ const Timer:react.FC = () => {
     return <div className="timer">{new Date(timer * 1000).toISOString().substr(11, 8)}</div>
 }
 
+const TestCompletionRouteContext = react.createContext({
+    getResFromTest:Function,
+    setFunctionMakingAnswer:Function
+})
+
+
+const TestCompletionTestRouteContext = react.createContext({
+    isTiming:false,
+    setIsTiming:(data:boolean) => {}
+})
+
 const TestCompletionRoute:react.FC = () => {
-    const {url} = useRouteMatch()
+    const {url} = useRouteMatch();
+    const [isTiming, setIsTiming] = useState(false)
+    const [flag, setFlag] = useState(false)
     const {test, setActive, getAnswerSheetId, answersheetId} = useContext(TestCompletionContext);
     const [data, setData] = useState("")
     console.log(data)
@@ -186,21 +246,51 @@ const TestCompletionRoute:react.FC = () => {
         test.test?.taskSet.edges[Number(index)]?.node?.Type.name!)!({
             data:test, varChange:setData, id:Number(index)!})
     console.log(test)
-    return <div className="test-completion-route__container">
-        <div className="test-type">{test.test?.taskSet.edges[Number(index)]?.node?.Type.name!}</div>
-        <div className="theory"> 
-            <div dangerouslySetInnerHTML={{__html:test.test?.taskSet.edges[Number(index)]?.node?.theory!}}></div>
-        </div>
-        {widget}
-        <DefaultButton handleClick={() => {
-            console.log(data, "data")
-            Answer[0]()
-        }} class="btn answer-btn">Ответить</DefaultButton>
-        <Link to={`${url}/complete`} className="btn-test-compl">
-        <button className="btn-test-comp__canceled btn-test-compl end-btn">Закончить</button>
 
-        </Link>
-    </div>
+    if (!flag) {
+        setFlag(true);
+        setIsTiming(
+            test.test?.taskSet.edges[Number(index)]?.node?.isTiming!
+        )
+    }
+
+    return <TestCompletionTestRouteContext.Provider value={{
+        isTiming:isTiming,
+        setIsTiming:setIsTiming
+    }}>
+        <Switch>
+                <Route path={`${url}/time`}>
+                    <TimeTaskPreview link={url}></TimeTaskPreview>
+                </Route>
+
+                <Route path={url}>
+                    {isTiming ? <Redirect to={`${url}/time`}></Redirect> : 
+                    
+                    <div className="test-completion-route__container">
+                    <div className="test-type">{test.test?.taskSet.edges[Number(index)]?.node?.Type.name!}</div>
+                    <div className="theory"> 
+                    <div dangerouslySetInnerHTML={{__html:test.test?.taskSet.edges[Number(index)]?.node?.theory!}}></div>
+                </div>
+                {widget}
+                <DefaultButton handleClick={() => {
+                    console.log(data, "data")
+                    Answer[0]()
+                }} class="btn answer-btn">Ответить</DefaultButton>
+                <Link to={`${url}/complete`} className="btn-test-compl">
+                    <button className="btn-test-comp__canceled btn-test-compl end-btn">Закончить</button>
+                </Link>
+                </div>
+                    
+                    }
+                    
+                </Route>
+
+        </Switch> 
+
+    </TestCompletionTestRouteContext.Provider> 
+
+    
+
 }
 
 const CompleteWidget:react.FC = () => {
@@ -219,9 +309,20 @@ interface IETestCompletion{
     link:string;
 }
 
+
+const TesCompletionContext = react.createContext({
+
+})
+
 export const TestCompletion:react.FC<IETestCompletion> = (props) => {
     const {id} = useParams<{id:string}>();
-    const history = useHistory()
+    const history = useHistory();
+    
+     
+    //const [isTiming, setIsTiming] = useState(false);
+    //const [dataFunction, setDataFunction] = useState(new Function);
+
+    const [timePreview, setTimePreview] = useState(false);
     const params = useContext(ChildContext);
     const [active, setActive] = useState(-1);
     const [answerSheetId, setAnswerSheetId] = useState("");
@@ -239,8 +340,16 @@ export const TestCompletion:react.FC<IETestCompletion> = (props) => {
     }
 
     return <TestCompletionContext.Provider value = {
-            {setActive:setActive, link:url, test:data!, answersheetId:answerSheetId,
-            getAnswerSheetId: getData}}>
+            {
+                setIsTiming: (res:boolean) => {},
+                setActive:setActive, 
+                link:url, 
+                test:data!, 
+                answersheetId:answerSheetId,
+                getAnswerSheetId: getData, 
+                setTimePreview:setTimePreview,
+            }
+            }> 
         <div className="centered">
             <div className="test-completion__container">
             <Pagination link={url} length={data?.test?.taskSet.edges.length!} active={active}></Pagination>

@@ -11,6 +11,7 @@ import {useQuery} from "@apollo/client";
 import {Switch, Route, Link, useRouteMatch} from "react-router-dom"
 import {SubjectDetail} from "./subjectDetail";
 
+
 interface IETeacherClass{
     node: {
         name:string;

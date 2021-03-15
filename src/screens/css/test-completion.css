@@ -151,3 +151,28 @@ color: #1D1D1D;
     font-weight: 600;
     margin-top: 150px;
 }
+
+.time__container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; 
+    padding: 20px;
+    width: calc(100% - 40px);
+
+    gap: 30px;
+
+
+    border: 1px #eee solid;
+
+    border-radius: 10px;
+}
+
+.time-text{
+    font-family: Montserrat;
+    font-weight: 600;
+}
+
+.time-btn{
+    width: 100%;
+}

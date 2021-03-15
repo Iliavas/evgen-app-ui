@@ -20,10 +20,12 @@ import "../css/testCreation.css"
 
 import {Editor} from "../../uiKit/editor";
 
-import {TextField} from "@material-ui/core";
+import {Input, TextField} from "@material-ui/core";
 import { DefaultButton } from "../../uiKit/Buttons";
 
 import { TaskTypeWidget } from "../../uiKit/TaskType";
+
+import TimeField from 'react-simple-timefield';
 
 import {TrueFalseQuestionWidget} from "../../uiKit/TrueFalseQuestion"
 import {BackLink} from "../../uiKit/backLink";
@@ -413,15 +415,12 @@ const QuestionEditing:react.FC<IEQuestionEditing> = (props) => {
         </div>
         <div className="timing checkbox__container">
             <input type="checkbox" checked={isTiming!} onChange={(e) => {setIsTiming(e.target.checked)}}/>Вопрос на время?
-            <TextField
-            type="time"
-            defaultValue={reformatDate(300)}
-            className="timePicker"
-            disabled={!isTiming}
-            onChange = {(e) => {setTime(reformatDataToNumber(e.target.value))}}
-            >
 
-            </TextField>
+            <TimeField
+                value={reformatDate(300)}
+                input={<input type="text" className="timePicker"></input>}
+                onChange = {(value) => {setTime(reformatDataToNumber(value.target.value))}}
+            ></TimeField>
         </div>
         <div className="how-many-points">
             <div className="points__label checkbox__container">Сколько макимум баллов:</div>

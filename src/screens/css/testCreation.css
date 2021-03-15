@@ -7,6 +7,9 @@
     gap : 10vw;
 }
 
+.timePicker::-webkit-datetime-edit-ampm-field {
+    display: none;
+}
 .test-creation__container{
     width: 100%;
     display: flex;

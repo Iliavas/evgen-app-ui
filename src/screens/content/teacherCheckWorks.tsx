@@ -27,6 +27,9 @@ import {BackLink} from "../../uiKit/backLink";
 
 import {TrueFalseQuestionWidget} from "../../uiKit/TrueFalseQuestion";
 import { printIntrospectionSchema } from "graphql";
+import {ChildDidntAnswerWidget} from "../../uiKit/ChildDidntAnswer";
+
+
 
 function parseData(data:AllTeacherTestQuery, link:string){
     let res = []
@@ -145,9 +148,8 @@ interface IEExtendedWriteAnswer{
     data:string;
 }
 
-function ExtededWriteAnswerParse(data:string) {
-    console.log(data, "data")
-    const parsedData = JSON.parse(data) as IEExtendedWriteAnswer;
+const ExtededWriteAnswerParse:react.FC<IEThemeSelection> = (props) => {
+    const parsedData = JSON.parse(props.data) as IEExtendedWriteAnswer;
     return <Editor
         content={parsedData.data}
     ></Editor>
@@ -161,8 +163,10 @@ interface IEThemeSelection{
     data: string;
 }
 
-function fromDecodedStringToUrl(data:string) {
-    let decoded = LZString.decompress(data)!;
+function fromDecodedStringToUrl(data:string|undefined) {
+    console.log(data, "fuckingData");
+    let decoded = LZString.decompress(data!)!;
+    if (!decoded) return "";
     const AudioArray = new Uint8Array(
         decoded.split(",").map((e) => {return Number(e)})
         )
@@ -170,33 +174,41 @@ function fromDecodedStringToUrl(data:string) {
     return window.URL.createObjectURL(BlobData);
 }
 
+
 const ThemeSelectionParse:react.FC<IErenderAnswer> = (props) => {
     let data = {} as IEThemeSelection;
-    let audioUrl = "";
-    try{
-        data = JSON.parse(props.data) as IEThemeSelection;
-        let parsedData = JSON.parse(data.data) as {theme:string; audio:string;}
-        let audioUrl = fromDecodedStringToUrl(parsedData.audio)
-    }catch{}
+
+    let audioData =
+        JSON.parse(
+            (JSON.parse(props.data) as IEThemeSelection)!.data!
+        ) as {theme:string, audio:string}
+     
+    let [audioUrl, setAudioUrl] = useState(fromDecodedStringToUrl(audioData.audio))
+
     return <div>
             {
-                audioUrl.length ? <Player url={audioUrl!}></Player> :
-                <div>Ученик не дал ответа</div>
+                <Player url={audioUrl!}></Player>
             }
     </div>
 }
 
 function RenderAnswerProvider(widget:react.FC<IErenderAnswer>) {
     return (data:string) => {
-        console.log("fuck", (widget))
-    return react.createElement(
-        widget,
-        {data:data}
-    )}
+        console.log("fuck", data.length)
+        if (data.length == 0) return <ChildDidntAnswerWidget></ChildDidntAnswerWidget>
+        return react.createElement(
+            widget,
+            {data:data} 
+        )
+        return data.toString().length > 0 ? react.createElement(
+            widget,
+            {data:data} 
+        ) : <ChildDidntAnswerWidget></ChildDidntAnswerWidget>
+    }
 }
 
 const RenderAnswer:Map<string, Function> = new Map([
-        ["расширенный письменный ответ", ExtededWriteAnswerParse],
+        ["расширенный письменный ответ", RenderAnswerProvider(ExtededWriteAnswerParse)],
     ]
 )
 
@@ -286,7 +298,7 @@ const AnswerDetail:react.FC<IEAnswerDetail> = (props) => {
     console.log(url)
     return <TestCompletionContext.Provider value={{
             link:url, setActive:setActive, test:[] as ChildtestQuery,
-            answersheetId:"", getAnswerSheetId:()=>{return"";}
+            answersheetId:"", getAnswerSheetId:()=>{return"";}, setTimePreview:(res:boolean) => {}
             }}>
         <div className="answer-detail__container">
             <Pagination

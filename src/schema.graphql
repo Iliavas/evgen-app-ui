@@ -162,7 +162,6 @@ query Childtest($testId:ID!){
       edges{
         node{
           theory, practise, isTiming, Type{name, id}, time,
-          
         }
       }
     }
